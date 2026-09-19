@@ -120,6 +120,37 @@ export default function App() {
     },
   })
 
+  // Previously the only way a new build ever reached an already-installed PWA was Settings ->
+  // "Check for Updates", tapped manually. Real gap found 2026-09-20: a shipped change (the splash
+  // tagline chrome effect) was live on the server all along, but Deep's installed app kept
+  // rendering yesterday's cached shell because nothing ever re-checked github.io's sw.js (served
+  // with a 10-minute HTTP cache) after the initial install. Re-check on every foreground, not just
+  // on cold load, so a backgrounded/reopened PWA self-heals instead of silently going stale.
+  useEffect(() => {
+    if (!swRegistration) return
+    const checkForUpdate = () => swRegistration.update()
+    const id = setInterval(checkForUpdate, 5 * 60 * 1000)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') checkForUpdate()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      clearInterval(id)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [swRegistration])
+
+  // Apply a found update automatically rather than waiting for a manual Settings tap — but not
+  // mid-capture, where a reload would drop an in-progress photo/voice/meal action. Re-evaluates
+  // every time `stage` changes, so it applies the moment the user lands back on a safe stage.
+  useEffect(() => {
+    if (!needRefresh) return
+    const UNSAFE_STAGES: Stage[] = ['camera', 'voice', 'identifying', 'logging']
+    if (!UNSAFE_STAGES.includes(stage)) {
+      updateServiceWorker(true)
+    }
+  }, [needRefresh, stage, updateServiceWorker])
+
   // Theme is a user preference, not app data — apply the stored choice once on mount, same
   // pattern as any other localStorage-backed setting (independent of the Supabase auth bootstrap
   // below, since it has to work identically for a brand-new user who hasn't onboarded yet).
