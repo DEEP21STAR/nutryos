@@ -611,40 +611,37 @@ body,
   }
 }
 
-/* Splash tagline ("EAT SMART · TRAIN HARD · TRACK REAL") — chrome/shimmer text finish, real
-   NUTRYOS accent tokens (emerald/violet/amber) rather than borrowing Whetū's cyan/purple palette
-   used by .wfd-logo elsewhere in this file. Same background-clip:text technique. */
-.splash-tagline-chrome {
-  background: linear-gradient(
-    100deg,
-    var(--color-accent-health) 0%,
-    #fff 20%,
-    var(--color-accent-ai) 45%,
-    #fff 65%,
-    var(--color-accent-energy) 85%,
-    var(--color-accent-health) 100%
-  );
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: splashTaglineShimmer 5s ease-in-out infinite;
+/* Splash tagline ("EAT SMART · TRAIN HARD · TRACK REAL") — real gap found 2026-09-20, reported
+   four times: the previous background-clip:text gradient-sweep technique depends on a CSS feature
+   that some Chromium-fork Android browsers (confirmed: Deep's own "Adblock Browser") render
+   inconsistently — when it silently fails, `color: transparent` (required by that technique) has
+   nothing to fall back to but the inherited grey, which is exactly the "still plain grey" report.
+   Replaced with the same solid-color + text-shadow neon-pulse technique already verified working
+   for the splash greeting name (.splash-greeting-name below) — plain `color` and `text-shadow`
+   have no browser-support edge cases, unlike background-clip:text. Each word gets its own NUTRYOS
+   accent color (matching the wordmark's own emerald/violet/amber) instead of one moving gradient,
+   which is more robust AND, arguably, more "eye candy" — three distinct pops instead of one sweep. */
+.splash-tagline-word {
+  animation: splashTaglineNeonPulse 2.4s ease-in-out infinite;
 }
-@keyframes splashTaglineShimmer {
-  0% {
-    background-position: 100% 50%;
+@keyframes splashTaglineNeonPulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 4px currentColor,
+      0 0 1px currentColor;
   }
   50% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
+    text-shadow:
+      0 0 14px currentColor,
+      0 0 6px currentColor,
+      0 0 22px currentColor;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .splash-tagline-chrome {
+  .splash-tagline-word {
     animation: none;
+    text-shadow: 0 0 6px currentColor;
   }
 }
 

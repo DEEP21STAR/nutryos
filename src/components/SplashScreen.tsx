@@ -23,7 +23,15 @@ const WORDMARK_LETTERS = [
 const RING_COLOR = '#00e5a0'
 const S_COLOR = '#ffb800'
 
-const TAGLINE_WORDS = ['EAT SMART', '·', 'TRAIN HARD', '·', 'TRACK REAL']
+// Each phrase gets its own solid NUTRYOS accent color + neon pulse (see .splash-tagline-word in
+// index.css) rather than one shared gradient — see that CSS comment for why the swap happened.
+const TAGLINE_WORDS = [
+  { text: 'EAT SMART', color: '#00e5a0' },
+  { text: '·', color: null },
+  { text: 'TRAIN HARD', color: '#8b5cf6' },
+  { text: '·', color: null },
+  { text: 'TRACK REAL', color: '#ffb800' },
+]
 
 const LETTER_ENTER = 0.45
 const LETTER_STAGGER = 0.09
@@ -401,16 +409,17 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
             S
           </span>
         </div>
-        <div className="splash-tagline-chrome flex gap-1.5 text-caption font-semibold tracking-[0.3em]">
+        <div className="flex gap-1.5 text-caption font-semibold tracking-[0.3em]">
           {TAGLINE_WORDS.map((word, i) => (
             <span
               key={i}
               ref={(el) => {
                 taglineWordRefs.current[i] = el
               }}
-              style={{ opacity: 0, display: 'inline-block' }}
+              className={word.color ? 'splash-tagline-word' : undefined}
+              style={{ opacity: 0, display: 'inline-block', color: word.color ?? 'rgb(255 255 255 / 0.4)' }}
             >
-              {word}
+              {word.text}
             </span>
           ))}
         </div>
