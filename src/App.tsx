@@ -540,7 +540,7 @@ export default function App() {
           <StreakBanner userId={userId} todaysMealCount={meals.length} displayName={displayName} />
           <WorkoutTracker userId={userId} onBurnedChange={setCaloriesBurned} displayName={displayName} />
           <WaterTracker />
-          <MealTimeline meals={meals} />
+          <MealTimeline meals={meals} onAddMeal={() => setStage('mode-select')} />
           <TipsTicker meals={meals} goals={goals ?? DEFAULT_GOALS} />
         </>
       )}

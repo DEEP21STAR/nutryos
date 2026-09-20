@@ -7,7 +7,7 @@
  * ahead of the on-device path in the chain (see App.tsx's handleCapture).
  */
 import { supabase } from '@/lib/supabase'
-import type { IdentifiedItem } from '@/lib/ollamaVision'
+import type { IdentifiedItem, ConversationTurn, TextParseResult } from '@/lib/ollamaVision'
 
 function blobToBase64(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -49,4 +49,36 @@ export async function identifyFoodViaGemini(photo: Blob): Promise<IdentifiedItem
     throw new Error('Shared vision service returned zero items')
   }
   return rawItems.map((it) => ({ name: it.name, estimatedGrams: Number(it.estimated_grams) || 100 }))
+}
+
+/**
+ * Text/voice meal-description fallback (2026-09-20) — same `identify-food` Edge Function as the
+ * photo path above, distinguished by sending `{conversation}` instead of `{imageBase64, mimeType}`.
+ * Exists because the text path had NO fallback at all before this: `VITE_OLLAMA_TAILSCALE_URL`
+ * never reached the production build (only the Supabase secrets are wired into the GitHub Actions
+ * workflow), so `candidateUrls()` resolved to just the caller's own `localhost:11434` for every
+ * real deployed user — a phone's own loopback address, never reachable. VoiceCapture.tsx now
+ * catches that and falls through to this, mirroring the photo path's Ollama -> Gemini cascade.
+ */
+export async function parseFoodTextViaGemini(
+  conversation: ConversationTurn[],
+): Promise<{ result: TextParseResult; endpointUsed: string }> {
+  const { data, error } = await supabase.functions.invoke<
+    { type?: string; question?: string; items?: { name: string; estimated_grams: number }[]; error?: string }
+  >('identify-food', { body: { conversation } })
+
+  if (error) {
+    throw new Error(`Shared text-parsing service unreachable: ${error.message}`)
+  }
+  if (data?.error) {
+    throw new Error(`Shared text-parsing service error: ${data.error}`)
+  }
+  if (data?.type === 'clarify' && data.question) {
+    return { result: { type: 'clarify', question: data.question }, endpointUsed: 'gemini' }
+  }
+  if (data?.type === 'items' && Array.isArray(data.items) && data.items.length > 0) {
+    const items = data.items.map((it) => ({ name: it.name, estimatedGrams: Number(it.estimated_grams) || 100 }))
+    return { result: { type: 'items', items }, endpointUsed: 'gemini' }
+  }
+  throw new Error('Shared text-parsing service returned an unparseable result')
 }

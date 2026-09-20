@@ -2,9 +2,31 @@ import type { Meal } from '@/lib/types'
 import { sumMacros } from '@/lib/types'
 
 /** Timeline View — restyled to the glass system (visual layer only, same data/order/logic as before). */
-export function MealTimeline({ meals }: { meals: Meal[] }) {
+export function MealTimeline({ meals, onAddMeal }: { meals: Meal[]; onAddMeal?: () => void }) {
   if (meals.length === 0) {
-    return <p className="mt-8 text-center text-body text-text-tertiary">No meals logged yet today.</p>
+    // Real gap found 2026-09-20: Workouts and Water each get their own "+ Log a..." button right
+    // in their section, but this one just said "No meals logged yet today" with no action at all —
+    // the only way to actually log a meal was the floating camera orb, which isn't obviously tied
+    // to "meals" for a first-time user. Same button pattern as WorkoutTracker's "+ Log a workout",
+    // using the user's own accent color since meals are the app's primary tracked metric.
+    return (
+      <div className="mt-6 flex flex-col items-center gap-3 px-4">
+        <p className="text-body text-text-tertiary">No meals logged yet today.</p>
+        {onAddMeal && (
+          <button
+            onClick={onAddMeal}
+            className="w-full max-w-xs rounded-xl border py-2.5 text-caption font-semibold transition active:scale-95"
+            style={{
+              borderColor: 'color-mix(in srgb, var(--color-accent-health) 40%, transparent)',
+              backgroundColor: 'color-mix(in srgb, var(--color-accent-health) 10%, transparent)',
+              color: 'var(--color-accent-health)',
+            }}
+          >
+            + Log a meal
+          </button>
+        )}
+      </div>
+    )
   }
   return (
     <ul className="relative mt-6 flex flex-col gap-3 px-4">

@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import { cn, prefersReducedMotion } from '@/lib/utils'
 import { parseFoodTextViaOllama } from '@/lib/ollamaVision'
 import type { ConversationTurn } from '@/lib/ollamaVision'
+import { parseFoodTextViaGemini } from '@/lib/geminiVision'
 import { resolveIdentifiedItems } from '@/lib/resolveFoodItems'
 import type { FoodItem } from '@/lib/types'
 
@@ -298,7 +299,18 @@ export function VoiceCapture({
     setPhase('parsing')
     setErrorMessage(null)
     try {
-      const { result } = await parseFoodTextViaOllama(conv)
+      // Ollama first (free, local — works when Deep's own machine is reachable), Gemini as the
+      // real fallback. Real bug found 2026-09-20: this path previously had NO fallback at all —
+      // VITE_OLLAMA_TAILSCALE_URL never reached the production build, so every deployed user's
+      // only candidate was their own device's localhost:11434, which always fails. Mirrors the
+      // Ollama -> Gemini cascade App.tsx's handleCapture already does for the photo path.
+      let result
+      try {
+        ;({ result } = await parseFoodTextViaOllama(conv))
+      } catch (ollamaErr) {
+        console.warn('parseFoodTextViaOllama failed, falling back to Gemini:', ollamaErr)
+        ;({ result } = await parseFoodTextViaGemini(conv))
+      }
       if (result.type === 'clarify') {
         const askedSoFar = conv.filter((t) => t.role === 'assistant').length
         if (askedSoFar >= MAX_CLARIFY_ROUNDS) {
