@@ -647,3 +647,32 @@ body,
     animation: none;
   }
 }
+
+/* Splash greeting name ("Good Afternoon, Deep") — real neon pulse, same effect family as
+   .donation-pulse's glow-breathe but on text-shadow instead of box-shadow, since there's no box
+   here to pulse. Electric Violet rather than the ring's own emerald so the name reads as a
+   distinct pop against the greeting text, not a repeat of the logo color. */
+.splash-greeting-name {
+  color: var(--color-accent-ai);
+  animation: greetingNeonPulse 1.8s ease-in-out infinite;
+}
+@keyframes greetingNeonPulse {
+  0%,
+  100% {
+    text-shadow:
+      0 0 6px var(--color-accent-ai),
+      0 0 2px var(--color-accent-ai);
+  }
+  50% {
+    text-shadow:
+      0 0 22px var(--color-accent-ai),
+      0 0 10px var(--color-accent-ai),
+      0 0 34px var(--color-accent-ai);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-greeting-name {
+    animation: none;
+    text-shadow: 0 0 10px var(--color-accent-ai);
+  }
+}

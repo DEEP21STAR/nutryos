@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { SPLASH_CATEGORIES } from '@/lib/splashCategories'
 import { playBrandChime } from '@/lib/chime'
+import { getCachedDisplayName } from '@/lib/displayNameCache'
 
 const INTRO_SEEN_KEY = 'nutrios.introSeen.v1'
 
@@ -39,9 +40,24 @@ const ZOOM_MS = 550
 // tour starts, bookending the splash with the brand instead of only closing on it. Deliberately
 // not a second full wordmark reveal — that would just repeat the finale rather than read as its
 // own moment, the same "Netflix ta-dum, then the real content" idea Deep referenced earlier.
-const INTRO_STAMP_ENTER = 0.35
-const INTRO_STAMP_HOLD = 0.5
-const INTRO_STAMP_EXIT = 0.3
+const INTRO_STAMP_ENTER = 0.4
+const INTRO_STAMP_HOLD = 1.6
+const INTRO_STAMP_EXIT = 0.35
+
+/**
+ * Time-of-day greeting (2026-09-20, Deep's ask) — the stamp moment now always plays (previously
+ * first-run only) and doubles as "Good Morning"/"Good Afternoon"/"Good Evening", plus the user's
+ * own name once one exists. Read once per mount, same "compute once, doesn't change during this
+ * component's short life" pattern as speechSupported/reducedMotion elsewhere in this codebase —
+ * a real Date read, not a placeholder. Folds the small overnight window into "Evening" rather than
+ * inventing a fourth "Good Night" state Deep didn't ask for.
+ */
+function getGreetingPeriod(): string {
+  const hour = new Date().getHours()
+  if (hour >= 5 && hour < 12) return 'Morning'
+  if (hour >= 12 && hour < 17) return 'Afternoon'
+  return 'Evening'
+}
 
 /**
  * Real 100°-wide bottom arc of the same ring (r=38, center 50,50) the "O" circle already uses —
@@ -89,6 +105,9 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   const finishRef = useRef<() => void>(() => {})
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
+  const cachedName = useRef(getCachedDisplayName()).current
+  const greetingPeriod = useRef(getGreetingPeriod()).current
+
   function handleSkip() {
     tlRef.current?.kill()
     finishRef.current()
@@ -103,7 +122,8 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
     }
 
     const categoryTotal = isFirstRun ? SPLASH_CATEGORIES.length * CATEGORY_BEAT : 0
-    const introStampTotal = isFirstRun ? INTRO_STAMP_ENTER + INTRO_STAMP_HOLD + INTRO_STAMP_EXIT : 0
+    // Stamp+greeting now always plays (previously first-run only) — see the timeline build below.
+    const introStampTotal = INTRO_STAMP_ENTER + INTRO_STAMP_HOLD + INTRO_STAMP_EXIT
     const totalEstimateMs =
       (introStampTotal + categoryTotal + WORDMARK_ENTER_TOTAL) * 1000 +
       HOLD_1_MS +
@@ -133,16 +153,18 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
     const tl = gsap.timeline()
     tlRef.current = tl
 
-    if (isFirstRun) {
-      tl.call(() => playBrandChime())
-      tl.fromTo(
-        introStampRef.current,
-        { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: INTRO_STAMP_ENTER, ease: 'back.out(2.2)' },
-      )
-      tl.to({}, { duration: INTRO_STAMP_HOLD })
-      tl.to(introStampRef.current, { opacity: 0, scale: 0.8, duration: INTRO_STAMP_EXIT, ease: 'power1.in' })
+    // Greeting stamp — always plays now (was first-run only), since it's the personalized
+    // "Good Afternoon, Deep" moment Deep wants on every load, not just the first one.
+    tl.call(() => playBrandChime())
+    tl.fromTo(
+      introStampRef.current,
+      { opacity: 0, scale: 0.5 },
+      { opacity: 1, scale: 1, duration: INTRO_STAMP_ENTER, ease: 'back.out(2.2)' },
+    )
+    tl.to({}, { duration: INTRO_STAMP_HOLD })
+    tl.to(introStampRef.current, { opacity: 0, scale: 0.8, duration: INTRO_STAMP_EXIT, ease: 'power1.in' })
 
+    if (isFirstRun) {
       SPLASH_CATEGORIES.forEach((cat, i) => {
         const el = categoryRefs.current[i]
         const dot = dotRefs.current[i]
@@ -240,15 +262,23 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           'radial-gradient(ellipse 70% 55% at 50% 42%, rgb(0 229 160 / 0.14) 0%, rgb(139 92 246 / 0.07) 45%, transparent 75%)',
       }}
     >
-      <div
-        ref={introStampRef}
-        aria-hidden
-        className="absolute z-10 flex items-center justify-center"
-        style={{ opacity: 0, width: 72, height: 72 }}
-      >
-        <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', filter: `drop-shadow(0 0 18px ${RING_COLOR})` }}>
-          <circle cx="50" cy="50" r="38" fill="none" stroke={RING_COLOR} strokeWidth="9" />
-        </svg>
+      <div ref={introStampRef} className="absolute z-10 flex flex-col items-center gap-4 px-6" style={{ opacity: 0 }}>
+        <div className="flex items-center justify-center" style={{ width: 72, height: 72 }}>
+          <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', filter: `drop-shadow(0 0 18px ${RING_COLOR})` }}>
+            <circle cx="50" cy="50" r="38" fill="none" stroke={RING_COLOR} strokeWidth="9" />
+          </svg>
+        </div>
+        <p
+          className="text-center font-semibold tracking-[0.12em]"
+          style={{ fontSize: 'clamp(18px, 4vh, 26px)', color: 'rgb(255 255 255 / 0.85)', fontFamily: 'var(--font-display)' }}
+        >
+          Good {greetingPeriod}
+          {cachedName && (
+            <>
+              , <span className="splash-greeting-name">{cachedName}</span>
+            </>
+          )}
+        </p>
       </div>
 
       <div className="relative flex h-[40vh] w-full items-center justify-center">

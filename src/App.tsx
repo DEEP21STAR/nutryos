@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { CameraCapture, InputOrbButton } from '@/components/CameraCapture'
 import { MenuCapture } from '@/components/MenuCapture'
 import { BarcodeCapture } from '@/components/BarcodeCapture'
@@ -54,6 +54,7 @@ import { ensureAuthenticated } from '@/lib/auth'
 import { insertMeal, listTodayMeals, subscribeToMeals } from '@/lib/mealsRepo'
 import { fetchGoals, saveGoals } from '@/lib/goalsRepo'
 import { fetchAvatarUrl, fetchDisplayName, saveDisplayName } from '@/lib/avatarRepo'
+import { setCachedDisplayName } from '@/lib/displayNameCache'
 import { sumMacros, DEFAULT_GOALS, type FoodItem, type Goals, type Meal } from '@/lib/types'
 import { uid } from '@/lib/utils'
 import type { RealtimeChannel } from '@supabase/supabase-js'
@@ -113,6 +114,13 @@ export default function App() {
   const [swRegistration, setSwRegistration] = useState<ServiceWorkerRegistration | undefined>(undefined)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [displayName, setDisplayName] = useState<string | null>(null)
+  // Single point of truth for keeping the splash's instant-read localStorage cache in sync with
+  // React state, wherever the name actually changes (bootstrap fetch, onboarding, Settings rename)
+  // -- see displayNameCache.ts for why the cache exists at all.
+  const updateDisplayName = useCallback((name: string | null) => {
+    setDisplayName(name)
+    setCachedDisplayName(name)
+  }, [])
 
   const { needRefresh: [needRefresh], updateServiceWorker } = useRegisterSW({
     onRegisteredSW(_url, registration) {
@@ -225,7 +233,7 @@ export default function App() {
 
       const savedName = await fetchDisplayName(user.id)
       if (cancelled) return
-      setDisplayName(savedName)
+      updateDisplayName(savedName)
     }
 
     // A single transient failure here (a brief network blip, or a genuinely-observed Supabase
@@ -444,7 +452,7 @@ export default function App() {
   async function handleOnboardingComplete(newGoals: Goals, name: string) {
     setGoals(newGoals)
     setNeedsOnboarding(false)
-    if (name) setDisplayName(name)
+    if (name) updateDisplayName(name)
     if (userId) {
       try {
         await saveGoals(userId, newGoals)
@@ -516,7 +524,7 @@ export default function App() {
           avatarUrl={avatarUrl}
           onAvatarChange={setAvatarUrl}
           displayName={displayName}
-          onDisplayNameChange={setDisplayName}
+          onDisplayNameChange={updateDisplayName}
         />
         </Suspense>
       )}
