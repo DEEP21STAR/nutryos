@@ -450,6 +450,19 @@ export function VoiceCapture({
         {phase === 'reviewing' && (
           <div className="flex w-full max-w-xs flex-col gap-3">
             {audioUrl && <audio controls src={audioUrl} className="w-full" />}
+            {/* Real complaint traced 2026-09-20: on browsers without Google's speech backend
+                (several Chromium-based Android browsers, not just non-Chromium ones — confirmed
+                via Deep's own Adblock Browser repro), webkitSpeechRecognition can exist and record
+                fine but never deliver a result, leaving this box empty with no explanation. Live
+                STT was always meant to be progressive enhancement here (see this file's header
+                comment), but silence read as broken rather than as "type it in" being the actual
+                path. Only surfaces once reviewing with nothing transcribed — never while the
+                textarea already has real content. */}
+            {!transcript.trim() && (
+              <p className="text-caption text-text-tertiary">
+                Couldn't transcribe that automatically — type what you had below.
+              </p>
+            )}
             <textarea
               value={transcript}
               onChange={(e) => setTranscript(e.target.value)}

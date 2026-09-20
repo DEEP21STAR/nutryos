@@ -282,6 +282,19 @@ export function ConfirmLog({
               </button>
             </div>
 
+            {/* Real gap found 2026-09-20: a lookup miss (no Open Food Facts or common-foods match
+                — Open Food Facts is a branded-product database, weakest on plain whole-food cuts)
+                silently left every macro at 0, which read as "this food has zero nutrition"
+                rather than "we couldn't find it, please fill this in" — exactly what happened with
+                "Lamb Shank". item.offCode is only ever set when a lookup actually succeeded (see
+                resolveFoodItems.ts), so its absence on a named item is the real, existing signal
+                for this, not a new field. */}
+            {item.name.trim().length > 0 && item.offCode === undefined && (
+              <p className="mt-2 text-caption text-accent-energy">
+                Couldn't find nutrition data for this — check the numbers below.
+              </p>
+            )}
+
             {/* Haptic-slider-style portion adjuster — real onChange -> updateItem, same estimatedGrams field as before. */}
             <div className="mt-3">
               <div className="mb-1.5 flex items-center justify-between">

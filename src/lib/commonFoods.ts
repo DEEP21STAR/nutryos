@@ -51,6 +51,10 @@ export const COMMON_FOODS: CommonFood[] = [
   { name: 'Salmon, cooked', keywords: ['salmon'], caloriesPer100g: 208, proteinPer100gG: 20, fatPer100gG: 13, carbsPer100gG: 0, fiberPer100gG: 0, sugarPer100gG: 0 },
   { name: 'Beef mince, cooked', keywords: ['beef mince', 'ground beef', 'mince'], caloriesPer100g: 250, proteinPer100gG: 26, fatPer100gG: 15, carbsPer100gG: 0, fiberPer100gG: 0, sugarPer100gG: 0 },
   { name: 'Steak, cooked', keywords: ['steak', 'beef steak'], caloriesPer100g: 271, proteinPer100gG: 25, fatPer100gG: 19, carbsPer100gG: 0, fiberPer100gG: 0, sugarPer100gG: 0 },
+  // Real gap found 2026-09-20 — Deep logged "Lamb Shank" and got 0g protein: OFF has no whole-cut
+  // lamb match (same weak spot this file already documents for olives/banana), and lamb wasn't in
+  // this list at all. USDA leg, shank half, trimmed to 1/8" fat, choice, cooked/roasted.
+  { name: 'Lamb, cooked', keywords: ['lamb shank', 'lamb chop', 'lamb leg', 'lamb'], caloriesPer100g: 217, proteinPer100gG: 26.7, fatPer100gG: 11.4, carbsPer100gG: 0, fiberPer100gG: 0, sugarPer100gG: 0 },
   { name: 'Bacon, cooked', keywords: ['bacon'], caloriesPer100g: 541, proteinPer100gG: 37, fatPer100gG: 42, carbsPer100gG: 1.4, fiberPer100gG: 0, sugarPer100gG: 0 },
   { name: 'Milk, whole', keywords: ['milk'], caloriesPer100g: 61, proteinPer100gG: 3.2, fatPer100gG: 3.3, carbsPer100gG: 4.8, fiberPer100gG: 0, sugarPer100gG: 5 },
   { name: 'Greek yoghurt, plain', keywords: ['greek yoghurt', 'greek yogurt', 'yoghurt', 'yogurt'], caloriesPer100g: 59, proteinPer100gG: 10, fatPer100gG: 0.4, carbsPer100gG: 3.6, fiberPer100gG: 0, sugarPer100gG: 3.6 },
