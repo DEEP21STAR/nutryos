@@ -253,7 +253,11 @@ export default function App() {
         try {
           await runBootstrap()
         } catch (err) {
-          if (!cancelled) setAuthError(err instanceof Error ? err.message : 'Supabase sign-in failed.')
+          if (!cancelled) {
+            // Developer detail goes to the console; end users get a plain, calm message.
+            console.warn('[nutryos] sign-in failed:', err)
+            setAuthError("Can't reach the cloud right now.")
+          }
         }
       }
     }
@@ -487,11 +491,7 @@ export default function App() {
         <div className="relative z-10 mx-auto flex min-h-screen max-w-md flex-col overflow-x-hidden pb-40 text-text-primary">
       {/* Ambient background glow — subtle, static, sits behind everything. Starfield canvas
           (index.html) now shows through here — Phase 1's "no particles" scope was revised. */}
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-x-0 top-0 h-80 opacity-30"
-        style={{ background: 'radial-gradient(60% 60% at 50% 0%, var(--glow-ai), transparent 70%)' }}
-      />
+      <div aria-hidden className="ux-mesh" />
 
       <header className="relative p-4 text-center">
         <SettingsMenuButton onClick={() => setShowSettings(true)} />
@@ -499,7 +499,7 @@ export default function App() {
           {activeTab === 'today' ? 'Today' : activeTab === 'progress' ? 'Progress' : 'Together'}
         </h1>
         {authError && (
-          <p className="mt-1 text-caption text-accent-danger">
+          <p className="mt-1 text-caption text-text-tertiary">
             {authError}{' '}
             <button onClick={() => window.location.reload()} className="underline">
               Retry
@@ -536,6 +536,9 @@ export default function App() {
       {activeTab === 'today' && (
         <>
           <TodayRing totals={totals} goals={goals ?? DEFAULT_GOALS} caloriesBurned={caloriesBurned} />
+          {/* Meals + empty-state "Log a meal" CTA sit directly under the ring (reorder only) so the
+              primary action isn't the 4th card down. */}
+          <MealTimeline meals={meals} onAddMeal={() => setStage('mode-select')} />
           <RecentMeals
             userId={userId}
             todaysMealCount={meals.length}
@@ -548,7 +551,6 @@ export default function App() {
           <StreakBanner userId={userId} todaysMealCount={meals.length} displayName={displayName} />
           <WorkoutTracker userId={userId} onBurnedChange={setCaloriesBurned} displayName={displayName} />
           <WaterTracker />
-          <MealTimeline meals={meals} onAddMeal={() => setStage('mode-select')} />
           <TipsTicker meals={meals} goals={goals ?? DEFAULT_GOALS} />
         </>
       )}

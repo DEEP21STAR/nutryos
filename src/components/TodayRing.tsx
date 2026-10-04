@@ -40,10 +40,36 @@ export function TodayRing({
   const remaining = Math.max(0, effectiveGoal - totals.calories)
   const remainingPct = (remaining / effectiveGoal) * 100
   const ringColor = ringColorForRemaining(remainingPct)
+  // Gradient only while the ring is in its normal (healthy) state — amber/crimson warning colours
+  // stay solid so the low-remaining signal is not diluted.
+  const isHealthy = ringColor === 'var(--color-accent-health)'
+  const macros = [
+    { key: 'P', label: 'Protein', value: totals.proteinG, goal: goals.proteinGoalG, color: MACRO_COLORS.protein },
+    { key: 'F', label: 'Fat', value: totals.fatG, goal: goals.fatGoalG, color: MACRO_COLORS.fat },
+    { key: 'C', label: 'Carbs', value: totals.carbsG, goal: goals.carbsGoalG, color: MACRO_COLORS.carbs },
+  ]
 
   return (
+    <>
     <div className="relative mx-auto mt-2" style={{ width: 260, height: 260 }}>
-      <RadialProgress percent={caloriePct} color={ringColor} size={260} strokeWidth={16} />
+      {/* Blurred halo behind the calorie ring, tinted by the ring's own state colour. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute rounded-full"
+        style={{
+          inset: -14,
+          background: `radial-gradient(closest-side, color-mix(in oklab, ${isHealthy ? 'var(--ux-accent-a)' : ringColor} var(--ux-glow-pct), transparent), transparent 72%)`,
+          filter: 'blur(18px)',
+          opacity: 0.55,
+        }}
+      />
+      <RadialProgress
+        percent={caloriePct}
+        color={ringColor}
+        gradient={isHealthy ? ['var(--ux-accent-a)', 'var(--ux-accent-b)'] : undefined}
+        size={260}
+        strokeWidth={16}
+      />
       <div className="absolute" style={{ inset: 30 }}>
         <RadialProgress
           percent={(totals.proteinG / goals.proteinGoalG) * 100}
@@ -72,7 +98,9 @@ export function TodayRing({
         />
       </div>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <CountUp value={totals.calories} decimals={0} className="text-display text-text-primary" />
+        <span className="ux-hero-number text-display">
+          <CountUp value={totals.calories} decimals={0} className="text-display" />
+        </span>
         <span className="text-caption text-text-tertiary">
           of {effectiveGoal} kcal{caloriesBurned > 0 && ` (+${caloriesBurned} burned)`}
         </span>
@@ -81,5 +109,27 @@ export function TodayRing({
         </span>
       </div>
     </div>
+    <ul className="mx-auto mt-4 flex max-w-md flex-wrap items-stretch justify-center gap-2 px-4" aria-label="Macros logged today">
+      {macros.map((m) => (
+        <li
+          key={m.key}
+          className="ux-glass flex min-w-0 items-center gap-2 px-3 py-1.5"
+          style={{ borderRadius: 9999 }}
+          aria-label={`${m.label} ${Math.round(m.value)} of ${Math.round(m.goal)} grams`}
+        >
+          <span
+            className="flex h-5 w-5 flex-none items-center justify-center rounded-full text-[11px] font-bold"
+            style={{ background: `color-mix(in oklab, ${m.color} 22%, transparent)`, color: m.color, boxShadow: `0 0 10px -3px ${m.color}` }}
+            aria-hidden
+          >
+            {m.key}
+          </span>
+          <span className="text-caption text-text-secondary whitespace-nowrap">
+            <span className="font-semibold text-text-primary">{Math.round(m.value)}</span>/{Math.round(m.goal)}g
+          </span>
+        </li>
+      ))}
+    </ul>
+    </>
   )
 }

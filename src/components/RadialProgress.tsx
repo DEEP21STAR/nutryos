@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import gsap from 'gsap'
 import { cn, prefersReducedMotion } from '@/lib/utils'
 
@@ -17,6 +17,7 @@ export function RadialProgress({
   centerLabel,
   className,
   glow = true,
+  gradient,
 }: {
   /** 0-100. Values outside that range are clamped — a ring never overflows past a full circle or reverses. */
   percent: number
@@ -28,7 +29,10 @@ export function RadialProgress({
   className?: string
   /** Luminous drop-shadow glow matching `color` — on by default per the Cinematic Tech spec, but the nested macro rings turn it off so the calorie ring's glow stays the visual lead. */
   glow?: boolean
+  /** Optional [from, to] CSS colours (var() ok) — strokes the arc with a linear gradient instead of the solid `color`. */
+  gradient?: [string, string]
 }) {
+  const gradId = useId()
   const clamped = Math.max(0, Math.min(100, percent))
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
@@ -68,14 +72,22 @@ export function RadialProgress({
   return (
     <div className={cn('relative shrink-0', className)} style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90 overflow-visible">
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={strokeWidth} />
+        {gradient && (
+          <defs>
+            <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" style={{ stopColor: gradient[0] }} />
+              <stop offset="100%" style={{ stopColor: gradient[1] }} />
+            </linearGradient>
+          </defs>
+        )}
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" style={{ stroke: 'var(--ux-ring-track, rgba(255,255,255,0.08))' }} strokeWidth={strokeWidth} />
         <circle
           ref={ringRef}
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={color}
+          stroke={gradient ? `url(#${gradId})` : color}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}

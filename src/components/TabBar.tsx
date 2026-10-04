@@ -37,23 +37,34 @@ export function TabBar({ active, onChange }: { active: TabKey; onChange: (tab: T
             key={key}
             onClick={() => onChange(key)}
             aria-current={isActive ? 'page' : undefined}
-            className="flex flex-1 flex-col items-center gap-1 py-2.5 transition active:scale-95"
+            className="flex flex-1 items-center justify-center py-2 transition active:scale-95"
           >
-            <Icon active={isActive} />
-            <span
-              className={cn('text-caption transition-colors', isActive ? 'font-semibold' : 'text-text-muted')}
-              style={isActive ? { color: accent.color, textShadow: `0 0 8px ${accent.glow}` } : undefined}
-            >
-              {label}
-            </span>
+            {/* Active tab = glass pill glowing in its own accent (--ux-accent-a is re-pointed per
+                tab so --ux-glow-sm picks up that tab's colour). Inactive keeps the bare icon+label. */}
             <span
               className={cn(
-                'h-0.5 w-6 rounded-full transition-all duration-300',
-                isActive ? 'opacity-100' : 'scale-x-0 opacity-0',
+                'flex flex-col items-center gap-1 rounded-2xl border px-5 py-1.5 transition-all duration-300',
+                isActive ? '' : 'border-transparent',
               )}
-              style={{ background: accent.color, boxShadow: isActive ? `0 0 6px 1px ${accent.glow}` : undefined }}
-              aria-hidden
-            />
+              style={
+                isActive
+                  ? ({
+                      ['--ux-accent-a' as string]: accent.color,
+                      background: `linear-gradient(155deg, color-mix(in oklab, ${accent.color} 20%, transparent), color-mix(in oklab, ${accent.color} 6%, transparent))`,
+                      borderColor: `color-mix(in oklab, ${accent.color} 32%, transparent)`,
+                      boxShadow: 'var(--ux-glass-edge), var(--ux-glow-sm)',
+                    } as React.CSSProperties)
+                  : undefined
+              }
+            >
+              <Icon active={isActive} />
+              <span
+                className={cn('text-caption transition-colors', isActive ? 'font-semibold' : 'text-text-muted')}
+                style={isActive ? { color: accent.color, textShadow: `0 0 8px ${accent.glow}` } : undefined}
+              >
+                {label}
+              </span>
+            </span>
           </button>
         )
       })}
