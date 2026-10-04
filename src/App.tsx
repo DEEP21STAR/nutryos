@@ -4,6 +4,7 @@ import { MenuCapture } from '@/components/MenuCapture'
 import { BarcodeCapture } from '@/components/BarcodeCapture'
 import { ConfirmLog } from '@/components/ConfirmLog'
 import { TodayRing } from '@/components/TodayRing'
+import { whatNextLine } from '@/lib/stats'
 import { HealthyScoreGauge } from '@/components/HealthyScoreGauge'
 import { StreakBanner } from '@/components/StreakBanner'
 import { WaterTracker } from '@/components/WaterTracker'
@@ -536,6 +537,11 @@ export default function App() {
       {activeTab === 'today' && (
         <>
           <TodayRing totals={totals} goals={goals ?? DEFAULT_GOALS} caloriesBurned={caloriesBurned} />
+          {goals && whatNextLine(totals, goals, caloriesBurned, meals.length) && (
+            <p className="mx-auto mt-3 max-w-md px-4 text-center text-body text-text-secondary">
+              {whatNextLine(totals, goals, caloriesBurned, meals.length)}
+            </p>
+          )}
           {/* Meals + empty-state "Log a meal" CTA sit directly under the ring (reorder only) so the
               primary action isn't the 4th card down. */}
           <MealTimeline meals={meals} onAddMeal={() => setStage('mode-select')} />

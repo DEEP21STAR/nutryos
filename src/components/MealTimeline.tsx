@@ -94,7 +94,7 @@ export function MealTimeline({ meals, onAddMeal }: { meals: Meal[]; onAddMeal?: 
               </div>
             )}
             <div className="min-w-0 flex-1">
-              <p className="truncate text-body text-text-primary">{meal.items.map((i) => i.name).join(', ') || 'Untitled meal'}</p>
+              <p className="line-clamp-2 break-words text-body text-text-primary">{meal.items.map((i) => i.name).join(', ') || 'Untitled meal'}</p>
               <p className="text-caption text-text-tertiary">
                 {slot.label} · {dateTime}
               </p>

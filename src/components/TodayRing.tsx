@@ -113,7 +113,7 @@ export function TodayRing({
       {macros.map((m) => (
         <li
           key={m.key}
-          className="ux-glass flex min-w-0 items-center gap-2 px-3 py-1.5"
+          className="ux-glass relative flex min-w-0 items-center gap-2 px-3 pb-2 pt-1.5"
           style={{ borderRadius: 9999 }}
           aria-label={`${m.label} ${Math.round(m.value)} of ${Math.round(m.goal)} grams`}
         >
@@ -124,8 +124,18 @@ export function TodayRing({
           >
             {m.key}
           </span>
-          <span className="text-caption text-text-secondary whitespace-nowrap">
+          <span className="whitespace-nowrap text-[13px] leading-5 text-text-secondary">
             <span className="font-semibold text-text-primary">{Math.round(m.value)}</span>/{Math.round(m.goal)}g
+          </span>
+          <span
+            aria-hidden
+            className="absolute bottom-1 left-3 right-3 h-[2px] overflow-hidden rounded-full"
+            style={{ background: `color-mix(in oklab, ${m.color} 18%, transparent)` }}
+          >
+            <span
+              className="block h-full rounded-full"
+              style={{ width: `${Math.min(100, Math.max(0, m.goal > 0 ? (m.value / m.goal) * 100 : 0))}%`, background: m.color }}
+            />
           </span>
         </li>
       ))}

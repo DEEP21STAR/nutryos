@@ -320,3 +320,19 @@ export function goalCrusherWeekScore(meals: Meal[], goals: Goals, now = new Date
   const avgDeviationPct = totalDeviationPct / daysLogged
   return Math.max(0, Math.min(100, 100 - avgDeviationPct - daysOverGoal * 10))
 }
+
+/** One plain sentence for the Today screen from real totals. Returns null when no goals are loaded. */
+export function whatNextLine(
+  totals: MacroTotals,
+  goals: Goals | null | undefined,
+  caloriesBurned = 0,
+  mealCount = totals.calories > 0 ? 1 : 0,
+): string | null {
+  if (!goals || !(goals.calorieGoal > 0)) return null
+  const budget = goals.calorieGoal + caloriesBurned
+  const left = Math.round(budget - totals.calories)
+  if (mealCount === 0 && totals.calories <= 0) return 'Nothing logged yet: start with breakfast'
+  if (left < 0) return `You're ${-left} kcal over today`
+  if (left === 0) return 'You hit your calorie goal for today'
+  return left >= 150 ? `You have ${left} kcal left: a snack fits` : `You have ${left} kcal left: a light bite fits`
+}
