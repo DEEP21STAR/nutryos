@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Images, Zap, Palette, Snowflake, Crown, ShieldCheck, Download, FlaskConical } from 'lucide-react'
+import { Images, Zap, Palette, Snowflake, Crown, ShieldCheck, Download, FlaskConical, CircleHelp } from 'lucide-react'
 import { applyTheme, type Theme } from '@/lib/theme'
 import { applyAccentColor, ACCENT_PRESETS, type AccentColor } from '@/lib/accentColor'
 import { AvatarPicker } from '@/components/AvatarPicker'
@@ -31,6 +31,8 @@ interface SettingsPanelProps {
   onAvatarChange: (avatar: string) => void
   displayName: string | null
   onDisplayNameChange: (name: string) => void
+  onOpenHelp: () => void
+  onReplayTour: () => void
 }
 
 /**
@@ -53,6 +55,8 @@ export function SettingsPanel({
   onAvatarChange,
   displayName,
   onDisplayNameChange,
+  onOpenHelp,
+  onReplayTour,
 }: SettingsPanelProps) {
   const [checkState, setCheckState] = useState<'idle' | 'checking' | 'up-to-date'>('idle')
   const [nameInput, setNameInput] = useState(displayName ?? '')
@@ -173,6 +177,24 @@ export function SettingsPanel({
             </div>
           </section>
         )}
+
+        <section className="glass-card flex flex-col gap-3 p-4">
+          <h3 className="flex items-center gap-1.5 text-body font-semibold">
+            <CircleHelp size={16} className="text-accent-ai" /> Help
+          </h3>
+          <button
+            onClick={onOpenHelp}
+            className="rounded-xl border border-accent-ai/40 bg-accent-ai/10 py-3 text-body font-semibold text-accent-ai"
+          >
+            How NUTRYOS works
+          </button>
+          <button
+            onClick={onReplayTour}
+            className="rounded-xl border border-white/10 bg-bg-secondary py-3 text-body text-text-secondary"
+          >
+            Replay the quick tour
+          </button>
+        </section>
 
         <section className="glass-card flex flex-col gap-3 p-4">
           <h3 className="text-body font-semibold">Appearance</h3>

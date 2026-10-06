@@ -28,7 +28,7 @@ const TAB_ACCENT: Record<TabKey, { color: string; glow: string }> = {
  */
 export function TabBar({ active, onChange }: { active: TabKey; onChange: (tab: TabKey) => void }) {
   return (
-    <nav className="glass fixed inset-x-0 bottom-0 z-30 flex items-stretch justify-around border-t border-white/5 pb-[env(safe-area-inset-bottom,0px)]">
+    <nav data-tour="tabbar" className="glass fixed inset-x-0 bottom-0 z-30 flex items-stretch justify-around border-t border-white/5 pb-[env(safe-area-inset-bottom,0px)]">
       {TABS.map(({ key, label, Icon }) => {
         const isActive = active === key
         const accent = TAB_ACCENT[key]

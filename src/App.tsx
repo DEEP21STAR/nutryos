@@ -19,6 +19,9 @@ import { WhetuFooter } from '@/components/WhetuFooter'
 import { SplashScreen } from '@/components/SplashScreen'
 import { OnboardingWizard } from '@/components/OnboardingWizard'
 import { SettingsMenuButton } from '@/components/SettingsMenuButton'
+import { CoachmarkTour } from '@/components/CoachmarkTour'
+import { HelpCarousel } from '@/components/HelpCarousel'
+import { hasSeenTour, markTourSeen } from '@/lib/guidance'
 
 // Code-split the heavy, not-always-visible screens — these five are the largest files in the
 // app after App.tsx itself, and were previously all precached into the main bundle even though
@@ -112,6 +115,23 @@ export default function App() {
   const [theme, setTheme] = useState<Theme>('dark')
   const [accentColor, setAccentColor] = useState<AccentColor>('emerald')
   const [showSettings, setShowSettings] = useState(false)
+  const [showTour, setShowTour] = useState(false)
+  const [showHelp, setShowHelp] = useState(false)
+  const endTour = useCallback(() => {
+    markTourSeen()
+    setShowTour(false)
+  }, [])
+  // First-run tour: starts once, only on a settled Today screen (past splash and onboarding, no
+  // capture flow or Settings open) and never again after it has been seen or skipped.
+  useEffect(() => {
+    if (showTour || showHelp || showSplash || needsOnboarding || !goals) return
+    if (stage !== 'idle' || showSettings || activeTab !== 'today') return
+    if (!hasSeenTour()) setShowTour(true)
+  }, [showTour, showHelp, showSplash, needsOnboarding, goals, stage, showSettings, activeTab])
+  // Logging always wins: if the user opens the log flow mid-tour, the tour ends.
+  useEffect(() => {
+    if (showTour && stage !== 'idle') endTour()
+  }, [showTour, stage, endTour])
   const [swRegistration, setSwRegistration] = useState<ServiceWorkerRegistration | undefined>(undefined)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [displayName, setDisplayName] = useState<string | null>(null)
@@ -526,6 +546,14 @@ export default function App() {
           onAvatarChange={setAvatarUrl}
           displayName={displayName}
           onDisplayNameChange={updateDisplayName}
+          onOpenHelp={() => setShowHelp(true)}
+          onReplayTour={() => {
+            setShowSettings(false)
+            setActiveTab('today')
+            // Wait a frame so the Today screen is mounted and measurable before the tour looks
+            // for its targets.
+            setTimeout(() => setShowTour(true), 50)
+          }}
         />
         </Suspense>
       )}
@@ -544,7 +572,9 @@ export default function App() {
           )}
           {/* Meals + empty-state "Log a meal" CTA sit directly under the ring (reorder only) so the
               primary action isn't the 4th card down. */}
-          <MealTimeline meals={meals} onAddMeal={() => setStage('mode-select')} />
+          <div data-tour="timeline">
+            <MealTimeline meals={meals} onAddMeal={() => setStage('mode-select')} />
+          </div>
           <RecentMeals
             userId={userId}
             todaysMealCount={meals.length}
@@ -594,6 +624,9 @@ export default function App() {
 
       <InputOrbButton onClick={() => setStage('mode-select')} />
       <TabBar active={activeTab} onChange={setActiveTab} />
+
+      {showTour && <CoachmarkTour onDone={endTour} />}
+      {showHelp && <HelpCarousel onClose={() => setShowHelp(false)} />}
 
       {stage === 'mode-select' && (
         <InputModeSheet

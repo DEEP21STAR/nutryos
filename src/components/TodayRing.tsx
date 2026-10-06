@@ -51,7 +51,7 @@ export function TodayRing({
 
   return (
     <>
-    <div className="relative mx-auto mt-2" style={{ width: 260, height: 260 }}>
+    <div data-tour="ring" className="relative mx-auto mt-2" style={{ width: 260, height: 260 }}>
       {/* Blurred halo behind the calorie ring, tinted by the ring's own state colour. */}
       <div
         aria-hidden
@@ -109,7 +109,7 @@ export function TodayRing({
         </span>
       </div>
     </div>
-    <ul className="mx-auto mt-4 flex max-w-md flex-wrap items-stretch justify-center gap-2 px-4" aria-label="Macros logged today">
+    <ul data-tour="macros" className="mx-auto mt-4 flex max-w-md flex-wrap items-stretch justify-center gap-2 px-4" aria-label="Macros logged today">
       {macros.map((m) => (
         <li
           key={m.key}
