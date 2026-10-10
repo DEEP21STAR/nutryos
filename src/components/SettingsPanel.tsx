@@ -9,6 +9,7 @@ import { isAnonymousAccount, isGoogleLinked, linkGoogleAccount } from '@/lib/acc
 import { downloadJson, exportUserData } from '@/lib/dataExport'
 import { LegalPage } from '@/components/LegalPage'
 import { getCloudAiOptIn, setCloudAiOptIn } from '@/lib/cloudAi'
+import { getOllamaUrl, setOllamaUrl } from '@/lib/ollamaVision'
 
 const PREMIUM_FEATURES = [
   { Icon: Images, text: 'Full progress-photo history (free: most recent 10)' },
@@ -67,6 +68,7 @@ export function SettingsPanel({
   const [linkError, setLinkError] = useState<string | null>(null)
   const [exportingData, setExportingData] = useState(false)
   const [cloudAi, setCloudAi] = useState(getCloudAiOptIn)
+  const [ollamaUrl, setOllamaUrlState] = useState(getOllamaUrl)
 
   useEffect(() => {
     isGoogleLinked().then(setGoogleLinked)
@@ -334,6 +336,24 @@ export function SettingsPanel({
             Off by default. When a food isn't in your foods, the NZ/AU food table or Open Food Facts, NUTRYOS can ask
             Google's free AI to estimate it. Only the food name and portion are sent, and Google may use them to improve
             their products. When this is off you'll be asked each time.
+          </p>
+          <label className="flex flex-col gap-1">
+            <span className="text-body text-text-secondary">Your own Ollama server (optional)</span>
+            <input
+              type="url"
+              inputMode="url"
+              placeholder="http://my-pc:11434"
+              value={ollamaUrl}
+              onChange={(e) => {
+                setOllamaUrlState(e.target.value)
+                setOllamaUrl(e.target.value)
+              }}
+              className="rounded-sm bg-bg-tertiary px-3 py-2 text-body text-text-primary outline-none ring-1 ring-white/5 focus:ring-accent-ai"
+            />
+          </label>
+          <p className="text-caption text-text-tertiary">
+            Leave empty unless you run Ollama yourself. NUTRYOS never contacts localhost or any Ollama address unless
+            you enter one here.
           </p>
         </section>
 

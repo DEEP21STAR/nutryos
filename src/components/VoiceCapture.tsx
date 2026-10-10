@@ -5,6 +5,9 @@ import { parseFoodTextViaOllama } from '@/lib/ollamaVision'
 import type { ConversationTurn } from '@/lib/ollamaVision'
 import { parseFoodTextViaGemini } from '@/lib/geminiVision'
 import { resolveIdentifiedItems } from '@/lib/resolveFoodItems'
+import { parseFoodTextPrivate } from '@/lib/privateTextParser'
+import { getCloudAiOptIn } from '@/lib/cloudAi'
+import { prepareAsr, removeAsrListener, transcribeBlob, asrTotalBytes, type AsrProgress } from '@/lib/asr/asrClient'
 import type { FoodItem } from '@/lib/types'
 
 /**
@@ -30,9 +33,13 @@ import type { FoodItem } from '@/lib/types'
  */
 
 const NUM_BARS = 24
-const MAX_CLARIFY_ROUNDS = 3
+// One clarifying question at most, and only for users who opted in to cloud AI (the default path is the
+// private deterministic parser, which never asks). Zorbleflax-style unresolvable text must end at
+// "Needs numbers", not in a chat loop.
+const MAX_CLARIFY_ROUNDS = 1
+const MAX_RECORD_MS = 55_000
 
-type Phase = 'recording' | 'reviewing' | 'parsing' | 'clarifying' | 'error'
+type Phase = 'recording' | 'transcribing' | 'reviewing' | 'parsing' | 'clarifying' | 'error'
 
 // Minimal ambient shape for the Web Speech API — there is no official TS DOM
 // lib type for it (still a non-standard/experimental API in the spec sense),
@@ -65,14 +72,25 @@ interface SpeechResultLike {
 export function VoiceCapture({
   onResolved,
   onCancel,
+  typeFirst = false,
 }: {
   onResolved: (items: FoodItem[]) => void
   onCancel: () => void
+  /** Opens straight on the text box (the visible "Type it" entry), without touching the microphone. */
+  typeFirst?: boolean
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
   const [closing, setClosing] = useState(false)
 
-  const [phase, setPhase] = useState<Phase>('recording')
+  const [phase, setPhase] = useState<Phase>(typeFirst ? 'reviewing' : 'recording')
+  const [asrProgress, setAsrProgress] = useState<AsrProgress | null>(null)
+  const [asrReady, setAsrReady] = useState(false)
+  const [asrNote, setAsrNote] = useState<'low' | 'failed' | null>(null)
+  const [asrMeta, setAsrMeta] = useState<{ ms: number; source: 'on-device' | 'native' | 'none' } | null>(null)
+  const [parseNote, setParseNote] = useState<string | null>(null)
+  const skipAsrRef = useRef(false)
+  const recordTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const originalTextRef = useRef('')
   const [micError, setMicError] = useState<string | null>(null)
   const [transcript, setTranscript] = useState('')
   const [liveInterim, setLiveInterim] = useState('')
@@ -206,6 +224,7 @@ export function VoiceCapture({
         }
         recorder.start()
         mediaRecorderRef.current = recorder
+        recordTimerRef.current = setTimeout(() => finishRecordingRef.current(false), MAX_RECORD_MS)
 
         startLevelMeter(stream)
 
@@ -247,8 +266,15 @@ export function VoiceCapture({
   }, [startLevelMeter])
 
   useEffect(() => {
+    if (typeFirst) return
+    // Start fetching the on-device speech model while the user is still talking (first use only; it is
+    // cached afterwards). Lazy: nothing is requested until voice capture is opened.
+    const onProgress = (p: AsrProgress) => setAsrProgress(p)
+    prepareAsr(onProgress).then(() => setAsrReady(true)).catch(() => setAsrNote('failed'))
     const cleanup = startRecording()
     return () => {
+      removeAsrListener(onProgress)
+      if (recordTimerRef.current) clearTimeout(recordTimerRef.current)
       cleanup()
       recognitionRef.current?.stop()
       stopLevelMeter()
@@ -262,12 +288,14 @@ export function VoiceCapture({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  /** Shared by the "Stop" button and the "Type instead / skip audio" escape
-   * hatch — both just mean "I'm done producing audio, move to review",
-   * whether or not any audio actually exists yet. */
-  function finishRecording() {
+  /** "Stop" (transcribe the recording on this device) or the "type instead" escape hatch (skipAsr). */
+  function finishRecording(skipAsr = false) {
+    if (recordTimerRef.current) clearTimeout(recordTimerRef.current)
     recognitionRef.current?.stop()
     stopLevelMeter()
+    // Native Web Speech text is only ever a bonus: never required, never trusted to exist.
+    const nativeText = (finalTranscriptRef.current + ' ' + liveInterim).trim()
+    skipAsrRef.current = skipAsr
     const recorder = mediaRecorderRef.current
     if (recorder && recorder.state !== 'inactive') {
       const mt = recorder.mimeType
@@ -275,11 +303,50 @@ export function VoiceCapture({
         const blob = new Blob(chunksRef.current, { type: mt || 'audio/webm' })
         setAudioUrl(URL.createObjectURL(blob))
         streamRef.current?.getTracks().forEach((t) => t.stop())
+        if (!skipAsr && blob.size > 0) void transcribeRecording(blob, nativeText)
       }
       recorder.stop()
+      if (skipAsr) {
+        setTranscript(nativeText)
+        setPhase('reviewing')
+      } else {
+        setPhase('transcribing')
+      }
     } else {
       streamRef.current?.getTracks().forEach((t) => t.stop())
+      setTranscript(nativeText)
+      setPhase('reviewing')
     }
+  }
+  const finishRecordingRef = useRef(finishRecording)
+  finishRecordingRef.current = finishRecording
+
+  async function transcribeRecording(blob: Blob, nativeText: string) {
+    setAsrNote(null)
+    try {
+      const r = await transcribeBlob(blob)
+      if (skipAsrRef.current) return
+      setAsrMeta({ ms: r.ms, source: 'on-device' })
+      if (!r.assessment.ok) console.warn('asr assessment', r.assessment.reason, JSON.stringify(r.text), r.seconds)
+      if (r.assessment.ok) {
+        setTranscript(r.text)
+      } else {
+        // Empty or doubtful: hand the user the typed box, pre-filled with whatever we have.
+        setTranscript(r.text || nativeText)
+        setAsrNote('low')
+      }
+    } catch (err) {
+      console.warn('on-device transcription failed:', err)
+      if (skipAsrRef.current) return
+      setTranscript(nativeText)
+      setAsrMeta({ ms: 0, source: nativeText ? 'native' : 'none' })
+      setAsrNote('failed')
+    }
+    setPhase('reviewing')
+  }
+
+  function skipTranscribing() {
+    skipAsrRef.current = true
     setTranscript((finalTranscriptRef.current + ' ' + liveInterim).trim())
     setPhase('reviewing')
   }
@@ -291,31 +358,50 @@ export function VoiceCapture({
     setLiveInterim('')
     finalTranscriptRef.current = ''
     setMicError(null)
+    setAsrNote(null)
+    setParseNote(null)
     setPhase('recording')
     startRecording()
+  }
+
+  /** Private deterministic parse -> Phase 1 resolution chain. Never touches the network except the
+   * chain's own lookups (Open Food Facts; cloud AI only when opted in). */
+  async function resolvePrivately(text: string): Promise<FoodItem[] | null> {
+    const parsed = await parseFoodTextPrivate(text, { fromSpeech: asrMeta !== null })
+    if (parsed.length === 0) return null
+    return resolveIdentifiedItems(parsed.map((p) => ({ name: p.name, estimatedGrams: p.estimatedGrams })))
   }
 
   async function runParse(conv: ConversationTurn[]) {
     setPhase('parsing')
     setErrorMessage(null)
+    setParseNote(null)
     try {
-      // Ollama first (free, local — works when Deep's own machine is reachable), Gemini as the
-      // real fallback. Real bug found 2026-09-20: this path previously had NO fallback at all —
-      // VITE_OLLAMA_TAILSCALE_URL never reached the production build, so every deployed user's
-      // only candidate was their own device's localhost:11434, which always fails. Mirrors the
-      // Ollama -> Gemini cascade App.tsx's handleCapture already does for the photo path.
+      const firstUser = conv.find((t) => t.role === 'user')?.content ?? ''
+      originalTextRef.current = firstUser
+      // 1. Private parser, alone, by default. Even opted-in users only reach the cloud when it finds nothing.
+      const privateItems = await resolvePrivately(conv.length === 1 ? firstUser : conv.filter((t) => t.role === 'user').map((t) => t.content).join(', '))
+      if (privateItems) {
+        onResolved(privateItems)
+        return
+      }
+      // 2. Nothing food-like found. Without cloud opt-in: back to the box, never a chat.
+      if (!getCloudAiOptIn()) {
+        setParseNote("I couldn't pick out any foods from that. Change the words below, or add the food by hand.")
+        setPhase('reviewing')
+        return
+      }
+      // 3. Opted in: own Ollama (only if configured in Settings) then the shared edge function.
       let result
       try {
         ;({ result } = await parseFoodTextViaOllama(conv))
       } catch (ollamaErr) {
-        console.warn('parseFoodTextViaOllama failed, falling back to Gemini:', ollamaErr)
+        console.warn('Ollama not used:', ollamaErr)
         ;({ result } = await parseFoodTextViaGemini(conv))
       }
       if (result.type === 'clarify') {
         const askedSoFar = conv.filter((t) => t.role === 'assistant').length
         if (askedSoFar >= MAX_CLARIFY_ROUNDS) {
-          // Safety cap — stop asking and hand back to ConfirmLog's manual
-          // fallback rather than looping the user through more questions.
           onResolved([])
           return
         }
@@ -332,6 +418,16 @@ export function VoiceCapture({
         err instanceof Error ? err.message : 'Could not understand that — try again or add items manually.',
       )
       setPhase('error')
+    }
+  }
+
+  /** Escape hatch from a clarifying question: keep what was said and enter the numbers by hand. */
+  async function skipClarify() {
+    setPhase('parsing')
+    try {
+      onResolved((await resolvePrivately(originalTextRef.current)) ?? [])
+    } catch {
+      onResolved([])
     }
   }
 
@@ -430,53 +526,89 @@ export function VoiceCapture({
                   </p>
                 ) : (
                   <p className="max-w-xs text-center text-caption text-text-tertiary">
-                    Live captions aren't available in this browser — you'll get to edit the text after stopping.
+                    No live captions: after you tap Stop, your voice is turned into text on this device and you can edit it.
                   </p>
                 )}
+                {!asrReady && asrProgress && asrProgress.fraction < 1 && !asrNote && (
+                  <ModelProgress p={asrProgress} />
+                )}
                 <button
-                  onClick={finishRecording}
+                  onClick={() => finishRecording(false)}
                   className="rounded-full bg-accent-ai px-8 py-3 text-subtitle font-semibold text-white shadow-[0_0_28px_6px_var(--glow-ai)] transition active:scale-95"
                 >
                   Stop
                 </button>
               </>
             )}
-            <button onClick={finishRecording} className="text-caption text-text-tertiary underline">
+            <button onClick={() => finishRecording(true)} className="text-caption text-text-tertiary underline">
               {micBlocked ? 'Type it instead' : 'Skip recording, type instead'}
             </button>
           </>
         )}
 
+        {phase === 'transcribing' && (
+          <div className="flex w-full max-w-xs flex-col items-center gap-3" data-testid="transcribing">
+            <div className="glass-card p-6">
+              <span className="text-3xl" aria-hidden>
+                🎧
+              </span>
+            </div>
+            <p className="text-body text-accent-ai motion-safe:animate-pulse">Transcribing on your device…</p>
+            <p className="text-center text-caption text-text-tertiary">Your voice never leaves this phone.</p>
+            {asrProgress && asrProgress.fraction < 1 && <ModelProgress p={asrProgress} />}
+            <button onClick={skipTranscribing} className="text-caption text-text-tertiary underline">
+              Type it instead
+            </button>
+          </div>
+        )}
+
         {phase === 'reviewing' && (
           <div className="flex w-full max-w-xs flex-col gap-3">
             {audioUrl && <audio controls src={audioUrl} className="w-full" />}
-            {/* Real complaint traced 2026-09-20: on browsers without Google's speech backend
-                (several Chromium-based Android browsers, not just non-Chromium ones — confirmed
-                via Deep's own Adblock Browser repro), webkitSpeechRecognition can exist and record
-                fine but never deliver a result, leaving this box empty with no explanation. Live
-                STT was always meant to be progressive enhancement here (see this file's header
-                comment), but silence read as broken rather than as "type it in" being the actual
-                path. Only surfaces once reviewing with nothing transcribed — never while the
-                textarea already has real content. */}
-            {!transcript.trim() && (
-              <p className="text-caption text-text-tertiary">
-                Couldn't transcribe that automatically — type what you had below.
+            {asrNote && !transcript.trim() && (
+              <p className="text-caption text-text-tertiary" data-testid="asr-fallback-note">
+                {asrNote === 'low'
+                  ? "I couldn't make that out. Type what you had below."
+                  : "The on-device voice model isn't available right now. Type what you had below."}
               </p>
+            )}
+            {asrNote === 'low' && transcript.trim() && (
+              <p className="text-caption text-text-tertiary" data-testid="asr-fallback-note">
+                I'm not sure I heard that right. Check the words before you send.
+              </p>
+            )}
+            {parseNote && (
+              <p className="text-caption text-accent-energy" data-testid="parse-note">
+                {parseNote}
+              </p>
+            )}
+            {asrMeta && (
+              <span hidden data-testid="asr-meta" data-ms={asrMeta.ms} data-source={asrMeta.source} />
             )}
             <textarea
               value={transcript}
               onChange={(e) => setTranscript(e.target.value)}
-              placeholder="e.g. I had a handful of almonds, a black coffee, and two scrambled eggs with hot sauce"
+              placeholder="e.g. two scrambled eggs, a flat white and half a banana"
               rows={4}
               className="w-full resize-none rounded-md bg-bg-tertiary px-3 py-2 text-body text-text-primary outline-none ring-1 ring-white/5 focus:ring-accent-ai"
             />
             <div className="flex gap-2">
+              {!typeFirst && (
               <button
                 onClick={reRecord}
                 className="glass flex-1 rounded-full px-4 py-2.5 text-caption text-text-secondary transition active:scale-95"
               >
                 Re-record
               </button>
+              )}
+              {parseNote && (
+                <button
+                  onClick={() => onResolved([])}
+                  className="glass flex-1 rounded-full px-4 py-2.5 text-caption text-text-secondary transition active:scale-95"
+                >
+                  Add by hand
+                </button>
+              )}
               <button
                 onClick={sendTranscript}
                 disabled={!transcript.trim()}
@@ -519,6 +651,9 @@ export function VoiceCapture({
                 </button>
               )}
             </div>
+            <button onClick={skipClarify} className="glass rounded-full px-4 py-2.5 text-caption text-text-secondary transition active:scale-95">
+              Skip, I'll enter the numbers myself
+            </button>
             <button
               onClick={sendReply}
               disabled={!replyText.trim()}
@@ -547,6 +682,23 @@ export function VoiceCapture({
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function ModelProgress({ p }: { p: AsrProgress }) {
+  const mb = Math.round(asrTotalBytes() / 1e6)
+  const pct = Math.round(p.fraction * 100)
+  return (
+    <div className="w-full max-w-xs" data-testid="asr-progress" data-pct={pct}>
+      <div className="mb-1 flex justify-between text-caption text-text-tertiary">
+        <span>Getting on-device voice ready (first time only, {mb} MB)</span>
+        <span>{pct}%</span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-bg-tertiary" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+        <div className="h-full rounded-full bg-accent-ai" style={{ width: `${pct}%` }} />
+      </div>
+      <p className="mt-1 text-caption text-text-tertiary">Downloaded from NUTRYOS itself and kept on this device. No third party.</p>
     </div>
   )
 }

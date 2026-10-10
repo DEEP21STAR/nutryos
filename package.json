@@ -12,6 +12,8 @@
     "e2e": "npm run build && playwright test --project=chromium-mobile --project=firefox",
     "gate": "node scripts/predeploy-gate.mjs",
     "gate:live": "playwright test --project=live",
+    "gate:voice-slow": "npm run build && playwright test --project=chromium-slowcpu",
+    "make:voice-fixtures": "~/.local/share/read-along/venv/bin/python3 scripts/make-voice-fixtures.py",
     "gate:live-foods": "vitest run --config vitest.live-foods.config.ts",
     "build:foods": "node scripts/build-foods.mjs"
   },

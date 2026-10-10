@@ -82,6 +82,7 @@ export default function App() {
   // case never sees an unnecessary extra line.
   const [identifyingDetail, setIdentifyingDetail] = useState<string | null>(null)
   const [stage, setStage] = useState<Stage>('idle')
+  const [typeFirst, setTypeFirst] = useState(false)
   // One place to react to "identification finished, food recognized" rather than duplicating a
   // sound/haptic call at every one of handleCapture's several setStage('confirm') exit points
   // (Ollama success, Gemini success, on-device success, on-device skipped) — this fires exactly
@@ -632,7 +633,8 @@ export default function App() {
       {stage === 'mode-select' && (
         <InputModeSheet
           onPhoto={() => setStage('camera')}
-          onVoice={() => setStage('voice')}
+          onVoice={() => { setTypeFirst(false); setStage('voice') }}
+          onType={() => { setTypeFirst(true); setStage('voice') }}
           onMenu={() => setStage('menu')}
           onBarcode={() => setStage('barcode')}
           onCancel={() => setStage('idle')}
@@ -643,7 +645,7 @@ export default function App() {
 
       {stage === 'voice' && (
         <Suspense fallback={<ScreenFallback />}>
-          <VoiceCapture onResolved={handleVoiceResolved} onCancel={() => setStage('idle')} />
+          <VoiceCapture typeFirst={typeFirst} onResolved={handleVoiceResolved} onCancel={() => setStage('idle')} />
         </Suspense>
       )}
 
@@ -719,12 +721,14 @@ export default function App() {
 function InputModeSheet({
   onPhoto,
   onVoice,
+  onType,
   onMenu,
   onBarcode,
   onCancel,
 }: {
   onPhoto: () => void
   onVoice: () => void
+  onType: () => void
   onMenu: () => void
   onBarcode: () => void
   onCancel: () => void
@@ -744,6 +748,12 @@ function InputModeSheet({
           className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-accent-ai shadow-[0_0_24px_4px_var(--glow-ai)] transition active:scale-95"
         >
           <span aria-hidden>🎙️</span> Voice
+        </button>
+        <button
+          onClick={onType}
+          className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-text-primary shadow-[0_0_24px_4px_rgb(255_255_255/0.15)] transition active:scale-95"
+        >
+          <span aria-hidden>⌨️</span> Type it
         </button>
         <button
           onClick={onMenu}

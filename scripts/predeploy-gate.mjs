@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Pre-deploy gate. Runs: tsc -b, vitest, build, e2e smoke/layout/splash (chromium-mobile + firefox),
 // secret-pattern scan of src/ and dist/. No third-party network calls (e2e blocks non-local origins).
+// Phase 2 adds: portion, private-text, on-device voice (12 sentences x 2 engines, cache, slow 3G) specs and the
+// self-hosted speech model check below. `npm run gate:voice-slow` (CPU-pinned timing) is separate.
 // Live tests (real edge function) are separate: `npm run gate:live`.
 // Prints exactly one final line: `GATE PASS` or `GATE FAIL: <reason>`.
 import { spawnSync } from 'node:child_process'
@@ -24,6 +26,19 @@ for (const [name, cmd, args] of steps) {
   console.error(`\n=== ${name} ===`)
   const r = spawnSync(cmd, args, { cwd: root, stdio: ['ignore', 'inherit', 'inherit'] })
   if (r.status !== 0) fail(`${name} exited ${r.status}`)
+}
+
+// Self-hosted speech model must be in the build (privacy: the voice path may not fetch it from a third party).
+console.error('\n=== speech model present in dist/ ===')
+for (const [f, min] of [
+  ['dist/models/moonshine-tiny/onnx/encoder_model_quantized.onnx', 7_000_000],
+  ['dist/models/moonshine-tiny/onnx/decoder_model_merged_quantized.onnx', 19_000_000],
+  ['dist/models/moonshine-tiny/tokenizer.json', 3_000_000],
+  ['dist/models/moonshine-tiny/config.json', 100],
+]) {
+  let size = 0
+  try { size = statSync(join(root, f)).size } catch { /* missing */ }
+  if (size < min) fail(`missing or truncated ${f} (${size} bytes)`)
 }
 
 // Secret scan. The Supabase publishable key (sb_publishable_) is public by design and allowed.

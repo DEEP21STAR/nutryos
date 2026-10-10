@@ -76,11 +76,36 @@ const GENERATION_OPTIONS = {
 }
 
 function candidateUrls(): string[] {
+  // Ollama is a personal power-user option: it is contacted ONLY when the user (or the build) has
+  // configured a URL. There is deliberately no default http://localhost:11434 probe, because on a
+  // phone that is the phone's own loopback and the public site must not make that request.
   const urls: string[] = []
+  const configured = getOllamaUrl()
+  if (configured) urls.push(configured)
   const tailscaleUrl = import.meta.env.VITE_OLLAMA_TAILSCALE_URL as string | undefined
   if (tailscaleUrl) urls.push(tailscaleUrl.replace(/\/$/, ''))
-  urls.push('http://localhost:11434')
-  return urls
+  return [...new Set(urls)]
+}
+
+const OLLAMA_URL_KEY = 'nutryos.ollamaUrl.v1'
+
+/** The Ollama base URL the user typed in Settings ('' when none). */
+export function getOllamaUrl(): string {
+  try {
+    return (localStorage.getItem(OLLAMA_URL_KEY) ?? '').trim().replace(/\/$/, '')
+  } catch {
+    return ''
+  }
+}
+
+export function setOllamaUrl(url: string): void {
+  try {
+    const v = url.trim().replace(/\/$/, '')
+    if (v) localStorage.setItem(OLLAMA_URL_KEY, v)
+    else localStorage.removeItem(OLLAMA_URL_KEY)
+  } catch {
+    /* storage blocked: not persisted */
+  }
 }
 
 async function fileToBase64(file: Blob): Promise<string> {

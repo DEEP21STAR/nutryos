@@ -1,0 +1,114 @@
+[
+  {
+    "id": "s01",
+    "voice": "en_US-lessac-medium",
+    "text": "I had two scrambled eggs, a flat white and thirty grams of whey protein powder",
+    "expect": [
+      "egg-scrambled",
+      "flat-white",
+      "whey-protein-powder"
+    ]
+  },
+  {
+    "id": "s02",
+    "voice": "en_US-ryan-high",
+    "text": "For breakfast I had two Weet-Bix with a cup of whole milk and half a banana",
+    "expect": [
+      "weet-bix",
+      "milk-whole",
+      "banana"
+    ]
+  },
+  {
+    "id": "s03",
+    "voice": "en_GB-cori-high",
+    "text": "Mince on toast and a flat white",
+    "expect": [
+      "mince-on-toast",
+      "flat-white"
+    ]
+  },
+  {
+    "id": "s04",
+    "voice": "en_US-norman-medium",
+    "text": "A protein bar and an apple",
+    "expect": [
+      "protein-bar",
+      "apple"
+    ]
+  },
+  {
+    "id": "s05",
+    "voice": "en_US-lessac-medium",
+    "text": "Greek yoghurt with a banana and a tablespoon of peanut butter",
+    "expect": [
+      "greek-yoghurt",
+      "banana",
+      "peanut-butter"
+    ]
+  },
+  {
+    "id": "s06",
+    "voice": "en_US-ryan-high",
+    "text": "One hundred and fifty grams of chicken breast and a cup of cooked white rice",
+    "expect": [
+      "chicken-breast",
+      "rice-white"
+    ]
+  },
+  {
+    "id": "s07",
+    "voice": "en_GB-cori-high",
+    "text": "Two slices of sourdough toast with peanut butter",
+    "expect": [
+      "toast-sourdough",
+      "peanut-butter"
+    ]
+  },
+  {
+    "id": "s08",
+    "voice": "en_US-ljspeech-high",
+    "text": "A glass of oat milk and a boiled egg",
+    "expect": [
+      "oat-milk",
+      "egg"
+    ]
+  },
+  {
+    "id": "s09",
+    "voice": "en_US-norman-medium",
+    "text": "Thirty grams of whey protein powder and a glass of whole milk",
+    "expect": [
+      "whey-protein-powder",
+      "milk-whole"
+    ]
+  },
+  {
+    "id": "s10",
+    "voice": "en_US-lessac-medium",
+    "text": "Half an apple and a tablespoon of peanut butter",
+    "expect": [
+      "apple",
+      "peanut-butter"
+    ]
+  },
+  {
+    "id": "s11",
+    "voice": "en_US-ryan-high",
+    "text": "Two boiled eggs and a slice of sourdough toast",
+    "expect": [
+      "egg",
+      "toast-sourdough"
+    ]
+  },
+  {
+    "id": "s12",
+    "voice": "en_GB-cori-high",
+    "text": "I had Greek yoghurt, a banana and a protein bar",
+    "expect": [
+      "greek-yoghurt",
+      "banana",
+      "protein-bar"
+    ]
+  }
+]

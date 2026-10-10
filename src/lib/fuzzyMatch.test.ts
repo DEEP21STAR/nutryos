@@ -57,3 +57,12 @@ describe('bestFuzzyMatch against the curated table (noisy transcripts)', () => {
     expect(bestFuzzyMatch('oat milk', foods)?.item.id).toBe('oat-milk')
   })
 })
+
+describe('phonetic (speech) matching', () => {
+  it('phoneticKey folds sound-alikes', async () => {
+    const { phoneticKey } = await import('@/lib/fuzzyMatch')
+    expect(phoneticKey('wheat')).toBe(phoneticKey('weet'))
+    expect(phoneticKey('bakes')).toBe(phoneticKey('bix'))
+    expect(phoneticKey('rice')).not.toBe(phoneticKey('beans'))
+  })
+})

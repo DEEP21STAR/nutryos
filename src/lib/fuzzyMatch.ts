@@ -67,9 +67,32 @@ export function editDistance(a: string, b: string): number {
   return d[m][n]
 }
 
+/**
+ * Rough sound-alike key for speech-recogniser slips: "wheat bakes" ~ "weet bix". Lower-case, common
+ * digraphs folded, vowels and h dropped after the first letter, doubled letters collapsed.
+ * Used only when the caller says the text came from speech (see `phonetic` below).
+ */
+export function phoneticKey(token: string): string {
+  let t = token.toLowerCase().replace(/[^a-z]/g, '')
+  t = t.replace(/^wh/, 'w').replace(/^kn/, 'n').replace(/^wr/, 'r').replace(/ph/g, 'f').replace(/ck/g, 'k')
+  t = t.replace(/c(?=[eiy])/g, 's').replace(/c/g, 'k').replace(/q/g, 'k').replace(/x/g, 'ks').replace(/z/g, 's')
+  const first = t[0] ?? ''
+  const rest = t.slice(1).replace(/[aeiouyh]/g, '')
+  // a final plural "s" is ignored ("bakes" ~ "bix" once x -> ks)
+  return (first + rest).replace(/(.)\1+/g, '$1').replace(/(.{2,})s$/, '$1')
+}
+
 /** Similarity in [0,1] for two tokens, or 0 when the edit distance is too large for their length. */
-export function tokenSimilarity(a: string, b: string): number {
+export function tokenSimilarity(a: string, b: string, phonetic = false): number {
   if (a === b) return 1
+  if (phonetic && a.length >= 4 && b.length >= 3 && a[0] === b[0] && Math.abs(a.length - b.length) <= 2) {
+    const ka = phoneticKey(a)
+    if (ka.length >= 2 && ka === phoneticKey(b)) return Math.max(0.72, tokenSimilarityEdit(a, b))
+  }
+  return tokenSimilarityEdit(a, b)
+}
+
+function tokenSimilarityEdit(a: string, b: string): number {
   const len = Math.max(a.length, b.length)
   const dist = editDistance(a, b)
   const allowed = len <= 3 ? 0 : len <= 5 ? 1 : 2
@@ -84,7 +107,7 @@ export interface AliasScore {
 }
 
 /** Scores one alias against a query; null when any alias token is missing from the query. */
-export function scoreAlias(queryTokens: string[], aliasTokens: string[]): AliasScore | null {
+export function scoreAlias(queryTokens: string[], aliasTokens: string[], phonetic = false): AliasScore | null {
   if (queryTokens.length === 0 || aliasTokens.length === 0) return null
 
   // Path 1: token-by-token alignment.
@@ -97,7 +120,7 @@ export function scoreAlias(queryTokens: string[], aliasTokens: string[]): AliasS
     let bestIdx = -1
     queryTokens.forEach((qt, i) => {
       if (used.has(i)) return
-      const s = tokenSimilarity(qt, at)
+      const s = tokenSimilarity(qt, at, phonetic)
       if (s > bestSim) {
         bestSim = s
         bestIdx = i
@@ -121,7 +144,7 @@ export function scoreAlias(queryTokens: string[], aliasTokens: string[]): AliasS
     for (let end = start + 1; end <= Math.min(queryTokens.length, start + aliasTokens.length + 1); end++) {
       const window = queryTokens.slice(start, end)
       if (window.length === aliasTokens.length && window.length === 1) continue // same as path 1
-      const s = tokenSimilarity(window.join(''), compactAlias)
+      const s = tokenSimilarity(window.join(''), compactAlias, false)
       if (s === 0) continue
       const cov = window.length / queryTokens.length
       const score = s * (0.6 + 0.4 * cov) + 0.02 * aliasTokens.length
@@ -150,13 +173,15 @@ export function bestFuzzyMatch<T extends FuzzyCandidate>(
   query: string,
   candidates: readonly T[],
   minScore = MIN_MATCH_SCORE,
+  /** True for text that came from a speech recogniser: also accepts sound-alike words. */
+  phonetic = false,
 ): FuzzyMatch<T> | null {
   const q = normalizeTokens(query)
   if (q.length === 0) return null
   let best: FuzzyMatch<T> | null = null
   for (const item of candidates) {
     for (const alias of item.aliases) {
-      const s = scoreAlias(q, normalizeTokens(alias))
+      const s = scoreAlias(q, normalizeTokens(alias), phonetic)
       if (!s || s.queryCoverage < 0.5 || s.score < minScore) continue
       if (!best || s.score > best.score) best = { item, alias, score: s.score, queryCoverage: s.queryCoverage }
     }

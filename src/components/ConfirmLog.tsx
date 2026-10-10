@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import type { FoodItem, Goals, MacroTotals } from '@/lib/types'
 import { sumMacros, type Meal } from '@/lib/types'
 import { cn, uid } from '@/lib/utils'
@@ -10,6 +10,7 @@ import { isPremiumUnlocked } from '@/lib/premium'
 import { badgeLabel, canLogMeal, itemNeedsNumbers, itemsNeedingNumbers } from '@/lib/mealGuards'
 import { estimateMacrosViaCloud, getCloudAiOptIn, setCloudAiOptIn } from '@/lib/cloudAi'
 import { itemFromAiEstimate } from '@/lib/resolveFoodItems'
+import { rescalePortion, type PortionBase } from '@/lib/portion'
 import { CloudAiConsentSheet, type CloudAiChoice } from '@/components/CloudAiConsentSheet'
 
 /** Real device haptic tick on slider drag, when the API exists — degrades to nothing (no error, no fake motion) everywhere else. Not gated by prefers-reduced-motion: this is tactile, not visual/animated. */
@@ -113,6 +114,22 @@ export function ConfirmLog({
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)))
   }
 
+  /** Remembered per-item scaling base (see lib/portion.ts), so repeated slider moves never drift. */
+  const portionBases = useRef(new Map<string, PortionBase>())
+
+  /** Slider or typed grams: rescales kcal/protein/fat/carbs/fiber/sugar in proportion. */
+  function setPortion(id: string, grams: number) {
+    setItems((prev) =>
+      prev.map((it) => {
+        if (it.id !== id) return it
+        const { patch, base } = rescalePortion(it, grams, portionBases.current.get(id))
+        if (base) portionBases.current.set(id, base)
+        else portionBases.current.delete(id)
+        return { ...it, ...patch }
+      }),
+    )
+  }
+
   /** Macro edits by hand: an item that had no numbers becomes "You entered". */
   function editMacros(item: FoodItem, patch: Partial<FoodItem>) {
     updateItem(item.id, item.source === 'unresolved' || itemNeedsNumbers(item) ? { ...patch, source: 'user', confidence: undefined, sourceRef: undefined } : patch)
@@ -209,7 +226,7 @@ export function ConfirmLog({
           // Barcode-scanned meal — no photo exists, and it isn't voice either. Same "no photo,
           // real reason why" pattern as the voice placeholder below, just its own icon/color/
           // label so it doesn't misreport how this item was actually logged.
-          <div className="glass-card flex h-32 w-full items-center justify-center gap-2 text-accent-health shadow-[0_0_24px_4px_var(--glow-health)]">
+          <div className="glass-card flex h-32 w-full items-start justify-center gap-2 pt-3 text-accent-health shadow-[0_0_24px_4px_var(--glow-health)]">
             <span className="text-2xl" aria-hidden>
               📦
             </span>
@@ -218,7 +235,7 @@ export function ConfirmLog({
         ) : logSource === 'repeat' ? (
           // Re-logged from a past meal (RecentMeals.tsx's long-press-to-edit path) — same pattern
           // as barcode/voice, its own icon/color so it reads as "repeated", not miscategorized.
-          <div className="glass-card flex h-32 w-full items-center justify-center gap-2 text-accent-energy shadow-[0_0_24px_4px_var(--glow-energy)]">
+          <div className="glass-card flex h-32 w-full items-start justify-center gap-2 pt-3 text-accent-energy shadow-[0_0_24px_4px_var(--glow-energy)]">
             <span className="text-2xl" aria-hidden>
               🔁
             </span>
@@ -227,7 +244,7 @@ export function ConfirmLog({
         ) : (
           // Voice-logged meal — no photo exists. Same violet AI glow language
           // as the Input Orb's voice option, not a blank/broken-image look.
-          <div className="glass-card flex h-32 w-full items-center justify-center gap-2 text-accent-ai shadow-[0_0_24px_4px_var(--glow-ai)]">
+          <div className="glass-card flex h-32 w-full items-start justify-center gap-2 pt-3 text-accent-ai shadow-[0_0_24px_4px_var(--glow-ai)]">
             <span className="text-2xl" aria-hidden>
               🎙️
             </span>
@@ -371,7 +388,21 @@ export function ConfirmLog({
             <div className="mt-3">
               <div className="mb-1.5 flex items-center justify-between">
                 <span className="text-caption text-text-tertiary">Portion</span>
-                <span className="text-data text-accent-health">{item.estimatedGrams}g</span>
+                <label className="flex items-center gap-1 text-data text-accent-health">
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    min={0}
+                    max={10000}
+                    step={5}
+                    value={item.estimatedGrams}
+                    onChange={(e) => setPortion(item.id, e.target.value === '' ? 0 : Number(e.target.value))}
+                    aria-label={`${item.name || 'Item'} portion in grams, typed`}
+                    data-testid="portion-input"
+                    className="w-16 rounded-sm bg-bg-tertiary/60 px-1 py-0.5 text-right text-data text-accent-health outline-none ring-1 ring-white/5 focus:ring-accent-health"
+                  />
+                  g
+                </label>
               </div>
               <input
                 type="range"
@@ -379,7 +410,7 @@ export function ConfirmLog({
                 max={800}
                 step={5}
                 value={item.estimatedGrams}
-                onChange={(e) => updateItem(item.id, { estimatedGrams: Number(e.target.value) })}
+                onChange={(e) => setPortion(item.id, Number(e.target.value))}
                 onInput={tick}
                 className="h-2 w-full cursor-pointer appearance-none rounded-full bg-bg-tertiary accent-accent-health
                   [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none
