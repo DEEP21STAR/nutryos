@@ -8,6 +8,7 @@ import { whatNextLine } from '@/lib/stats'
 import { HealthyScoreGauge } from '@/components/HealthyScoreGauge'
 import { StreakBanner } from '@/components/StreakBanner'
 import { WaterTracker } from '@/components/WaterTracker'
+import { HabitStreaks } from '@/components/HabitStreaks'
 import { RecentMeals } from '@/components/RecentMeals'
 import { WorkoutTracker } from '@/components/WorkoutTracker'
 import { MealTimeline } from '@/components/MealTimeline'
@@ -587,6 +588,7 @@ export default function App() {
           <StreakBanner userId={userId} todaysMealCount={meals.length} displayName={displayName} />
           <WorkoutTracker userId={userId} onBurnedChange={setCaloriesBurned} displayName={displayName} />
           <WaterTracker />
+          <HabitStreaks userId={userId} todaysMealCount={meals.length} />
           <TipsTicker meals={meals} goals={goals ?? DEFAULT_GOALS} />
         </>
       )}

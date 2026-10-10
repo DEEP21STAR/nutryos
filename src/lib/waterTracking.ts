@@ -41,6 +41,32 @@ function saveState(state: WaterState) {
   }
 }
 
+const HIST_KEY = 'nutrios.waterHistory.v1'
+
+/** Per-day totals (yyyy-mm-dd -> ml), kept so a water streak can be computed. Starts empty: the
+ * streak honestly counts from the first day this was recorded. Trimmed to the last 120 days. */
+export function getWaterHistory(): Record<string, number> {
+  try {
+    const raw = localStorage.getItem(HIST_KEY)
+    const parsed = raw ? JSON.parse(raw) : {}
+    return parsed && typeof parsed === 'object' ? (parsed as Record<string, number>) : {}
+  } catch {
+    return {}
+  }
+}
+
+function recordHistory(date: string, ml: number) {
+  try {
+    const h = getWaterHistory()
+    h[date] = ml
+    const keys = Object.keys(h).sort()
+    while (keys.length > 120) delete h[keys.shift() as string]
+    localStorage.setItem(HIST_KEY, JSON.stringify(h))
+  } catch {
+    // storage blocked: streak just won't persist
+  }
+}
+
 export function getTodayWaterMl(): number {
   return loadState().ml
 }
@@ -49,5 +75,7 @@ export function addWaterMl(amountMl: number): number {
   const state = loadState()
   state.ml = Math.max(0, state.ml + amountMl)
   saveState(state)
+  recordHistory(state.date, state.ml)
+  try { window.dispatchEvent(new Event('nutrios-water')) } catch { /* non-browser */ }
   return state.ml
 }

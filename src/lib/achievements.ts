@@ -1,4 +1,5 @@
 import type { Goals, Meal } from '@/lib/types'
+import { longestLowSugarStreak, longestTakeawayFreeStreak } from '@/lib/habitStreaks'
 import {
   dateWhenUniqueFoodsReached,
   firstEatingOutMeal,
@@ -49,6 +50,8 @@ export function computeBadges(meals: Meal[], goals: Goals): Badge[] {
   const { length: bestBullseyeStreak, endDate: bullseyeEndDate } = longestCalorieGoalStreak(meals, goals)
   const foods = uniqueFoodNames(meals)
   const firstEatOut = firstEatingOutMeal(meals)
+  const bestTakeawayFree = longestTakeawayFreeStreak(meals)
+  const bestLowSugar = longestLowSugarStreak(meals)
 
   const badges: Badge[] = [
     {
@@ -126,6 +129,36 @@ export function computeBadges(meals: Meal[], goals: Goals): Badge[] {
       progressCurrent: firstEatOut ? 1 : 0,
       progressTarget: 1,
       celebration: 'default',
+    },
+    {
+      id: 'takeaway-free-7',
+      icon: '🥗',
+      title: 'Home Cook Week',
+      description: 'Log 7 days in a row with no takeaway',
+      earned: bestTakeawayFree >= 7,
+      progressCurrent: Math.min(bestTakeawayFree, 7),
+      progressTarget: 7,
+      celebration: 'streak',
+    },
+    {
+      id: 'takeaway-free-30',
+      icon: '🏡',
+      title: 'Takeaway-Free Month',
+      description: 'Log 30 days in a row with no takeaway',
+      earned: bestTakeawayFree >= 30,
+      progressCurrent: Math.min(bestTakeawayFree, 30),
+      progressTarget: 30,
+      celebration: 'streak',
+    },
+    {
+      id: 'low-sugar-7',
+      icon: '🍎',
+      title: 'Sugar Smart',
+      description: 'Stay under 50 g of sugar for 7 days in a row',
+      earned: bestLowSugar >= 7,
+      progressCurrent: Math.min(bestLowSugar, 7),
+      progressTarget: 7,
+      celebration: 'streak',
     },
     {
       id: 'foods-10',
