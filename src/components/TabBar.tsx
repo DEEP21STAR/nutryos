@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { TodayTabIcon, ProgressTabIcon, TogetherTabIcon } from '@/components/TabIcons'
 import { cn } from '@/lib/utils'
 
@@ -26,9 +27,21 @@ const TAB_ACCENT: Record<TabKey, { color: string; glow: string }> = {
  * (App.tsx) floats just above it, unaffected by which tab is active since
  * logging a meal is a global action, not a per-tab one.
  */
-export function TabBar({ active, onChange }: { active: TabKey; onChange: (tab: TabKey) => void }) {
+export function TabBar({ active, onChange, fab }: { active: TabKey; onChange: (tab: TabKey) => void; fab?: ReactNode }) {
   return (
-    <nav data-tour="tabbar" className="glass fixed inset-x-0 bottom-0 z-30 flex items-stretch justify-around border-t border-white/5 pb-[env(safe-area-inset-bottom,0px)]">
+    // Docked: the camera FAB lives in its own row of this bar (not floating over page content), and
+    // the bar background is near-opaque (96%) so scrolling text never shows through it.
+    <nav
+      data-tour="tabbar"
+      className="glass fixed inset-x-0 bottom-0 z-30 flex flex-col border-t border-white/5 pb-[env(safe-area-inset-bottom,0px)]"
+      style={{
+        background: 'color-mix(in srgb, var(--color-bg-primary) 96%, transparent)',
+        backdropFilter: 'blur(24px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+      }}
+    >
+      {fab && <div className="flex justify-center pt-2">{fab}</div>}
+      <div className="flex items-stretch justify-around">
       {TABS.map(({ key, label, Icon }) => {
         const isActive = active === key
         const accent = TAB_ACCENT[key]
@@ -68,6 +81,7 @@ export function TabBar({ active, onChange }: { active: TabKey; onChange: (tab: T
           </button>
         )
       })}
+      </div>
     </nav>
   )
 }

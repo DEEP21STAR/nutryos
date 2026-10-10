@@ -26,7 +26,7 @@ export function InputOrbButton({ onClick }: { onClick: () => void }) {
   }, [])
 
   return (
-    <div data-tour="orb" className="fixed bottom-24 left-1/2 z-40 -translate-x-1/2">
+    <div data-tour="orb" className="relative">
       <div
         ref={glowRef}
         aria-hidden

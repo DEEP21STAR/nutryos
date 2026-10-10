@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import gsap from 'gsap'
 import { SPLASH_CATEGORIES } from '@/lib/splashCategories'
 import { playBrandChime } from '@/lib/chime'
@@ -113,6 +114,10 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
   const finishRef = useRef<() => void>(() => {})
   const tlRef = useRef<gsap.core.Timeline | null>(null)
 
+  // The six progress dashes belong to the category tour only. They are NOT mounted during the
+  // greeting stamp (Good morning/afternoon/evening) - the tour mounts them when it starts.
+  const [tourDotsMounted, setTourDotsMounted] = useState(false)
+
   const cachedName = useRef(getCachedDisplayName()).current
   const greetingPeriod = useRef(getGreetingPeriod()).current
 
@@ -173,14 +178,21 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
     tl.to(introStampRef.current, { opacity: 0, scale: 0.8, duration: INTRO_STAMP_EXIT, ease: 'power1.in' })
 
     if (isFirstRun) {
+      // Mount the dashes synchronously right as the tour starts (after the greeting has faded).
+      tl.call(() => flushSync(() => setTourDotsMounted(true)))
       SPLASH_CATEGORIES.forEach((cat, i) => {
         const el = categoryRefs.current[i]
-        const dot = dotRefs.current[i]
         const particles = particleRefs.current.slice(i * 8, i * 8 + 8)
 
         tl.addLabel(`cat${i}`)
-        tl.set(dot, { backgroundColor: cat.color, scale: 1.4 }, `cat${i}`)
-        if (i > 0) tl.set(dotRefs.current[i - 1], { scale: 1, backgroundColor: 'rgb(255 255 255 / 0.25)' }, `cat${i}`)
+        tl.call(
+          () => {
+            gsap.set(dotRefs.current[i], { backgroundColor: cat.color, scale: 1.4 })
+            if (i > 0) gsap.set(dotRefs.current[i - 1], { scale: 1, backgroundColor: 'rgb(255 255 255 / 0.25)' })
+          },
+          undefined,
+          `cat${i}`,
+        )
 
         tl.fromTo(
           el,
@@ -270,7 +282,7 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
           'radial-gradient(ellipse 70% 55% at 50% 42%, rgb(0 229 160 / 0.14) 0%, rgb(139 92 246 / 0.07) 45%, transparent 75%)',
       }}
     >
-      <div ref={introStampRef} className="absolute z-10 flex flex-col items-center gap-4 px-6" style={{ opacity: 0 }}>
+      <div ref={introStampRef} data-testid="splash-greeting" className="absolute z-10 flex flex-col items-center gap-4 px-6" style={{ opacity: 0 }}>
         <div className="flex items-center justify-center" style={{ width: 72, height: 72 }}>
           <svg viewBox="0 0 100 100" style={{ width: '100%', height: '100%', filter: `drop-shadow(0 0 18px ${RING_COLOR})` }}>
             <circle cx="50" cy="50" r="38" fill="none" stroke={RING_COLOR} strokeWidth="9" />
@@ -338,17 +350,20 @@ export function SplashScreen({ onDone }: { onDone: () => void }) {
         })}
       </div>
 
-      <div ref={dotsRowRef} className="mb-[6vh] flex gap-2">
-        {SPLASH_CATEGORIES.map((cat, i) => (
-          <div
-            key={cat.id}
-            ref={(el) => {
-              dotRefs.current[i] = el
-            }}
-            className="h-1.5 w-5 rounded-full"
-            style={{ backgroundColor: 'rgb(255 255 255 / 0.25)' }}
-          />
-        ))}
+      {/* Fixed-height slot keeps the layout identical whether or not the dashes are mounted. */}
+      <div ref={dotsRowRef} className="mb-[6vh] flex h-1.5 gap-2">
+        {tourDotsMounted &&
+          SPLASH_CATEGORIES.map((cat, i) => (
+            <div
+              key={cat.id}
+              data-testid="splash-progress-dash"
+              ref={(el) => {
+                dotRefs.current[i] = el
+              }}
+              className="h-1.5 w-5 rounded-full"
+              style={{ backgroundColor: 'rgb(255 255 255 / 0.25)' }}
+            />
+          ))}
       </div>
 
       <div className="absolute flex flex-col items-center gap-[1.4vh]" style={{ opacity: 0 }} ref={wordmarkRef}>

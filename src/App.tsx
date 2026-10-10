@@ -510,7 +510,7 @@ export default function App() {
       {needsOnboarding ? (
         <OnboardingWizard onComplete={handleOnboardingComplete} />
       ) : (
-        <div className="relative z-10 mx-auto flex min-h-screen max-w-md flex-col overflow-x-hidden pb-40 text-text-primary">
+        <div className="relative z-10 mx-auto flex min-h-screen max-w-md flex-col overflow-x-hidden pb-[calc(12rem+env(safe-area-inset-bottom,0px))] text-text-primary">
       {/* Ambient background glow — subtle, static, sits behind everything. Starfield canvas
           (index.html) now shows through here — Phase 1's "no particles" scope was revised. */}
       <div aria-hidden className="ux-mesh" />
@@ -624,8 +624,7 @@ export default function App() {
           bottom" even though it was technically the last DOM child). */}
       <WhetuFooter className="mt-auto" name={displayName} />
 
-      <InputOrbButton onClick={() => setStage('mode-select')} />
-      <TabBar active={activeTab} onChange={setActiveTab} />
+      <TabBar active={activeTab} onChange={setActiveTab} fab={<InputOrbButton onClick={() => setStage('mode-select')} />} />
 
       {showTour && <CoachmarkTour onDone={endTour} />}
       {showHelp && <HelpCarousel onClose={() => setShowHelp(false)} />}

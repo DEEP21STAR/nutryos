@@ -25,3 +25,7 @@ dist-ssr
 
 # Supabase CLI local metadata (project ref, pooler URL, versions — not secrets, but local-only)
 supabase/.temp
+
+# Playwright
+test-results/
+playwright-report/
