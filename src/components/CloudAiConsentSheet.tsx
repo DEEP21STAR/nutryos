@@ -10,10 +10,13 @@ export type CloudAiChoice = 'once' | 'always' | 'private'
 
 export function CloudAiConsentSheet({
   foodNames,
+  kind = 'estimate',
   onChoose,
 }: {
   /** What would be sent, shown verbatim so the user sees exactly what leaves the phone. */
   foodNames: string[]
+  /** 'label' = a photo of a nutrition panel is sent (barcode fallback). */
+  kind?: 'estimate' | 'label'
   onChoose: (choice: CloudAiChoice) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -29,11 +32,12 @@ export function CloudAiConsentSheet({
         onClick={(e) => e.stopPropagation()}
       >
         <h3 id="cloud-ai-title" className="text-subtitle font-semibold text-text-primary">
-          Estimate with AI?
+          {kind === 'label' ? 'Read the label with AI?' : 'Estimate with AI?'}
         </h3>
         <p className="text-body text-text-secondary">
-          AI estimate sends the food name and portion ({foodNames.join(', ')}) to Google's free AI, which may use it to
-          improve their products. Nothing else about you is sent.
+          {kind === 'label'
+            ? "Photo scan sends the label photo to Google's free AI, which may use it to improve their products. Nothing else about you is sent."
+            : `AI estimate sends the food name and portion (${foodNames.join(', ')}) to Google's free AI, which may use it to improve their products. Nothing else about you is sent.`}
         </p>
         <p className="text-caption text-text-tertiary">You can change this any time in Settings → Privacy.</p>
         <div className="mt-1 flex flex-col gap-2">

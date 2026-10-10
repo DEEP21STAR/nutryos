@@ -14,6 +14,8 @@ export interface MyFood {
   /** Extra names it should answer to ("my whey", "protein"). The name itself always counts. */
   aliases?: string[]
   per100g: Per100g
+  /** Barcode (normalised GTIN) this food came from, so a re-scan resolves instantly from My Foods. */
+  barcode?: string
   /** The portion the user usually has, used when the parser gives no grams. */
   usualGrams?: number
   updatedAt: string
@@ -49,4 +51,9 @@ export const localMyFoodsStore: MyFoodsStore = {
 export function matchMyFood(query: string, store: MyFoodsStore = localMyFoodsStore): FuzzyMatch<MyFood & { aliases: string[] }> | null {
   const foods = store.all().map((f) => ({ ...f, aliases: [f.name, ...(f.aliases ?? [])] }))
   return bestFuzzyMatch(query, foods)
+}
+
+/** My Foods entry saved from a barcode scan (label photo or typed numbers), or null. */
+export function findMyFoodByBarcode(code: string, store: MyFoodsStore = localMyFoodsStore): MyFood | null {
+  return store.all().find((f) => f.barcode === code) ?? null
 }

@@ -3,6 +3,9 @@
 // secret-pattern scan of src/ and dist/. No third-party network calls (e2e blocks non-local origins).
 // Phase 2 adds: portion, private-text, on-device voice (12 sentences x 2 engines, cache, slow 3G) specs and the
 // self-hosted speech model check below. `npm run gate:voice-slow` (CPU-pinned timing) is separate.
+// Phase 3 adds: barcode.spec.ts (10 photos x 2 engines via file input, scan button, typed digits, unknown -> label/manual,
+// native-empty -> ponyfill, lazy self-hosted WASM, no CDN) and barcodeFakeCam.spec.ts (10 photos via Chromium fake camera).
+// `npm run gate:live-barcode` (real Open Food Facts, <= 10 requests) is separate.
 // Live tests (real edge function) are separate: `npm run gate:live`.
 // Prints exactly one final line: `GATE PASS` or `GATE FAIL: <reason>`.
 import { spawnSync } from 'node:child_process'
@@ -39,6 +42,13 @@ for (const [f, min] of [
   let size = 0
   try { size = statSync(join(root, f)).size } catch { /* missing */ }
   if (size < min) fail(`missing or truncated ${f} (${size} bytes)`)
+}
+
+// Self-hosted barcode WASM must be in the build (the ponyfill's default is a jsDelivr URL, overridden in barcodePonyfill.ts).
+console.error('\n=== barcode WASM present in dist/ ===')
+{
+  const wasm = readdirSync(join(root, 'dist/assets')).filter((f) => /^zxing_reader-.*\.wasm$/.test(f))
+  if (wasm.length !== 1 || statSync(join(root, 'dist/assets', wasm[0])).size < 500_000) fail('barcode zxing_reader wasm missing or truncated in dist/assets')
 }
 
 // Secret scan. The Supabase publishable key (sb_publishable_) is public by design and allowed.

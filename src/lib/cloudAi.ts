@@ -70,3 +70,76 @@ export async function estimateMacrosViaCloud(items: Array<{ name: string; grams:
     }
   })
 }
+
+/** Per-100 g numbers read off a nutrition panel. */
+export interface LabelReading {
+  name: string
+  per100g: { kcal: number; proteinG: number; fatG: number; carbsG: number }
+  servingG?: number
+}
+
+interface RawLabel {
+  name?: unknown
+  serving_g?: unknown
+  per_100g?: { kcal?: unknown; protein_g?: unknown; fat_g?: unknown; carbs_g?: unknown }
+  per_serving?: { kcal?: unknown; protein_g?: unknown; fat_g?: unknown; carbs_g?: unknown }
+}
+
+const pos = (v: unknown): number | undefined => {
+  const n = typeof v === 'string' ? Number(v) : v
+  return typeof n === 'number' && Number.isFinite(n) && n >= 0 ? n : undefined
+}
+
+/**
+ * Validates what the label-reading service says (pure, unit-tested). Prefers the printed per-100 g
+ * column; otherwise scales the per-serving column by 100 / serving_g. Returns null unless kcal > 0
+ * and the numbers are physically possible, so a bad read can never become a silent 0.
+ */
+export function parseLabelReading(raw: RawLabel | null | undefined): LabelReading | null {
+  if (!raw) return null
+  const servingG = pos(raw.serving_g)
+  let src = raw.per_100g
+  let factor = 1
+  if (!(pos(src?.kcal)! > 0)) {
+    src = raw.per_serving
+    if (!servingG || !(servingG > 0)) return null
+    factor = 100 / servingG
+  }
+  const kcal = pos(src?.kcal)
+  if (kcal === undefined || !(kcal > 0)) return null
+  const r1 = (v: number) => Math.round(v * factor * 10) / 10
+  const per100g = {
+    kcal: Math.round(kcal * factor),
+    proteinG: r1(pos(src?.protein_g) ?? 0),
+    fatG: r1(pos(src?.fat_g) ?? 0),
+    carbsG: r1(pos(src?.carbs_g) ?? 0),
+  }
+  if (per100g.kcal > 950 || per100g.proteinG + per100g.fatG + per100g.carbsG > 105) return null
+  return {
+    name: typeof raw.name === 'string' ? raw.name.trim().slice(0, 80) : '',
+    per100g,
+    servingG: servingG && servingG > 0 && servingG <= 3000 ? servingG : undefined,
+  }
+}
+
+/**
+ * Reads a nutrition-label photo through the identify-food edge function (the Gemini key stays
+ * server-side). Callers MUST have the user's cloud-AI consent first (CloudAiConsentSheet). The
+ * function must support `{label:{imageBase64,mimeType}}`; the version deployed before Phase 3 does
+ * not and answers 400, which surfaces here as a thrown error so the UI shows the manual path.
+ * Returns null when the service answered but could not read usable numbers.
+ */
+export async function readLabelViaCloud(photo: Blob): Promise<LabelReading | null> {
+  const imageBase64 = await new Promise<string>((resolve, reject) => {
+    const r = new FileReader()
+    r.onload = () => resolve(String(r.result).split(',')[1] ?? '')
+    r.onerror = () => reject(r.error)
+    r.readAsDataURL(photo)
+  })
+  const { data, error } = await supabase.functions.invoke<{ label?: RawLabel; error?: string }>('identify-food', {
+    body: { label: { imageBase64, mimeType: photo.type || 'image/jpeg' } },
+  })
+  if (error) throw new Error(`Label reading unavailable: ${error.message}`)
+  if (data?.error) throw new Error(`Label reading unavailable: ${data.error}`)
+  return parseLabelReading(data?.label)
+}

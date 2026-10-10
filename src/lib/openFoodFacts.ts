@@ -198,51 +198,84 @@ export async function lookupFoodMacros(query: string, opts: OffSearchOptions = {
   return result
 }
 
+/** Raw OFF v2 product response (only the parts we read). */
+export interface OffProductResponse {
+  status?: number
+  product?: {
+    code?: string
+    product_name?: string
+    product_name_en?: string
+    nutriments?: Record<string, unknown>
+    nutriments_estimated?: Record<string, number>
+  }
+}
+
+/** Result of a barcode lookup. `no-kcal` = OFF knows the product but has no usable energy value. */
+export type BarcodeLookup =
+  | { kind: 'found'; macros: OffMacros }
+  | { kind: 'no-kcal'; code: string; productName: string }
+  | { kind: 'not-found' }
+
+function offNum(v: unknown): number | undefined {
+  const n = typeof v === 'string' && v.trim() !== '' ? Number(v) : v
+  return typeof n === 'number' && Number.isFinite(n) ? n : undefined
+}
+
 /**
- * Direct barcode lookup — the real OFF v2 product endpoint, exact-match by code rather than the
- * fuzzy free-text search used by lookupFoodMacros. Verified against real live responses before
- * writing this (a valid barcode returns `status:1` + a `product` object; an unknown/invalid one
- * returns `status:0` with no `product` key at all — HTTP 200 either way, "not found" is never an
- * HTTP error here). Used by BarcodeCapture.tsx.
+ * Maps an OFF v2 product response to a lookup result (pure, unit-tested). Energy comes from
+ * energy-kcal_100g, else energy-kj_100g / energy_100g converted at 4.184. A missing, zero or
+ * impossible (>950 kcal per 100 g) energy is `no-kcal`: the caller sends the user to the label /
+ * manual path instead of logging a silent 0. Missing protein/fat/carbs become 0, which is harmless
+ * because the kcal is real.
  */
-export async function lookupByBarcode(barcode: string): Promise<OffMacros | null> {
+export function mapOffProductResponse(data: OffProductResponse, barcode: string): BarcodeLookup {
+  if (data.status !== 1 || !data.product) return { kind: 'not-found' }
+  const prod = data.product
+  const n = prod.nutriments ?? {}
+  const code = prod.code ?? barcode
+  const productName = (prod.product_name_en || prod.product_name || '').trim() || `Barcode ${barcode}`
+  let kcal = offNum(n['energy-kcal_100g'])
+  if (kcal === undefined || !(kcal > 0)) {
+    const kj = offNum(n['energy-kj_100g']) ?? offNum(n['energy_100g'])
+    kcal = kj !== undefined && kj > 0 ? kj / 4.184 : undefined
+  }
+  if (kcal === undefined || !(kcal > 0) || kcal > 950) return { kind: 'no-kcal', code, productName }
+  return {
+    kind: 'found',
+    macros: {
+      code,
+      productName,
+      caloriesPer100g: Math.round(kcal * 10) / 10,
+      proteinPer100gG: offNum(n['proteins_100g']) ?? 0,
+      fatPer100gG: offNum(n['fat_100g']) ?? 0,
+      carbsPer100gG: offNum(n['carbohydrates_100g']) ?? 0,
+      fiberPer100gG: offNum(n['fiber_100g']),
+      sugarPer100gG: offNum(n['sugars_100g']),
+      micronutrientsPer100g: prod.nutriments_estimated ? extractMicronutrientsPer100g(prod.nutriments_estimated) : undefined,
+    },
+  }
+}
+
+/**
+ * Direct barcode lookup: the OFF v2 product endpoint, exact match by code (public API, GET only,
+ * sends nothing but the barcode digits). An unknown code answers `status:0` (HTTP 404 in practice, 200 in older
+ * responses); both map to `not-found`. Browsers do not let a page set User-Agent, so the app identifies itself through the
+ * `app_name` parameter OFF documents for that case. Retries once on a 5xx and gives up after 8 s.
+ */
+export async function lookupByBarcode(barcode: string, fetchImpl: typeof fetch = fetch): Promise<BarcodeLookup> {
   const url = `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(
     barcode,
-  )}.json?fields=code,product_name,product_name_en,nutriments,nutriments_estimated`
+  )}.json?app_name=NUTRYOS&fields=code,product_name,product_name_en,nutriments,nutriments_estimated`
 
-  let res = await fetch(url)
+  const get = () => fetchImpl(url, { signal: AbortSignal.timeout(8000) })
+  let res = await get()
   if (!res.ok && res.status >= 500) {
     await new Promise((r) => setTimeout(r, 1500))
-    res = await fetch(url)
+    res = await get()
   }
+  if (res.status === 404) return { kind: 'not-found' } // OFF answers 404 for some unknown codes
   if (!res.ok) throw new Error(`Open Food Facts request failed: ${res.status}`)
-
-  const data = (await res.json()) as {
-    status?: number
-    product?: {
-      code?: string
-      product_name?: string
-      product_name_en?: string
-      nutriments?: Record<string, number>
-      nutriments_estimated?: Record<string, number>
-    }
-  }
-  if (data.status !== 1 || !data.product?.nutriments) return null
-
-  const n = data.product.nutriments
-  return {
-    code: data.product.code ?? barcode,
-    productName: data.product.product_name_en || data.product.product_name || `Barcode ${barcode}`,
-    caloriesPer100g: n['energy-kcal_100g'] ?? 0,
-    proteinPer100gG: n['proteins_100g'] ?? 0,
-    fatPer100gG: n['fat_100g'] ?? 0,
-    carbsPer100gG: n['carbohydrates_100g'] ?? 0,
-    fiberPer100gG: n['fiber_100g'],
-    sugarPer100gG: n['sugars_100g'],
-    micronutrientsPer100g: data.product.nutriments_estimated
-      ? extractMicronutrientsPer100g(data.product.nutriments_estimated)
-      : undefined,
-  }
+  return mapOffProductResponse((await res.json()) as OffProductResponse, barcode)
 }
 
 /** Scales a per-100g macro profile to an estimated portion size in grams. */

@@ -1,0 +1,82 @@
+[
+  {
+    "file": "01-marmite-nz.png",
+    "code": "9414942110252",
+    "format": "EAN-13",
+    "variant": "clean",
+    "nz": true,
+    "product": "Marmite (Sanitarium NZ)"
+  },
+  {
+    "file": "02-whittakers-dark-ghana-nz.png",
+    "code": "9403142001231",
+    "format": "EAN-13",
+    "variant": "clean",
+    "nz": true,
+    "product": "Whittaker's Dark Ghana"
+  },
+  {
+    "file": "03-pics-peanut-butter-nz.png",
+    "code": "9421901881160",
+    "format": "EAN-13",
+    "variant": "clean",
+    "nz": true,
+    "product": "Pic's Peanut Butter Smooth"
+  },
+  {
+    "file": "04-watties-baked-beans-nz.png",
+    "code": "9400547002634",
+    "format": "EAN-13",
+    "variant": "clean",
+    "nz": true,
+    "product": "Wattie's Baked Beans"
+  },
+  {
+    "file": "05-griffins-snax-nz.png",
+    "code": "9400553436485",
+    "format": "EAN-13",
+    "variant": "clean",
+    "nz": true,
+    "product": "Griffin's Snax Original"
+  },
+  {
+    "file": "06-mainland-buttersoft-nz-blurred.png",
+    "code": "9415007002062",
+    "format": "EAN-13",
+    "variant": "blurred",
+    "nz": true,
+    "product": "Mainland Buttersoft"
+  },
+  {
+    "file": "07-doritos-cheese-supreme-nz-angled.png",
+    "code": "9400566006354",
+    "format": "EAN-13",
+    "variant": "angled",
+    "nz": true,
+    "product": "Doritos Cheese Supreme"
+  },
+  {
+    "file": "08-nutella-upca.png",
+    "code": "062020000248",
+    "format": "UPC-A",
+    "variant": "clean",
+    "nz": false,
+    "product": "Nutella (UPC-A)"
+  },
+  {
+    "file": "09-whittakers-dark-ghana-nz-lowcontrast.png",
+    "code": "9403142001231",
+    "format": "EAN-13",
+    "variant": "low-contrast",
+    "nz": true,
+    "product": "Whittaker's Dark Ghana"
+  },
+  {
+    "file": "10-marmite-nz-rotated90.png",
+    "code": "9414942110252",
+    "format": "EAN-13",
+    "variant": "rotated-90",
+    "nz": true,
+    "product": "Marmite (Sanitarium NZ)"
+  }
+]

@@ -765,7 +765,7 @@ function InputModeSheet({
           onClick={onBarcode}
           className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-text-primary shadow-[0_0_24px_4px_rgb(255_255_255/0.15)] transition active:scale-95"
         >
-          <span aria-hidden>📦</span> Barcode
+          <span aria-hidden>📦</span> Scan barcode
         </button>
         <button onClick={onCancel} className="mt-1 text-caption text-text-tertiary underline">
           Cancel

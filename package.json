@@ -15,11 +15,14 @@
     "gate:voice-slow": "npm run build && playwright test --project=chromium-slowcpu",
     "make:voice-fixtures": "~/.local/share/read-along/venv/bin/python3 scripts/make-voice-fixtures.py",
     "gate:live-foods": "vitest run --config vitest.live-foods.config.ts",
-    "build:foods": "node scripts/build-foods.mjs"
+    "build:foods": "node scripts/build-foods.mjs",
+    "gate:live-barcode": "vitest run --config vitest.live-barcode.config.ts",
+    "make:barcode-fixtures": "node scripts/make-barcode-fixtures.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.3.0",
     "@supabase/supabase-js": "^2.116.0",
+    "barcode-detector": "^3.2.2",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
@@ -38,6 +41,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "bwip-js": "^4.11.4",
     "jsdom": "^30.1.0",
     "oxlint": "^1.81.0",
     "tailwindcss": "^4.3.3",

@@ -77,6 +77,17 @@ const ESTIMATE_SYSTEM_PROMPT =
   "Use confidence \"low\" when the food name is unfamiliar, ambiguous or possibly misspelled. If a name is not " +
   "a food you can recognise at all, return kcal 0 for it (the app then asks the user). Never invent precision.";
 
+// Phase 3 label path. Image only; no user data is sent with it.
+const LABEL_SYSTEM_PROMPT =
+  "You read the Nutrition Information Panel on a food package photo. Respond ONLY with JSON: " +
+  '{"name":string,"serving_g":number|null,"per_100g":{"kcal":number,"protein_g":number,"fat_g":number,"carbs_g":number}|null,' +
+  '"per_serving":{"kcal":number,"protein_g":number,"fat_g":number,"carbs_g":number}|null}. ' +
+  "Copy the numbers PRINTED on the panel; never estimate or compute them. kcal is Calories (Cal/kcal), not kJ: if only kJ is " +
+  "printed, divide by 4.184. Fill per_100g from the 'per 100 g' (or 'per 100 mL') column and per_serving from the 'per serving' " +
+  "column; use null for a column that is not printed. serving_g is the serving size in grams/mL if printed, else null. " +
+  "'carbs_g' is Carbohydrate (total), not sugars. If the photo is not a nutrition panel or is unreadable, respond " +
+  '{"name":"","serving_g":null,"per_100g":null,"per_serving":null}.';
+
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -205,6 +216,29 @@ Deno.serve(async (req: Request) => {
         };
       });
       return jsonResponse({ items: out }, 200);
+    }
+
+    // Label path (NUTRYOS Phase 3). Receives ONE nutrition-panel photo, only after the user's
+    // cloud-AI consent. Returns the printed numbers; the client validates them (kcal > 0, plausible)
+    // and lets the user edit before anything is logged.
+    if (body?.label && typeof body.label === "object") {
+      const { imageBase64: labelImg, mimeType: labelMime } = body.label as { imageBase64?: unknown; mimeType?: unknown };
+      if (typeof labelImg !== "string" || typeof labelMime !== "string" || labelImg.length > 8_000_000) {
+        return jsonResponse({ error: "label.imageBase64 and label.mimeType are required (max ~6 MB)" }, 400);
+      }
+      const { res: geminiRes, lastDetail } = await callGeminiWithRetry(apiKey, {
+        systemInstruction: { parts: [{ text: LABEL_SYSTEM_PROMPT }] },
+        contents: [{ role: "user", parts: [{ text: "Read this nutrition information panel." }, { inlineData: { mimeType: labelMime, data: labelImg } }] }],
+        generationConfig: { temperature: 0, maxOutputTokens: 1024, responseMimeType: "application/json" },
+      });
+      if (!geminiRes) return jsonResponse({ error: "Gemini API call never completed" }, 502);
+      if (!geminiRes.ok) {
+        const detail = geminiRes.status === 503 || geminiRes.status === 429 ? lastDetail : await geminiRes.text();
+        return jsonResponse({ error: `Gemini API error (${geminiRes.status}) after retries: ${detail.slice(0, 300)}` }, 502);
+      }
+      const geminiJson = await geminiRes.json();
+      const parsed = extractJson(geminiJson?.candidates?.[0]?.content?.parts?.[0]?.text);
+      return jsonResponse({ label: parsed }, 200);
     }
 
     // Photo path (existing, unchanged behavior).
