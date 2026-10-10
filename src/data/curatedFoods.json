@@ -1,0 +1,7604 @@
+{
+ "generatedBy": "scripts/build-foods.mjs",
+ "generatedAt": "2026-10-10T01:43:52.270Z",
+ "note": "Every nutrition value below was read from the cited source at build time. Do not hand-edit; change scripts/foods-spec.mjs and rebuild.",
+ "sources": {
+  "AFCD": {
+   "title": "Australian Food Composition Database - Release 3 (Nutrient profiles, per 100 g)",
+   "publisher": "Food Standards Australia New Zealand",
+   "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+   "file": "https://www.foodstandards.gov.au/sites/default/files/2025-12/AFCD%20Release%203%20-%20Nutrient%20profiles.xlsx",
+   "terms": "FSANZ copyright notice applies; attribution: Food Standards Australia New Zealand (2025) Australian Food Composition Database - Release 3"
+  },
+  "USDA SR Legacy": {
+   "title": "FoodData Central SR Legacy (April 2018)",
+   "publisher": "U.S. Department of Agriculture, Agricultural Research Service",
+   "url": "https://fdc.nal.usda.gov/",
+   "file": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+   "terms": "Public domain (CC0 1.0)"
+  },
+  "Open Food Facts (median)": {
+   "title": "Open Food Facts",
+   "url": "https://world.openfoodfacts.org/",
+   "terms": "Database: Open Database License (ODbL)"
+  }
+ },
+ "foods": [
+  {
+   "id": "whey-protein-powder",
+   "name": "Whey protein powder",
+   "category": "supplement",
+   "aliases": [
+    "whey protein powder",
+    "whey protein",
+    "protein powder",
+    "whey",
+    "protein scoop"
+   ],
+   "per100g": {
+    "kcal": 374.8,
+    "proteinG": 85,
+    "fatG": 2.2,
+    "carbsG": 1.6,
+    "fiberG": 1.8,
+    "sugarG": 1.3
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 scoop",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007493",
+    "name": "Protein powder, whey based, protein >70%, unfortified",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 379,
+     "proteinG": 82,
+     "fatG": 2,
+     "carbsG": 7.8,
+     "sugarG": 1.5
+    },
+    "source": {
+     "db": "Open Food Facts (median)",
+     "id": "2145405830000",
+     "name": "Pure Whey 100% Isolate Chocolate (median kcal of 39 plausible products)",
+     "url": "https://world.openfoodfacts.org/product/2145405830000",
+     "query": "https://world.openfoodfacts.org/cgi/search.pl?action=process&json=1&page_size=40&fields=code%2Cproduct_name%2Cproduct_name_en%2Cnutriments%2Ccountries_tags&search_terms=whey&search_simple=1&tagtype_0=categories&tag_contains_0=contains&tag_0=en%3Aprotein-powders",
+     "sampleCodes": [
+      "8719881036429",
+      "3583787294765",
+      "8719979204457",
+      "3583787458693",
+      "2145405830000",
+      "8719979204471",
+      "3760322501636",
+      "5060469988467",
+      "8719881036436",
+      "8718836397073",
+      "0748927059113",
+      "4066447484809",
+      "3608391673093",
+      "2145405860007",
+      "3583787458709"
+     ]
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "protein-shake-water",
+   "name": "Whey protein shake (with water)",
+   "category": "supplement",
+   "aliases": [
+    "protein shake",
+    "whey shake",
+    "protein shake with water"
+   ],
+   "per100g": {
+    "kcal": 62.4,
+    "proteinG": 14.2,
+    "fatG": 0.4,
+    "carbsG": 0.3,
+    "fiberG": 0.3,
+    "sugarG": 0.2
+   },
+   "serving": {
+    "grams": 300,
+    "label": "1 shaker",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009818",
+    "name": "Protein powder, whey based, protein >70%, unfortified, prepared with water",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "protein-bar",
+   "name": "Protein bar",
+   "category": "supplement",
+   "aliases": [
+    "protein bar",
+    "high protein bar"
+   ],
+   "per100g": {
+    "kcal": 406,
+    "proteinG": 20,
+    "fatG": 16,
+    "carbsG": 44,
+    "fiberG": 9.1,
+    "sugarG": 30
+   },
+   "serving": {
+    "grams": 60,
+    "label": "1 bar",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Open Food Facts (median)",
+    "id": "5900617013101",
+    "name": "PROTEINRIEGEL MIT VANILLE AROMA (median kcal of 38 plausible products)",
+    "url": "https://world.openfoodfacts.org/product/5900617013101",
+    "query": "https://world.openfoodfacts.org/cgi/search.pl?action=process&json=1&page_size=40&fields=code%2Cproduct_name%2Cproduct_name_en%2Cnutriments%2Ccountries_tags&tagtype_0=categories&tag_contains_0=contains&tag_0=en%3Aprotein-bars",
+    "sampleCodes": [
+     "5060088700112",
+     "8000500435670",
+     "8410076901026",
+     "5060088700105",
+     "8410076611277",
+     "8410076901033",
+     "5053827189927",
+     "3609200011174",
+     "4056489997665",
+     "5060088700082",
+     "3609200011549",
+     "5391532121710",
+     "3609200011532",
+     "5900617013064",
+     "5391532124162"
+    ]
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 511,
+     "proteinG": 25,
+     "fatG": 31.9,
+     "carbsG": 30,
+     "fiberG": 4.8,
+     "sugarG": 15
+    },
+    "source": {
+     "db": "AFCD",
+     "id": "F009802",
+     "name": "Bar, snack, with >35% nuts, added protein",
+     "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+    }
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "hemp-protein",
+   "name": "Plant protein powder (hemp)",
+   "category": "supplement",
+   "aliases": [
+    "hemp protein",
+    "plant protein powder",
+    "vegan protein powder"
+   ],
+   "per100g": {
+    "kcal": 334.6,
+    "proteinG": 35.8,
+    "fatG": 13.5,
+    "carbsG": 4.4,
+    "fiberG": 27.8,
+    "sugarG": 4.2
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 scoop",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F010642",
+    "name": "Protein powder, hemp seed based",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "muesli-bar",
+   "name": "Muesli bar",
+   "category": "snack",
+   "aliases": [
+    "muesli bar",
+    "granola bar",
+    "cereal bar"
+   ],
+   "per100g": {
+    "kcal": 379.1,
+    "proteinG": 8.3,
+    "fatG": 11.5,
+    "carbsG": 59.2,
+    "fiberG": 7,
+    "sugarG": 15.9
+   },
+   "serving": {
+    "grams": 35,
+    "label": "1 bar",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000333",
+    "name": "Bar, muesli, plain or with dried fruit",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "nut-bar",
+   "name": "Nut bar",
+   "category": "snack",
+   "aliases": [
+    "nut bar"
+   ],
+   "per100g": {
+    "kcal": 517,
+    "proteinG": 18.8,
+    "fatG": 34.6,
+    "carbsG": 31,
+    "fiberG": 6.8,
+    "sugarG": 15.9
+   },
+   "serving": {
+    "grams": 35,
+    "label": "1 bar",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009801",
+    "name": "Bar, snack, with >55% nuts",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "banana",
+   "name": "Banana",
+   "category": "fruit",
+   "aliases": [
+    "banana"
+   ],
+   "per100g": {
+    "kcal": 95.4,
+    "proteinG": 1.4,
+    "fatG": 0.2,
+    "carbsG": 19.9,
+    "fiberG": 2.2,
+    "sugarG": 13.4
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000262",
+    "name": "Banana, cavendish, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 89,
+     "proteinG": 1.1,
+     "fatG": 0.3,
+     "carbsG": 22.8,
+     "fiberG": 2.6,
+     "sugarG": 12.2
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "173944",
+     "name": "Bananas, raw",
+     "url": "https://fdc.nal.usda.gov/food-details/173944/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "apple",
+   "name": "Apple",
+   "category": "fruit",
+   "aliases": [
+    "apple",
+    "red apple"
+   ],
+   "per100g": {
+    "kcal": 57.8,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 13.1,
+    "fiberG": 2.5,
+    "sugarG": 12.4
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000110",
+    "name": "Apple, red skin, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 52,
+     "proteinG": 0.3,
+     "fatG": 0.2,
+     "carbsG": 13.8,
+     "fiberG": 2.4,
+     "sugarG": 10.4
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "171688",
+     "name": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+     "url": "https://fdc.nal.usda.gov/food-details/171688/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "apple-green",
+   "name": "Green apple",
+   "category": "fruit",
+   "aliases": [
+    "green apple",
+    "granny smith"
+   ],
+   "per100g": {
+    "kcal": 50.7,
+    "proteinG": 0.3,
+    "fatG": 0,
+    "carbsG": 11.4,
+    "fiberG": 2.5,
+    "sugarG": 11.1
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000098",
+    "name": "Apple, green skin, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "orange",
+   "name": "Orange",
+   "category": "fruit",
+   "aliases": [
+    "orange"
+   ],
+   "per100g": {
+    "kcal": 41.6,
+    "proteinG": 1,
+    "fatG": 0,
+    "carbsG": 8.2,
+    "fiberG": 2.3,
+    "sugarG": 8.2
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006277",
+    "name": "Orange, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mandarin",
+   "name": "Mandarin",
+   "category": "fruit",
+   "aliases": [
+    "mandarin",
+    "tangerine"
+   ],
+   "per100g": {
+    "kcal": 47.1,
+    "proteinG": 0.8,
+    "fatG": 0.2,
+    "carbsG": 9.8,
+    "fiberG": 1.6,
+    "sugarG": 9.8
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1 mandarin",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005293",
+    "name": "Mandarin, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pear",
+   "name": "Pear",
+   "category": "fruit",
+   "aliases": [
+    "pear"
+   ],
+   "per100g": {
+    "kcal": 59.3,
+    "proteinG": 0.4,
+    "fatG": 0,
+    "carbsG": 13.3,
+    "fiberG": 3,
+    "sugarG": 10.8
+   },
+   "serving": {
+    "grams": 160,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006601",
+    "name": "Pear, green skin, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "nashi",
+   "name": "Nashi pear",
+   "category": "fruit",
+   "aliases": [
+    "nashi",
+    "nashi pear",
+    "asian pear"
+   ],
+   "per100g": {
+    "kcal": 49.2,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 11.2,
+    "fiberG": 2.1,
+    "sugarG": 9.3
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1 nashi",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006604",
+    "name": "Pear, nashi, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "kiwifruit",
+   "name": "Kiwifruit, green",
+   "category": "fruit",
+   "aliases": [
+    "kiwifruit",
+    "kiwi fruit",
+    "kiwi",
+    "green kiwifruit"
+   ],
+   "per100g": {
+    "kcal": 55,
+    "proteinG": 1.2,
+    "fatG": 0.7,
+    "carbsG": 9.1,
+    "fiberG": 3,
+    "sugarG": 8.8
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1 kiwifruit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004816",
+    "name": "Kiwifruit, green (hayward), peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "kiwifruit-gold",
+   "name": "Kiwifruit, gold",
+   "category": "fruit",
+   "aliases": [
+    "gold kiwifruit",
+    "gold kiwi",
+    "golden kiwi"
+   ],
+   "per100g": {
+    "kcal": 58.3,
+    "proteinG": 1.2,
+    "fatG": 0.5,
+    "carbsG": 11.1,
+    "fiberG": 1.8,
+    "sugarG": 10.9
+   },
+   "serving": {
+    "grams": 85,
+    "label": "1 kiwifruit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004815",
+    "name": "Kiwifruit, gold, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "grapes",
+   "name": "Grapes, green",
+   "category": "fruit",
+   "aliases": [
+    "grape",
+    "green grape"
+   ],
+   "per100g": {
+    "kcal": 66.2,
+    "proteinG": 0.8,
+    "fatG": 0,
+    "carbsG": 15.8,
+    "fiberG": 1,
+    "sugarG": 15.4
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 small bunch",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004260",
+    "name": "Grape, green, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "grapes-red",
+   "name": "Grapes, red",
+   "category": "fruit",
+   "aliases": [
+    "red grape"
+   ],
+   "per100g": {
+    "kcal": 75,
+    "proteinG": 0.8,
+    "fatG": 0.1,
+    "carbsG": 17.1,
+    "fiberG": 2.2,
+    "sugarG": 17.1
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 small bunch",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004259",
+    "name": "Grape, red globe, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "strawberries",
+   "name": "Strawberries",
+   "category": "fruit",
+   "aliases": [
+    "strawberry"
+   ],
+   "per100g": {
+    "kcal": 31.5,
+    "proteinG": 0.7,
+    "fatG": 0.2,
+    "carbsG": 5.6,
+    "fiberG": 2.1,
+    "sugarG": 5.5
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 punnet half",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008952",
+    "name": "Strawberry, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "blueberries",
+   "name": "Blueberries",
+   "category": "fruit",
+   "aliases": [
+    "blueberry"
+   ],
+   "per100g": {
+    "kcal": 48.5,
+    "proteinG": 0.5,
+    "fatG": 0,
+    "carbsG": 10.4,
+    "fiberG": 3,
+    "sugarG": 10
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001290",
+    "name": "Blueberry, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "blueberries-frozen",
+   "name": "Blueberries, frozen",
+   "category": "fruit",
+   "aliases": [
+    "frozen blueberry",
+    "frozen berry"
+   ],
+   "per100g": {
+    "kcal": 49.7,
+    "proteinG": 0.5,
+    "fatG": 0,
+    "carbsG": 10.7,
+    "fiberG": 3,
+    "sugarG": 10.3
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001289",
+    "name": "Blueberry, purchased frozen",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "watermelon",
+   "name": "Watermelon",
+   "category": "fruit",
+   "aliases": [
+    "watermelon"
+   ],
+   "per100g": {
+    "kcal": 31.1,
+    "proteinG": 0.6,
+    "fatG": 0,
+    "carbsG": 7.1,
+    "fiberG": 0.4,
+    "sugarG": 6.8
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1 wedge",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005520",
+    "name": "Melon, watermelon, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pineapple",
+   "name": "Pineapple",
+   "category": "fruit",
+   "aliases": [
+    "pineapple"
+   ],
+   "per100g": {
+    "kcal": 39.4,
+    "proteinG": 0.5,
+    "fatG": 0,
+    "carbsG": 8.6,
+    "fiberG": 1.3,
+    "sugarG": 8.6
+   },
+   "serving": {
+    "grams": 100,
+    "label": "2 rings",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006702",
+    "name": "Pineapple, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mango",
+   "name": "Mango",
+   "category": "fruit",
+   "aliases": [
+    "mango"
+   ],
+   "per100g": {
+    "kcal": 53.5,
+    "proteinG": 0.4,
+    "fatG": 0,
+    "carbsG": 12.6,
+    "fiberG": 1.3,
+    "sugarG": 12.1
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 cheek pair",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005299",
+    "name": "Mango, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "peach",
+   "name": "Peach",
+   "category": "fruit",
+   "aliases": [
+    "peach"
+   ],
+   "per100g": {
+    "kcal": 38.5,
+    "proteinG": 0.7,
+    "fatG": 0,
+    "carbsG": 8,
+    "fiberG": 1.6,
+    "sugarG": 7.4
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006573",
+    "name": "Peach, yellow, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "plum",
+   "name": "Plum",
+   "category": "fruit",
+   "aliases": [
+    "plum"
+   ],
+   "per100g": {
+    "kcal": 50,
+    "proteinG": 0.6,
+    "fatG": 0,
+    "carbsG": 10.2,
+    "fiberG": 2,
+    "sugarG": 9
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 plum",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006832",
+    "name": "Plum, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "avocado",
+   "name": "Avocado",
+   "category": "fruit",
+   "aliases": [
+    "avocado",
+    "avo"
+   ],
+   "per100g": {
+    "kcal": 156.1,
+    "proteinG": 1.6,
+    "fatG": 14.6,
+    "carbsG": 2.2,
+    "fiberG": 5.9,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1/2 avocado",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000162",
+    "name": "Avocado, hass, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "feijoa",
+   "name": "Feijoa",
+   "category": "fruit",
+   "aliases": [
+    "feijoa"
+   ],
+   "per100g": {
+    "kcal": 42.1,
+    "proteinG": 0.6,
+    "fatG": 0.4,
+    "carbsG": 8,
+    "fiberG": 3,
+    "sugarG": 7.7
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1 feijoa",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003818",
+    "name": "Feijoa, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sultanas",
+   "name": "Sultanas",
+   "category": "fruit",
+   "aliases": [
+    "sultana",
+    "raisin"
+   ],
+   "per100g": {
+    "kcal": 312.6,
+    "proteinG": 2.6,
+    "fatG": 0.3,
+    "carbsG": 75.8,
+    "fiberG": 3.3,
+    "sugarG": 74
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 small box",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008983",
+    "name": "Sultana",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "dates",
+   "name": "Dates, dried",
+   "category": "fruit",
+   "aliases": [
+    "date",
+    "dried date",
+    "medjool date"
+   ],
+   "per100g": {
+    "kcal": 289.7,
+    "proteinG": 2,
+    "fatG": 0.2,
+    "carbsG": 67.2,
+    "fiberG": 9.7,
+    "sugarG": 65.9
+   },
+   "serving": {
+    "grams": 30,
+    "label": "3 dates",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003496",
+    "name": "Date, dried",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "broccoli",
+   "name": "Broccoli, boiled",
+   "category": "veg",
+   "aliases": [
+    "broccoli",
+    "boiled broccoli"
+   ],
+   "per100g": {
+    "kcal": 23.9,
+    "proteinG": 2.9,
+    "fatG": 0.3,
+    "carbsG": 1.2,
+    "fiberG": 2.5,
+    "sugarG": 1.1
+   },
+   "serving": {
+    "grams": 90,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001900",
+    "name": "Broccoli, fresh, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "broccoli-raw",
+   "name": "Broccoli, raw",
+   "category": "veg",
+   "aliases": [
+    "raw broccoli"
+   ],
+   "per100g": {
+    "kcal": 32,
+    "proteinG": 4,
+    "fatG": 0.4,
+    "carbsG": 1.2,
+    "fiberG": 3.5,
+    "sugarG": 1.2
+   },
+   "serving": {
+    "grams": 90,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001905",
+    "name": "Broccoli, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "carrot",
+   "name": "Carrot, raw",
+   "category": "veg",
+   "aliases": [
+    "carrot",
+    "raw carrot"
+   ],
+   "per100g": {
+    "kcal": 34.7,
+    "proteinG": 0.6,
+    "fatG": 0,
+    "carbsG": 6.6,
+    "fiberG": 3.2,
+    "sugarG": 6.2
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002276",
+    "name": "Carrot, mature, peeled, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "carrot-boiled",
+   "name": "Carrot, boiled",
+   "category": "veg",
+   "aliases": [
+    "boiled carrot",
+    "cooked carrot"
+   ],
+   "per100g": {
+    "kcal": 33.2,
+    "proteinG": 1.1,
+    "fatG": 0.3,
+    "carbsG": 5.1,
+    "fiberG": 3.3,
+    "sugarG": 4.6
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002275",
+    "name": "Carrot, mature, peeled, fresh, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "potato-boiled",
+   "name": "Potato, boiled",
+   "category": "veg",
+   "aliases": [
+    "potato",
+    "boiled potato"
+   ],
+   "per100g": {
+    "kcal": 61.7,
+    "proteinG": 1.5,
+    "fatG": 0.1,
+    "carbsG": 12.1,
+    "fiberG": 2,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007320",
+    "name": "Potato, pale skin, peeled, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "potato-baked",
+   "name": "Potato, baked",
+   "category": "veg",
+   "aliases": [
+    "baked potato",
+    "roast potato",
+    "jacket potato"
+   ],
+   "per100g": {
+    "kcal": 88,
+    "proteinG": 3,
+    "fatG": 0,
+    "carbsG": 17.4,
+    "fiberG": 1.7,
+    "sugarG": 1.5
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007314",
+    "name": "Potato, pale skin, peeled, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "kumara",
+   "name": "Kumara (orange), baked",
+   "category": "veg",
+   "aliases": [
+    "kumara",
+    "sweet potato",
+    "orange kumara",
+    "roast kumara"
+   ],
+   "per100g": {
+    "kcal": 79.6,
+    "proteinG": 1.8,
+    "fatG": 0.2,
+    "carbsG": 16.1,
+    "fiberG": 3.2,
+    "sugarG": 7.1
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 medium piece",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009033",
+    "name": "Sweet potato, orange flesh, peeled, fresh, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "kumara-boiled",
+   "name": "Kumara (orange), boiled",
+   "category": "veg",
+   "aliases": [
+    "boiled kumara",
+    "mashed kumara",
+    "boiled sweet potato"
+   ],
+   "per100g": {
+    "kcal": 70.3,
+    "proteinG": 1.6,
+    "fatG": 0.2,
+    "carbsG": 14.2,
+    "fiberG": 2.8,
+    "sugarG": 6.2
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009034",
+    "name": "Sweet potato, orange flesh, peeled, fresh, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pumpkin",
+   "name": "Pumpkin, baked",
+   "category": "veg",
+   "aliases": [
+    "pumpkin",
+    "roast pumpkin"
+   ],
+   "per100g": {
+    "kcal": 32,
+    "proteinG": 1.2,
+    "fatG": 0.4,
+    "carbsG": 5,
+    "fiberG": 2.1,
+    "sugarG": 4.5
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 wedge",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F011005",
+    "name": "Pumpkin, kent/jap, peeled, fresh, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "butternut",
+   "name": "Butternut, baked",
+   "category": "veg",
+   "aliases": [
+    "butternut",
+    "butternut squash",
+    "butternut pumpkin"
+   ],
+   "per100g": {
+    "kcal": 53.1,
+    "proteinG": 2.5,
+    "fatG": 0.7,
+    "carbsG": 8.1,
+    "fiberG": 2.1,
+    "sugarG": 6.1
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007533",
+    "name": "Pumpkin, butternut, peeled, fresh, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "peas",
+   "name": "Peas, frozen, boiled",
+   "category": "veg",
+   "aliases": [
+    "pea",
+    "green pea",
+    "frozen pea"
+   ],
+   "per100g": {
+    "kcal": 62.4,
+    "proteinG": 5.2,
+    "fatG": 0.3,
+    "carbsG": 6.4,
+    "fiberG": 6.1,
+    "sugarG": 2.5
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006538",
+    "name": "Pea, green, frozen, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "corn-cob",
+   "name": "Corn on the cob, boiled",
+   "category": "veg",
+   "aliases": [
+    "corn",
+    "corn on the cob",
+    "sweetcorn",
+    "corn cob"
+   ],
+   "per100g": {
+    "kcal": 91.8,
+    "proteinG": 3.8,
+    "fatG": 1.9,
+    "carbsG": 13,
+    "fiberG": 4.4,
+    "sugarG": 5.6
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 cob",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003200",
+    "name": "Corn, fresh on cob, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "corn-canned",
+   "name": "Corn kernels, canned",
+   "category": "veg",
+   "aliases": [
+    "canned corn",
+    "corn kernel",
+    "whole kernel corn"
+   ],
+   "per100g": {
+    "kcal": 93.5,
+    "proteinG": 2.9,
+    "fatG": 1,
+    "carbsG": 16.8,
+    "fiberG": 2.7,
+    "sugarG": 3.5
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003220",
+    "name": "Corn, kernels, canned in brine, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "spinach",
+   "name": "Spinach, baby, raw",
+   "category": "veg",
+   "aliases": [
+    "spinach",
+    "baby spinach"
+   ],
+   "per100g": {
+    "kcal": 16.3,
+    "proteinG": 2.8,
+    "fatG": 0,
+    "carbsG": 0,
+    "fiberG": 2.5,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 handful",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008749",
+    "name": "Spinach, baby, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lettuce",
+   "name": "Lettuce, iceberg",
+   "category": "veg",
+   "aliases": [
+    "lettuce",
+    "iceberg lettuce",
+    "salad leaves"
+   ],
+   "per100g": {
+    "kcal": 14.3,
+    "proteinG": 1,
+    "fatG": 0,
+    "carbsG": 2.1,
+    "fiberG": 1.1,
+    "sugarG": 2.1
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005192",
+    "name": "Lettuce, iceberg, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lettuce-cos",
+   "name": "Lettuce, cos",
+   "category": "veg",
+   "aliases": [
+    "cos lettuce",
+    "romaine"
+   ],
+   "per100g": {
+    "kcal": 17.2,
+    "proteinG": 1.2,
+    "fatG": 0.2,
+    "carbsG": 1.8,
+    "fiberG": 1.8,
+    "sugarG": 1.8
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005191",
+    "name": "Lettuce, cos, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tomato",
+   "name": "Tomato",
+   "category": "veg",
+   "aliases": [
+    "tomato"
+   ],
+   "per100g": {
+    "kcal": 17.4,
+    "proteinG": 0.6,
+    "fatG": 0,
+    "carbsG": 3,
+    "fiberG": 1.1,
+    "sugarG": 2.5
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 medium",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009193",
+    "name": "Tomato, common, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tomato-cherry",
+   "name": "Cherry tomatoes",
+   "category": "veg",
+   "aliases": [
+    "cherry tomato"
+   ],
+   "per100g": {
+    "kcal": 21.5,
+    "proteinG": 0.9,
+    "fatG": 0,
+    "carbsG": 3.5,
+    "fiberG": 1.7,
+    "sugarG": 3.5
+   },
+   "serving": {
+    "grams": 80,
+    "label": "6 tomatoes",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009190",
+    "name": "Tomato, cherry, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cucumber",
+   "name": "Cucumber, Lebanese",
+   "category": "veg",
+   "aliases": [
+    "cucumber",
+    "lebanese cucumber"
+   ],
+   "per100g": {
+    "kcal": 11,
+    "proteinG": 0.7,
+    "fatG": 0,
+    "carbsG": 1.8,
+    "fiberG": 0.6,
+    "sugarG": 1.7
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1/2 cucumber",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003321",
+    "name": "Cucumber, Lebanese, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "capsicum-red",
+   "name": "Capsicum, red",
+   "category": "veg",
+   "aliases": [
+    "capsicum",
+    "red capsicum",
+    "red pepper",
+    "bell pepper"
+   ],
+   "per100g": {
+    "kcal": 27.5,
+    "proteinG": 1.1,
+    "fatG": 0.4,
+    "carbsG": 4.4,
+    "fiberG": 1.1,
+    "sugarG": 4.4
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 capsicum",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002247",
+    "name": "Capsicum, red, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "capsicum-green",
+   "name": "Capsicum, green",
+   "category": "veg",
+   "aliases": [
+    "green capsicum",
+    "green pepper"
+   ],
+   "per100g": {
+    "kcal": 16.5,
+    "proteinG": 0.9,
+    "fatG": 0,
+    "carbsG": 2.5,
+    "fiberG": 1.5,
+    "sugarG": 2.5
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 capsicum",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002239",
+    "name": "Capsicum, green, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "onion",
+   "name": "Onion, brown",
+   "category": "veg",
+   "aliases": [
+    "onion",
+    "brown onion"
+   ],
+   "per100g": {
+    "kcal": 32.5,
+    "proteinG": 1.3,
+    "fatG": 0,
+    "carbsG": 5.8,
+    "fiberG": 2.3,
+    "sugarG": 5.8
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1/2 onion",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006225",
+    "name": "Onion, mature, brown skinned, peeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "onion-red",
+   "name": "Onion, red",
+   "category": "veg",
+   "aliases": [
+    "red onion"
+   ],
+   "per100g": {
+    "kcal": 27.7,
+    "proteinG": 0.8,
+    "fatG": 0,
+    "carbsG": 5.5,
+    "fiberG": 1.8,
+    "sugarG": 5.5
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1/2 onion",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009800",
+    "name": "Onion, mature, red skinned, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "spring-onion",
+   "name": "Spring onion",
+   "category": "veg",
+   "aliases": [
+    "spring onion",
+    "scallion"
+   ],
+   "per100g": {
+    "kcal": 30.4,
+    "proteinG": 1.7,
+    "fatG": 0.2,
+    "carbsG": 4.6,
+    "fiberG": 1.9,
+    "sugarG": 4.5
+   },
+   "serving": {
+    "grams": 15,
+    "label": "1 stalk",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006250",
+    "name": "Onion, spring, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mushroom",
+   "name": "Mushrooms, pan-fried",
+   "category": "veg",
+   "aliases": [
+    "mushroom",
+    "fried mushroom"
+   ],
+   "per100g": {
+    "kcal": 49.7,
+    "proteinG": 5,
+    "fatG": 1.4,
+    "carbsG": 3.1,
+    "fiberG": 2.7,
+    "sugarG": 3.1
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005945",
+    "name": "Mushroom, common, fresh, fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mushroom-raw",
+   "name": "Mushrooms, raw",
+   "category": "veg",
+   "aliases": [
+    "raw mushroom"
+   ],
+   "per100g": {
+    "kcal": 27.2,
+    "proteinG": 2.2,
+    "fatG": 0.8,
+    "carbsG": 2,
+    "fiberG": 1.4,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005946",
+    "name": "Mushroom, common, fresh, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cabbage",
+   "name": "Cabbage, white, raw",
+   "category": "veg",
+   "aliases": [
+    "cabbage",
+    "white cabbage"
+   ],
+   "per100g": {
+    "kcal": 24.1,
+    "proteinG": 1.2,
+    "fatG": 0,
+    "carbsG": 3.8,
+    "fiberG": 2.2,
+    "sugarG": 3.8
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 cup shredded",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002015",
+    "name": "Cabbage, white, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cabbage-red",
+   "name": "Cabbage, red, raw",
+   "category": "veg",
+   "aliases": [
+    "red cabbage"
+   ],
+   "per100g": {
+    "kcal": 30.6,
+    "proteinG": 2.2,
+    "fatG": 0.3,
+    "carbsG": 3.2,
+    "fiberG": 3.1,
+    "sugarG": 3.2
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 cup shredded",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002006",
+    "name": "Cabbage, red, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cauliflower",
+   "name": "Cauliflower, boiled",
+   "category": "veg",
+   "aliases": [
+    "cauliflower"
+   ],
+   "per100g": {
+    "kcal": 25.3,
+    "proteinG": 2,
+    "fatG": 0.2,
+    "carbsG": 3.4,
+    "fiberG": 1.2,
+    "sugarG": 2.9
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002377",
+    "name": "Cauliflower, fresh, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "green-beans",
+   "name": "Green beans, boiled",
+   "category": "veg",
+   "aliases": [
+    "green bean",
+    "bean"
+   ],
+   "per100g": {
+    "kcal": 27.2,
+    "proteinG": 1.9,
+    "fatG": 0,
+    "carbsG": 3.5,
+    "fiberG": 3,
+    "sugarG": 2.8
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000430",
+    "name": "Bean, green, fresh, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "zucchini",
+   "name": "Zucchini",
+   "category": "veg",
+   "aliases": [
+    "zucchini",
+    "courgette"
+   ],
+   "per100g": {
+    "kcal": 16.5,
+    "proteinG": 1,
+    "fatG": 0.2,
+    "carbsG": 2.2,
+    "fiberG": 1,
+    "sugarG": 2.2
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 zucchini",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009775",
+    "name": "Zucchini, green skin, fresh, unpeeled, raw",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "silverbeet",
+   "name": "Silverbeet, boiled",
+   "category": "veg",
+   "aliases": [
+    "silverbeet",
+    "chard"
+   ],
+   "per100g": {
+    "kcal": 24.6,
+    "proteinG": 2.5,
+    "fatG": 0.3,
+    "carbsG": 1.7,
+    "fiberG": 2.7,
+    "sugarG": 1.7
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008266",
+    "name": "Silverbeet, fresh, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "beetroot",
+   "name": "Beetroot, canned",
+   "category": "veg",
+   "aliases": [
+    "beetroot",
+    "canned beetroot"
+   ],
+   "per100g": {
+    "kcal": 44,
+    "proteinG": 1.2,
+    "fatG": 0,
+    "carbsG": 8.7,
+    "fiberG": 2,
+    "sugarG": 8.7
+   },
+   "serving": {
+    "grams": 50,
+    "label": "2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001010",
+    "name": "Beetroot, canned in brine, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "baked-beans",
+   "name": "Baked beans",
+   "category": "legume",
+   "aliases": [
+    "baked bean"
+   ],
+   "per100g": {
+    "kcal": 91.1,
+    "proteinG": 4.8,
+    "fatG": 0.3,
+    "carbsG": 13,
+    "fiberG": 4.8,
+    "sugarG": 5
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1/2 can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000243",
+    "name": "Baked beans, canned in tomato sauce",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chickpeas",
+   "name": "Chickpeas, canned",
+   "category": "legume",
+   "aliases": [
+    "chickpea"
+   ],
+   "per100g": {
+    "kcal": 113.3,
+    "proteinG": 6.3,
+    "fatG": 2.1,
+    "carbsG": 13.3,
+    "fiberG": 5.7,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002880",
+    "name": "Chickpea, canned, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lentils",
+   "name": "Lentils, boiled",
+   "category": "legume",
+   "aliases": [
+    "lentil"
+   ],
+   "per100g": {
+    "kcal": 92,
+    "proteinG": 7.3,
+    "fatG": 0.5,
+    "carbsG": 11.9,
+    "fiberG": 4.1,
+    "sugarG": 0.5
+   },
+   "serving": {
+    "grams": 150,
+    "label": "3/4 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005177",
+    "name": "Lentil, dried, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "kidney-beans",
+   "name": "Kidney beans, canned",
+   "category": "legume",
+   "aliases": [
+    "kidney bean",
+    "red kidney bean"
+   ],
+   "per100g": {
+    "kcal": 105.4,
+    "proteinG": 6.6,
+    "fatG": 0.6,
+    "carbsG": 14,
+    "fiberG": 6.5,
+    "sugarG": 2.4
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000448",
+    "name": "Bean, red kidney, canned, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tofu",
+   "name": "Tofu, firm",
+   "category": "legume",
+   "aliases": [
+    "tofu",
+    "bean curd"
+   ],
+   "per100g": {
+    "kcal": 129.8,
+    "proteinG": 12.8,
+    "fatG": 8.3,
+    "carbsG": 0,
+    "fiberG": 1,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 slab",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009176",
+    "name": "Tofu (soy bean curd), firm, as purchased",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "hummus",
+   "name": "Hummus",
+   "category": "legume",
+   "aliases": [
+    "hummus",
+    "hommus"
+   ],
+   "per100g": {
+    "kcal": 248.3,
+    "proteinG": 6.9,
+    "fatG": 19.5,
+    "carbsG": 9.4,
+    "fiberG": 3.9,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 30,
+    "label": "2 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003539",
+    "name": "Dip, hummus (hommus), commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bread-white",
+   "name": "White bread",
+   "category": "grain",
+   "aliases": [
+    "white bread",
+    "bread",
+    "sandwich bread"
+   ],
+   "per100g": {
+    "kcal": 251,
+    "proteinG": 9.5,
+    "fatG": 2,
+    "carbsG": 46.2,
+    "fiberG": 3.2,
+    "sugarG": 3.1
+   },
+   "serving": {
+    "grams": 32,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001463",
+    "name": "Bread, from white flour",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "toast-white",
+   "name": "White toast",
+   "category": "grain",
+   "aliases": [
+    "toast",
+    "white toast"
+   ],
+   "per100g": {
+    "kcal": 296.6,
+    "proteinG": 10.8,
+    "fatG": 2.8,
+    "carbsG": 54.3,
+    "fiberG": 4.3,
+    "sugarG": 3.7
+   },
+   "serving": {
+    "grams": 32,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001541",
+    "name": "Bread, from white flour, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 290,
+     "proteinG": 9,
+     "fatG": 4,
+     "carbsG": 54.5,
+     "fiberG": 2.9,
+     "sugarG": 6.2
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "174925",
+     "name": "Bread, white, commercially prepared, toasted",
+     "url": "https://fdc.nal.usda.gov/food-details/174925/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bread-wholemeal",
+   "name": "Wholemeal bread",
+   "category": "grain",
+   "aliases": [
+    "wholemeal bread",
+    "whole wheat bread",
+    "brown bread"
+   ],
+   "per100g": {
+    "kcal": 237.3,
+    "proteinG": 10.4,
+    "fatG": 2.5,
+    "carbsG": 39.2,
+    "fiberG": 6.9,
+    "sugarG": 3.2
+   },
+   "serving": {
+    "grams": 35,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001553",
+    "name": "Bread, from wholemeal flour",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "toast-wholemeal",
+   "name": "Wholemeal toast",
+   "category": "grain",
+   "aliases": [
+    "wholemeal toast",
+    "brown toast"
+   ],
+   "per100g": {
+    "kcal": 279.2,
+    "proteinG": 12.2,
+    "fatG": 2.9,
+    "carbsG": 46.1,
+    "fiberG": 8.1,
+    "sugarG": 3.7
+   },
+   "serving": {
+    "grams": 35,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001597",
+    "name": "Bread, from wholemeal flour, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bread-grain",
+   "name": "Mixed grain bread",
+   "category": "grain",
+   "aliases": [
+    "mixed grain bread",
+    "multigrain bread",
+    "grain bread",
+    "vogels",
+    "vogel"
+   ],
+   "per100g": {
+    "kcal": 257.6,
+    "proteinG": 10.7,
+    "fatG": 4.5,
+    "carbsG": 39.8,
+    "fiberG": 5.8,
+    "sugarG": 2.5
+   },
+   "serving": {
+    "grams": 40,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001621",
+    "name": "Bread, mixed grain",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "toast-grain",
+   "name": "Mixed grain toast",
+   "category": "grain",
+   "aliases": [
+    "multigrain toast",
+    "grain toast",
+    "vogels toast"
+   ],
+   "per100g": {
+    "kcal": 303.1,
+    "proteinG": 12.6,
+    "fatG": 5.3,
+    "carbsG": 46.8,
+    "fiberG": 6.9,
+    "sugarG": 3
+   },
+   "serving": {
+    "grams": 40,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001644",
+    "name": "Bread, mixed grain, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bread-sourdough",
+   "name": "Sourdough bread",
+   "category": "grain",
+   "aliases": [
+    "sourdough",
+    "sourdough bread"
+   ],
+   "per100g": {
+    "kcal": 229.7,
+    "proteinG": 8.8,
+    "fatG": 1.4,
+    "carbsG": 42.9,
+    "fiberG": 3.1,
+    "sugarG": 1.2
+   },
+   "serving": {
+    "grams": 40,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001537",
+    "name": "Bread, from white flour, sour dough, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "toast-sourdough",
+   "name": "Sourdough toast",
+   "category": "grain",
+   "aliases": [
+    "sourdough toast",
+    "toasted sourdough"
+   ],
+   "per100g": {
+    "kcal": 273.4,
+    "proteinG": 10.4,
+    "fatG": 1.7,
+    "carbsG": 51.1,
+    "fiberG": 3.7,
+    "sugarG": 1.4
+   },
+   "serving": {
+    "grams": 40,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001538",
+    "name": "Bread, from white flour, sour dough, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 319,
+     "proteinG": 13,
+     "fatG": 2.1,
+     "carbsG": 61.9,
+     "fiberG": 3.1,
+     "sugarG": 3.6
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "174911",
+     "name": "Bread, french or vienna, toasted (includes sourdough)",
+     "url": "https://fdc.nal.usda.gov/food-details/174911/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bread-rye",
+   "name": "Rye sourdough",
+   "category": "grain",
+   "aliases": [
+    "rye bread",
+    "rye sourdough"
+   ],
+   "per100g": {
+    "kcal": 234.2,
+    "proteinG": 9.2,
+    "fatG": 1.6,
+    "carbsG": 42.7,
+    "fiberG": 5.2,
+    "sugarG": 2
+   },
+   "serving": {
+    "grams": 40,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001450",
+    "name": "Bread, from rye flour, sour dough",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bagel",
+   "name": "Bagel, toasted",
+   "category": "grain",
+   "aliases": [
+    "bagel"
+   ],
+   "per100g": {
+    "kcal": 301.1,
+    "proteinG": 11.8,
+    "fatG": 1.6,
+    "carbsG": 57.6,
+    "fiberG": 3.5,
+    "sugarG": 7
+   },
+   "serving": {
+    "grams": 90,
+    "label": "1 bagel",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000234",
+    "name": "Bagel, from white flour, commercial, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "english-muffin",
+   "name": "English muffin, toasted",
+   "category": "grain",
+   "aliases": [
+    "english muffin"
+   ],
+   "per100g": {
+    "kcal": 243.5,
+    "proteinG": 11,
+    "fatG": 2.3,
+    "carbsG": 42.1,
+    "fiberG": 3.4,
+    "sugarG": 1.8
+   },
+   "serving": {
+    "grams": 65,
+    "label": "1 muffin",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005898",
+    "name": "Muffin, English style, from white flour, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "crumpet",
+   "name": "Crumpet, toasted",
+   "category": "grain",
+   "aliases": [
+    "crumpet"
+   ],
+   "per100g": {
+    "kcal": 222.3,
+    "proteinG": 7.1,
+    "fatG": 1.2,
+    "carbsG": 43.3,
+    "fiberG": 3,
+    "sugarG": 2.6
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1 crumpet",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003313",
+    "name": "Crumpet, from white flour, toasted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "wrap",
+   "name": "Wrap, white",
+   "category": "grain",
+   "aliases": [
+    "wrap",
+    "tortilla",
+    "white wrap"
+   ],
+   "per100g": {
+    "kcal": 302.6,
+    "proteinG": 7.8,
+    "fatG": 8.4,
+    "carbsG": 46.9,
+    "fiberG": 3,
+    "sugarG": 5.3
+   },
+   "serving": {
+    "grams": 60,
+    "label": "1 wrap",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001415",
+    "name": "Bread, wrap, white, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pita",
+   "name": "Pita bread",
+   "category": "grain",
+   "aliases": [
+    "pita",
+    "pita bread",
+    "lebanese bread",
+    "pita pocket"
+   ],
+   "per100g": {
+    "kcal": 263.4,
+    "proteinG": 9.5,
+    "fatG": 2.1,
+    "carbsG": 49.1,
+    "fiberG": 3.7,
+    "sugarG": 3.1
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 pita",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001401",
+    "name": "Bread, flat (pita or Lebanese), white, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bread-roll",
+   "name": "Bread roll, white",
+   "category": "grain",
+   "aliases": [
+    "bread roll",
+    "roll",
+    "bun"
+   ],
+   "per100g": {
+    "kcal": 249.5,
+    "proteinG": 9.3,
+    "fatG": 2.9,
+    "carbsG": 44.6,
+    "fiberG": 3,
+    "sugarG": 3.4
+   },
+   "serving": {
+    "grams": 60,
+    "label": "1 roll",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001353",
+    "name": "Bread roll, from white flour",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "rice-white",
+   "name": "White rice, cooked",
+   "category": "grain",
+   "aliases": [
+    "white rice",
+    "rice",
+    "cooked rice",
+    "boiled rice",
+    "white rice cooked",
+    "steamed rice"
+   ],
+   "per100g": {
+    "kcal": 157.5,
+    "proteinG": 3.1,
+    "fatG": 0.2,
+    "carbsG": 34.7,
+    "fiberG": 0.8,
+    "sugarG": 0.1
+   },
+   "serving": {
+    "grams": 180,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007661",
+    "name": "Rice, white, boiled or rice cooker, no added salt",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 130,
+     "proteinG": 2.7,
+     "fatG": 0.3,
+     "carbsG": 28.2,
+     "fiberG": 0.4,
+     "sugarG": 0.1
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "168878",
+     "name": "Rice, white, long-grain, regular, enriched, cooked",
+     "url": "https://fdc.nal.usda.gov/food-details/168878/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "rice-brown",
+   "name": "Brown rice, cooked",
+   "category": "grain",
+   "aliases": [
+    "brown rice"
+   ],
+   "per100g": {
+    "kcal": 165.6,
+    "proteinG": 4.1,
+    "fatG": 1.1,
+    "carbsG": 33.5,
+    "fiberG": 1.7,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 180,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007641",
+    "name": "Rice, brown, boiled, no added salt",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pasta",
+   "name": "Pasta, cooked",
+   "category": "grain",
+   "aliases": [
+    "pasta",
+    "spaghetti",
+    "penne",
+    "fusilli"
+   ],
+   "per100g": {
+    "kcal": 136.7,
+    "proteinG": 5.3,
+    "fatG": 0.4,
+    "carbsG": 26.2,
+    "fiberG": 2.2,
+    "sugarG": 0.2
+   },
+   "serving": {
+    "grams": 180,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006456",
+    "name": "Pasta, white wheat flour, boiled from dry, no added salt",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "noodles-instant",
+   "name": "Instant noodles, cooked",
+   "category": "grain",
+   "aliases": [
+    "instant noodle",
+    "2 minute noodle",
+    "two minute noodle",
+    "noodle",
+    "ramen"
+   ],
+   "per100g": {
+    "kcal": 143.6,
+    "proteinG": 3.8,
+    "fatG": 6.2,
+    "carbsG": 17.6,
+    "fiberG": 1.2,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1 packet cooked",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006053",
+    "name": "Noodle, wheat, instant, flavoured, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "noodles-rice",
+   "name": "Rice noodles, cooked",
+   "category": "grain",
+   "aliases": [
+    "rice noodle",
+    "rice stick",
+    "vermicelli"
+   ],
+   "per100g": {
+    "kcal": 119,
+    "proteinG": 2.5,
+    "fatG": 0,
+    "carbsG": 26.1,
+    "fiberG": 0.7,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006038",
+    "name": "Noodle, rice stick, boiled, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "noodles-egg",
+   "name": "Egg noodles, cooked",
+   "category": "grain",
+   "aliases": [
+    "egg noodle"
+   ],
+   "per100g": {
+    "kcal": 165.9,
+    "proteinG": 7.5,
+    "fatG": 1.4,
+    "carbsG": 29.1,
+    "fiberG": 2.6,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006044",
+    "name": "Noodle, wheat with egg, plain, boiled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "quinoa",
+   "name": "Quinoa, cooked",
+   "category": "grain",
+   "aliases": [
+    "quinoa"
+   ],
+   "per100g": {
+    "kcal": 103.3,
+    "proteinG": 3.6,
+    "fatG": 1.8,
+    "carbsG": 16.3,
+    "fiberG": 3.4,
+    "sugarG": 1.3
+   },
+   "serving": {
+    "grams": 150,
+    "label": "3/4 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007596",
+    "name": "Quinoa, cooked in water, no added salt",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "couscous",
+   "name": "Couscous, cooked",
+   "category": "grain",
+   "aliases": [
+    "couscous"
+   ],
+   "per100g": {
+    "kcal": 161.8,
+    "proteinG": 6.1,
+    "fatG": 0.1,
+    "carbsG": 32.7,
+    "fiberG": 1.9,
+    "sugarG": 1.5
+   },
+   "serving": {
+    "grams": 150,
+    "label": "3/4 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003235",
+    "name": "Couscous, boiled, no added fat or salt",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "oats",
+   "name": "Rolled oats, dry",
+   "category": "cereal",
+   "aliases": [
+    "oat",
+    "rolled oat",
+    "oatmeal"
+   ],
+   "per100g": {
+    "kcal": 373.8,
+    "proteinG": 12.2,
+    "fatG": 9.5,
+    "carbsG": 54.5,
+    "fiberG": 9.5,
+    "sugarG": 1
+   },
+   "serving": {
+    "grams": 40,
+    "label": "1/2 cup dry",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006143",
+    "name": "Oats, rolled, uncooked",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "porridge-water",
+   "name": "Porridge (made with water)",
+   "category": "cereal",
+   "aliases": [
+    "porridge",
+    "porridge with water"
+   ],
+   "per100g": {
+    "kcal": 89.4,
+    "proteinG": 3,
+    "fatG": 2.9,
+    "carbsG": 11.4,
+    "fiberG": 2.9,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 bowl",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007164",
+    "name": "Porridge, rolled oats, prepared with water",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "porridge-milk",
+   "name": "Porridge (made with milk)",
+   "category": "cereal",
+   "aliases": [
+    "porridge with milk",
+    "milk porridge"
+   ],
+   "per100g": {
+    "kcal": 126,
+    "proteinG": 5.3,
+    "fatG": 4.9,
+    "carbsG": 14.5,
+    "fiberG": 1.6,
+    "sugarG": 5.3
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 bowl",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007156",
+    "name": "Porridge, rolled oats, prepared with regular fat cow's milk",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "muesli",
+   "name": "Toasted muesli",
+   "category": "cereal",
+   "aliases": [
+    "muesli",
+    "toasted muesli"
+   ],
+   "per100g": {
+    "kcal": 401.5,
+    "proteinG": 8.9,
+    "fatG": 13.3,
+    "carbsG": 56.6,
+    "fiberG": 11.4,
+    "sugarG": 21.7
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005856",
+    "name": "Muesli, toasted, added dried fruit & nuts, unfortified",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "muesli-natural",
+   "name": "Natural muesli",
+   "category": "cereal",
+   "aliases": [
+    "natural muesli",
+    "bircher muesli",
+    "untoasted muesli"
+   ],
+   "per100g": {
+    "kcal": 393.4,
+    "proteinG": 10.8,
+    "fatG": 10.8,
+    "carbsG": 59.2,
+    "fiberG": 9.4,
+    "sugarG": 18.7
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005857",
+    "name": "Muesli, untoasted or natural style, added dried fruit, unfortified",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "granola",
+   "name": "Granola",
+   "category": "cereal",
+   "aliases": [
+    "granola"
+   ],
+   "per100g": {
+    "kcal": 424.5,
+    "proteinG": 11.2,
+    "fatG": 17.6,
+    "carbsG": 52.3,
+    "fiberG": 7.6,
+    "sugarG": 16.3
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009807",
+    "name": "Muesli, granola, toasted, added nuts & seeds, unfortified",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "weet-bix",
+   "name": "Weet-Bix",
+   "category": "cereal",
+   "aliases": [
+    "weet bix",
+    "weetbix",
+    "wheat biscuit",
+    "weeties"
+   ],
+   "per100g": {
+    "kcal": 338.9,
+    "proteinG": 11.9,
+    "fatG": 2.3,
+    "carbsG": 61,
+    "fiberG": 11,
+    "sugarG": 2.4
+   },
+   "serving": {
+    "grams": 30,
+    "label": "2 biscuits",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001844",
+    "name": "Breakfast cereal, whole wheat, biscuit, added vitamins & minerals (Sanitarium Weet Bix)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 355,
+     "proteinG": 12.4,
+     "fatG": 1.3,
+     "carbsG": 67,
+     "sugarG": 3.3
+    },
+    "source": {
+     "db": "Open Food Facts (median)",
+     "id": "9300652010015",
+     "name": "Weet-Bix (median kcal of 35 plausible products)",
+     "url": "https://world.openfoodfacts.org/product/9300652010015",
+     "query": "https://world.openfoodfacts.org/cgi/search.pl?action=process&json=1&page_size=40&fields=code%2Cproduct_name%2Cproduct_name_en%2Cnutriments%2Ccountries_tags&search_terms=weet-bix&search_simple=1",
+     "sampleCodes": [
+      "9300652010794",
+      "9300652010374",
+      "9414942805653",
+      "9300652801286",
+      "9300652808339",
+      "9300652014396",
+      "6001052001018",
+      "9414942010750",
+      "6001052001049",
+      "9300652804874",
+      "9300652801309",
+      "9300652014457",
+      "9414942010378",
+      "6001052003906",
+      "9300652810257"
+     ]
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cornflakes",
+   "name": "Cornflakes",
+   "category": "cereal",
+   "aliases": [
+    "cornflake",
+    "corn flake"
+   ],
+   "per100g": {
+    "kcal": 388.4,
+    "proteinG": 7.9,
+    "fatG": 1.8,
+    "carbsG": 81.8,
+    "fiberG": 3.8,
+    "sugarG": 8.9
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001701",
+    "name": "Breakfast cereal, flakes of corn, added vitamins & minerals (Kellogg's Cornflakes)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "nutri-grain",
+   "name": "Nutri-Grain",
+   "category": "cereal",
+   "aliases": [
+    "nutri grain",
+    "nutrigrain"
+   ],
+   "per100g": {
+    "kcal": 370.7,
+    "proteinG": 23.3,
+    "fatG": 2.5,
+    "carbsG": 62.8,
+    "fiberG": 2.5,
+    "sugarG": 28
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001767",
+    "name": "Breakfast cereal, mixed grain (wheat, oat & corn), added vitamins & minerals (Kellogg's Nutri-grain)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "rice-bubbles",
+   "name": "Rice Bubbles",
+   "category": "cereal",
+   "aliases": [
+    "rice bubble",
+    "rice krispie"
+   ],
+   "per100g": {
+    "kcal": 370.2,
+    "proteinG": 6.8,
+    "fatG": 1.1,
+    "carbsG": 81.2,
+    "fiberG": 0.9,
+    "sugarG": 6.2
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001803",
+    "name": "Breakfast cereal, puffed or popped rice, added vitamins & minerals (Kellogg's Rice Bubbles)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "all-bran",
+   "name": "All-Bran",
+   "category": "cereal",
+   "aliases": [
+    "all bran"
+   ],
+   "per100g": {
+    "kcal": 322.2,
+    "proteinG": 14.2,
+    "fatG": 5,
+    "carbsG": 41.7,
+    "fiberG": 27.3,
+    "sugarG": 15.4
+   },
+   "serving": {
+    "grams": 45,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001829",
+    "name": "Breakfast cereal, wheat bran, pellets, added vitamins & minerals (Kellogg's All Bran)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bran-flakes",
+   "name": "Bran flakes",
+   "category": "cereal",
+   "aliases": [
+    "bran flake"
+   ],
+   "per100g": {
+    "kcal": 353,
+    "proteinG": 12.2,
+    "fatG": 3.6,
+    "carbsG": 58.4,
+    "fiberG": 19.3,
+    "sugarG": 11
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001818",
+    "name": "Breakfast cereal, wheat bran, flakes, added vitamins & minerals (Kellogg's Bran Flakes)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pancake",
+   "name": "Pancake",
+   "category": "grain",
+   "aliases": [
+    "pancake",
+    "pikelet",
+    "hotcake"
+   ],
+   "per100g": {
+    "kcal": 221.6,
+    "proteinG": 7.4,
+    "fatG": 7.6,
+    "carbsG": 30.3,
+    "fiberG": 0.8,
+    "sugarG": 4.2
+   },
+   "serving": {
+    "grams": 80,
+    "label": "1 large",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006298",
+    "name": "Pancake, plain, homemade",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "rice-cracker",
+   "name": "Rice crackers",
+   "category": "snack",
+   "aliases": [
+    "rice cracker"
+   ],
+   "per100g": {
+    "kcal": 388.6,
+    "proteinG": 7,
+    "fatG": 4.3,
+    "carbsG": 78.8,
+    "fiberG": 0.9,
+    "sugarG": 0.7
+   },
+   "serving": {
+    "grams": 20,
+    "label": "8 crackers",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001152",
+    "name": "Biscuit, savoury, rice cracker, plain",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cracker",
+   "name": "Crackers (Salada style)",
+   "category": "snack",
+   "aliases": [
+    "cracker",
+    "salada",
+    "cream cracker"
+   ],
+   "per100g": {
+    "kcal": 426.6,
+    "proteinG": 9.2,
+    "fatG": 14.2,
+    "carbsG": 63.1,
+    "fiberG": 3.6,
+    "sugarG": 1.2
+   },
+   "serving": {
+    "grams": 20,
+    "label": "3 crackers",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001129",
+    "name": "Biscuit, savoury, from white wheat flour, Salada style",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "corn-thins",
+   "name": "Corn thins",
+   "category": "snack",
+   "aliases": [
+    "corn thin",
+    "corn cake"
+   ],
+   "per100g": {
+    "kcal": 369.7,
+    "proteinG": 9.8,
+    "fatG": 3,
+    "carbsG": 71.5,
+    "fiberG": 5.9,
+    "sugarG": 0.4
+   },
+   "serving": {
+    "grams": 12,
+    "label": "2 thins",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001115",
+    "name": "Biscuit, savoury, corn cake, plain, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "rice-cake",
+   "name": "Rice cake",
+   "category": "snack",
+   "aliases": [
+    "rice cake"
+   ],
+   "per100g": {
+    "kcal": 383.1,
+    "proteinG": 8.8,
+    "fatG": 3.5,
+    "carbsG": 76.3,
+    "fiberG": 3.5,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 10,
+    "label": "1 cake",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001147",
+    "name": "Biscuit, savoury, rice cake, from brown rice, plain",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "milk-whole",
+   "name": "Milk, whole",
+   "category": "dairy",
+   "aliases": [
+    "milk",
+    "whole milk",
+    "full fat milk",
+    "blue top milk",
+    "cow milk",
+    "standard milk"
+   ],
+   "per100g": {
+    "kcal": 64.5,
+    "proteinG": 3.3,
+    "fatG": 3.4,
+    "carbsG": 5.4,
+    "fiberG": 0,
+    "sugarG": 5.4
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass (250 ml)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005634",
+    "name": "Milk, cow, fluid, regular fat (~3.5%)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 61,
+     "proteinG": 3.2,
+     "fatG": 3.3,
+     "carbsG": 4.8,
+     "fiberG": 0,
+     "sugarG": 5.1
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "171265",
+     "name": "Milk, whole, 3.25% milkfat, with added vitamin D",
+     "url": "https://fdc.nal.usda.gov/food-details/171265/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "milk-light",
+   "name": "Milk, reduced fat",
+   "category": "dairy",
+   "aliases": [
+    "light milk",
+    "lite milk",
+    "low fat milk",
+    "reduced fat milk",
+    "light blue milk"
+   ],
+   "per100g": {
+    "kcal": 43.3,
+    "proteinG": 3.3,
+    "fatG": 1.2,
+    "carbsG": 4.8,
+    "fiberG": 0,
+    "sugarG": 4.8
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass (250 ml)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005614",
+    "name": "Milk, cow, fluid, reduced fat (~1%)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "milk-trim",
+   "name": "Milk, trim/skim",
+   "category": "dairy",
+   "aliases": [
+    "trim milk",
+    "skim milk",
+    "skimmed milk",
+    "fat free milk",
+    "green top milk"
+   ],
+   "per100g": {
+    "kcal": 34.9,
+    "proteinG": 3.6,
+    "fatG": 0,
+    "carbsG": 5.3,
+    "fiberG": 0,
+    "sugarG": 5.3
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass (250 ml)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005637",
+    "name": "Milk, cow, fluid, skim (~0.15% fat)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "oat-milk",
+   "name": "Oat milk",
+   "category": "dairy-alt",
+   "aliases": [
+    "oat milk",
+    "oat beverage",
+    "oat drink"
+   ],
+   "per100g": {
+    "kcal": 53.5,
+    "proteinG": 1.3,
+    "fatG": 0.8,
+    "carbsG": 10.2,
+    "fiberG": 0.3,
+    "sugarG": 3.1
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass (250 ml)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006132",
+    "name": "Oat beverage, fluid, unfortified",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 45,
+     "proteinG": 0.8,
+     "fatG": 1.5,
+     "carbsG": 6,
+     "fiberG": 0.7,
+     "sugarG": 3.1
+    },
+    "source": {
+     "db": "Open Food Facts (median)",
+     "id": "5411188136217",
+     "name": "alpro avena cremosa (median kcal of 40 plausible products)",
+     "url": "https://world.openfoodfacts.org/product/5411188136217",
+     "query": "https://world.openfoodfacts.org/cgi/search.pl?action=process&json=1&page_size=40&fields=code%2Cproduct_name%2Cproduct_name_en%2Cnutriments%2Ccountries_tags&tagtype_0=categories&tag_contains_0=contains&tag_0=en%3Aoat-based-drinks",
+     "sampleCodes": [
+      "5411188124689",
+      "3229820792132",
+      "5411188115366",
+      "3229820801087",
+      "4056489997511",
+      "7394376616709",
+      "3245413451804",
+      "8019428000105",
+      "8402001014581",
+      "7394376616228",
+      "3564707105675",
+      "3250392243517",
+      "3256223377406",
+      "5411188127697",
+      "7394376616501"
+     ]
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "soy-milk",
+   "name": "Soy milk",
+   "category": "dairy-alt",
+   "aliases": [
+    "soy milk",
+    "soya milk"
+   ],
+   "per100g": {
+    "kcal": 61.4,
+    "proteinG": 4.4,
+    "fatG": 2.7,
+    "carbsG": 4.6,
+    "fiberG": 0.6,
+    "sugarG": 2.6
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass (250 ml)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008720",
+    "name": "Soy beverage, regular fat (~3%), added Ca & vitamins A, B1, B2 & B12",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "almond-milk",
+   "name": "Almond milk",
+   "category": "dairy-alt",
+   "aliases": [
+    "almond milk"
+   ],
+   "per100g": {
+    "kcal": 15.5,
+    "proteinG": 0.5,
+    "fatG": 1.4,
+    "carbsG": 0,
+    "fiberG": 0.5,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass (250 ml)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009824",
+    "name": "Almond beverage, no added sugar, unfortified",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cheddar",
+   "name": "Cheddar cheese",
+   "category": "dairy",
+   "aliases": [
+    "cheese",
+    "cheddar",
+    "cheddar cheese",
+    "tasty cheese",
+    "mild cheese"
+   ],
+   "per100g": {
+    "kcal": 403,
+    "proteinG": 24.6,
+    "fatG": 33.4,
+    "carbsG": 0.3,
+    "fiberG": 0,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002414",
+    "name": "Cheese, cheddar, natural, regular fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "edam",
+   "name": "Edam cheese",
+   "category": "dairy",
+   "aliases": [
+    "edam"
+   ],
+   "per100g": {
+    "kcal": 358.5,
+    "proteinG": 27.4,
+    "fatG": 27.2,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002448",
+    "name": "Cheese, edam",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mozzarella",
+   "name": "Mozzarella",
+   "category": "dairy",
+   "aliases": [
+    "mozzarella"
+   ],
+   "per100g": {
+    "kcal": 289.7,
+    "proteinG": 22.2,
+    "fatG": 22.1,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1/4 cup grated",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002472",
+    "name": "Cheese, mozzarella",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "feta",
+   "name": "Feta",
+   "category": "dairy",
+   "aliases": [
+    "feta",
+    "fetta"
+   ],
+   "per100g": {
+    "kcal": 256.5,
+    "proteinG": 16.6,
+    "fatG": 20.6,
+    "carbsG": 0.4,
+    "fiberG": 0,
+    "sugarG": 0.4
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 cube",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002452",
+    "name": "Cheese, fetta (feta)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cottage-cheese",
+   "name": "Cottage cheese",
+   "category": "dairy",
+   "aliases": [
+    "cottage cheese"
+   ],
+   "per100g": {
+    "kcal": 132.9,
+    "proteinG": 17,
+    "fatG": 5.7,
+    "carbsG": 1.8,
+    "fiberG": 0,
+    "sugarG": 1.8
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002435",
+    "name": "Cheese, cottage",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cream-cheese",
+   "name": "Cream cheese",
+   "category": "dairy",
+   "aliases": [
+    "cream cheese",
+    "philadelphia"
+   ],
+   "per100g": {
+    "kcal": 339.4,
+    "proteinG": 8.5,
+    "fatG": 34.2,
+    "carbsG": 0.2,
+    "fiberG": 0,
+    "sugarG": 0.2
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002444",
+    "name": "Cheese, cream, plain",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "butter",
+   "name": "Butter",
+   "category": "fat",
+   "aliases": [
+    "butter"
+   ],
+   "per100g": {
+    "kcal": 733.5,
+    "proteinG": 1.1,
+    "fatG": 82.2,
+    "carbsG": 0.6,
+    "fiberG": 0,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 10,
+    "label": "2 tsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001973",
+    "name": "Butter, plain, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "margarine",
+   "name": "Margarine spread",
+   "category": "fat",
+   "aliases": [
+    "margarine",
+    "spread",
+    "flora"
+   ],
+   "per100g": {
+    "kcal": 597.5,
+    "proteinG": 0.5,
+    "fatG": 67.3,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 10,
+    "label": "2 tsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005309",
+    "name": "Margarine spread, monounsaturated (>65% fat)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cream",
+   "name": "Cream, thickened",
+   "category": "dairy",
+   "aliases": [
+    "cream",
+    "whipped cream",
+    "thickened cream"
+   ],
+   "per100g": {
+    "kcal": 339.9,
+    "proteinG": 2,
+    "fatG": 36.5,
+    "carbsG": 2.4,
+    "fiberG": 0,
+    "sugarG": 2.4
+   },
+   "serving": {
+    "grams": 30,
+    "label": "2 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003270",
+    "name": "Cream, thickened, regular fat (~35%)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sour-cream",
+   "name": "Sour cream",
+   "category": "dairy",
+   "aliases": [
+    "sour cream"
+   ],
+   "per100g": {
+    "kcal": 338,
+    "proteinG": 1.9,
+    "fatG": 36.3,
+    "carbsG": 2,
+    "fiberG": 0,
+    "sugarG": 2
+   },
+   "serving": {
+    "grams": 30,
+    "label": "2 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003269",
+    "name": "Cream, sour, regular fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "yoghurt-natural",
+   "name": "Yoghurt, natural",
+   "category": "dairy",
+   "aliases": [
+    "yoghurt",
+    "yogurt",
+    "natural yoghurt",
+    "plain yoghurt"
+   ],
+   "per100g": {
+    "kcal": 73.1,
+    "proteinG": 5.1,
+    "fatG": 3.2,
+    "carbsG": 5,
+    "fiberG": 0.1,
+    "sugarG": 4.9
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 pottle",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009694",
+    "name": "Yoghurt, natural, regular fat (~3%)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "greek-yoghurt",
+   "name": "Greek yoghurt, plain",
+   "category": "dairy",
+   "aliases": [
+    "greek yoghurt",
+    "greek yogurt",
+    "greek style yoghurt"
+   ],
+   "per100g": {
+    "kcal": 97,
+    "proteinG": 9,
+    "fatG": 5,
+    "carbsG": 4,
+    "fiberG": 0,
+    "sugarG": 4
+   },
+   "serving": {
+    "grams": 150,
+    "label": "3/4 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "USDA SR Legacy",
+    "id": "171304",
+    "name": "Yogurt, Greek, plain, whole milk",
+    "url": "https://fdc.nal.usda.gov/food-details/171304/nutrients"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 98,
+     "proteinG": 3,
+     "fatG": 8,
+     "carbsG": 3.5,
+     "fiberG": 0,
+     "sugarG": 3.5
+    },
+    "source": {
+     "db": "Open Food Facts (median)",
+     "id": "3560071416836",
+     "name": "Yaourt à la grecque 🇬🇷 (median kcal of 38 plausible products)",
+     "url": "https://world.openfoodfacts.org/product/3560071416836",
+     "query": "https://world.openfoodfacts.org/cgi/search.pl?action=process&json=1&page_size=40&fields=code%2Cproduct_name%2Cproduct_name_en%2Cnutriments%2Ccountries_tags&search_terms=plain&search_simple=1&tagtype_0=categories&tag_contains_0=contains&tag_0=en%3Agreek-style-yogurts",
+     "sampleCodes": [
+      "8480000213587",
+      "4088600060941",
+      "4088600060880",
+      "0096619483556",
+      "0894700010137",
+      "5000462416772",
+      "5036589253532",
+      "01206111",
+      "4056489035367",
+      "20790981",
+      "00282123",
+      "20761776",
+      "5036589201687",
+      "20917937",
+      "0894700010434"
+     ]
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "yoghurt-flavoured",
+   "name": "Yoghurt, flavoured",
+   "category": "dairy",
+   "aliases": [
+    "flavoured yoghurt",
+    "fruit yoghurt",
+    "strawberry yoghurt",
+    "vanilla yoghurt"
+   ],
+   "per100g": {
+    "kcal": 81.5,
+    "proteinG": 4.6,
+    "fatG": 1.3,
+    "carbsG": 12.2,
+    "fiberG": 0.3,
+    "sugarG": 11.3
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 pottle",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009810",
+    "name": "Yoghurt, flavoured, low fat (~2%)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "ice-cream",
+   "name": "Ice cream, vanilla",
+   "category": "dessert",
+   "aliases": [
+    "ice cream",
+    "vanilla ice cream"
+   ],
+   "per100g": {
+    "kcal": 192.6,
+    "proteinG": 3.7,
+    "fatG": 11.1,
+    "carbsG": 20.5,
+    "fiberG": 0,
+    "sugarG": 18.4
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 scoop",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004508",
+    "name": "Ice cream, vanilla flavour, regular fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "custard",
+   "name": "Custard",
+   "category": "dessert",
+   "aliases": [
+    "custard"
+   ],
+   "per100g": {
+    "kcal": 98.2,
+    "proteinG": 3.2,
+    "fatG": 3,
+    "carbsG": 14.6,
+    "fiberG": 1.2,
+    "sugarG": 12.3
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003442",
+    "name": "Custard, vanilla, regular fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "egg",
+   "name": "Egg, boiled",
+   "category": "egg",
+   "aliases": [
+    "egg",
+    "boiled egg",
+    "hard boiled egg"
+   ],
+   "per100g": {
+    "kcal": 136,
+    "proteinG": 12.4,
+    "fatG": 9.4,
+    "carbsG": 0.7,
+    "fiberG": 0,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1 large egg",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003721",
+    "name": "Egg, chicken, whole, hard-boiled",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 155,
+     "proteinG": 12.6,
+     "fatG": 10.6,
+     "carbsG": 1.1,
+     "fiberG": 0,
+     "sugarG": 1.1
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "173424",
+     "name": "Egg, whole, cooked, hard-boiled",
+     "url": "https://fdc.nal.usda.gov/food-details/173424/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "egg-fried",
+   "name": "Egg, fried",
+   "category": "egg",
+   "aliases": [
+    "fried egg"
+   ],
+   "per100g": {
+    "kcal": 144.8,
+    "proteinG": 14.3,
+    "fatG": 9.6,
+    "carbsG": 0.3,
+    "fiberG": 0,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1 egg",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003718",
+    "name": "Egg, chicken, whole, fried, no fat added",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "egg-poached",
+   "name": "Egg, poached",
+   "category": "egg",
+   "aliases": [
+    "poached egg"
+   ],
+   "per100g": {
+    "kcal": 132.6,
+    "proteinG": 13.1,
+    "fatG": 8.8,
+    "carbsG": 0.3,
+    "fiberG": 0,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1 egg",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003725",
+    "name": "Egg, chicken, whole, poached",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "egg-scrambled",
+   "name": "Scrambled eggs",
+   "category": "egg",
+   "aliases": [
+    "scrambled egg"
+   ],
+   "per100g": {
+    "kcal": 120.5,
+    "proteinG": 10.8,
+    "fatG": 7.7,
+    "carbsG": 2.1,
+    "fiberG": 0,
+    "sugarG": 2
+   },
+   "serving": {
+    "grams": 120,
+    "label": "2 eggs",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003732",
+    "name": "Egg, chicken, whole, scrambled, with regular fat cow's milk, no fat added",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chicken-breast",
+   "name": "Chicken breast, grilled",
+   "category": "meat",
+   "aliases": [
+    "chicken breast",
+    "grilled chicken",
+    "chicken"
+   ],
+   "per100g": {
+    "kcal": 142.9,
+    "proteinG": 29.8,
+    "fatG": 2.5,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 breast",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002593",
+    "name": "Chicken, breast, lean flesh, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 165,
+     "proteinG": 31,
+     "fatG": 3.6,
+     "carbsG": 0,
+     "fiberG": 0,
+     "sugarG": 0
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "171477",
+     "name": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+     "url": "https://fdc.nal.usda.gov/food-details/171477/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chicken-breast-baked",
+   "name": "Chicken breast, baked",
+   "category": "meat",
+   "aliases": [
+    "baked chicken breast",
+    "roast chicken breast",
+    "roast chicken"
+   ],
+   "per100g": {
+    "kcal": 152.2,
+    "proteinG": 29,
+    "fatG": 3.9,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 breast",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002590",
+    "name": "Chicken, breast, lean flesh, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chicken-thigh",
+   "name": "Chicken thigh, baked",
+   "category": "meat",
+   "aliases": [
+    "chicken thigh"
+   ],
+   "per100g": {
+    "kcal": 175.2,
+    "proteinG": 24.2,
+    "fatG": 8.7,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 thigh",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002804",
+    "name": "Chicken, thigh, lean flesh, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chicken-drumstick",
+   "name": "Chicken drumstick (with skin), baked",
+   "category": "meat",
+   "aliases": [
+    "drumstick",
+    "chicken drumstick",
+    "chicken leg"
+   ],
+   "per100g": {
+    "kcal": 237.3,
+    "proteinG": 28.5,
+    "fatG": 13.6,
+    "carbsG": 0.3,
+    "fiberG": 0,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 drumstick",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002648",
+    "name": "Chicken, drumstick, lean flesh, skin & fat, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "beef-mince",
+   "name": "Beef mince, cooked",
+   "category": "meat",
+   "aliases": [
+    "mince",
+    "beef mince",
+    "ground beef",
+    "minced beef",
+    "savoury mince"
+   ],
+   "per100g": {
+    "kcal": 264.8,
+    "proteinG": 29.5,
+    "fatG": 16.4,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000679",
+    "name": "Beef, mince, regular fat, stir-fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "beef-mince-lean",
+   "name": "Lean beef mince, cooked",
+   "category": "meat",
+   "aliases": [
+    "lean mince",
+    "lean beef mince"
+   ],
+   "per100g": {
+    "kcal": 202.9,
+    "proteinG": 32.3,
+    "fatG": 8.1,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1/2 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000667",
+    "name": "Beef, mince, lower fat, stir-fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "rump-steak",
+   "name": "Rump steak, grilled",
+   "category": "meat",
+   "aliases": [
+    "steak",
+    "rump steak",
+    "beef steak"
+   ],
+   "per100g": {
+    "kcal": 169.7,
+    "proteinG": 32,
+    "fatG": 4.5,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 180,
+    "label": "1 steak",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000738",
+    "name": "Beef, rump steak, lean, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "scotch-fillet",
+   "name": "Scotch fillet, grilled",
+   "category": "meat",
+   "aliases": [
+    "scotch fillet",
+    "ribeye",
+    "rib eye"
+   ],
+   "per100g": {
+    "kcal": 169,
+    "proteinG": 31.9,
+    "fatG": 4.5,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 180,
+    "label": "1 steak",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000846",
+    "name": "Beef, steak, boneless, scotch fillet, lean, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "eye-fillet",
+   "name": "Eye fillet, grilled",
+   "category": "meat",
+   "aliases": [
+    "eye fillet",
+    "beef fillet",
+    "tenderloin"
+   ],
+   "per100g": {
+    "kcal": 178.3,
+    "proteinG": 31.9,
+    "fatG": 5.5,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 steak",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000835",
+    "name": "Beef, steak, boneless, fillet or tenderloin, lean, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lamb-chop",
+   "name": "Lamb loin chop, grilled",
+   "category": "meat",
+   "aliases": [
+    "lamb chop",
+    "lamb loin chop",
+    "lamb"
+   ],
+   "per100g": {
+    "kcal": 275.8,
+    "proteinG": 26.8,
+    "fatG": 18.9,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 chop (meat)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005043",
+    "name": "Lamb, loin chop, untrimmed, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lamb-chop-lean",
+   "name": "Lamb loin chop, lean, grilled",
+   "category": "meat",
+   "aliases": [
+    "lean lamb chop",
+    "lean lamb"
+   ],
+   "per100g": {
+    "kcal": 201.5,
+    "proteinG": 29.8,
+    "fatG": 9.1,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 chop (meat)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005026",
+    "name": "Lamb, loin chop, lean, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pork-chop",
+   "name": "Pork chop, lean, BBQ",
+   "category": "meat",
+   "aliases": [
+    "pork chop",
+    "pork"
+   ],
+   "per100g": {
+    "kcal": 162.5,
+    "proteinG": 26.3,
+    "fatG": 6.3,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 chop",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006921",
+    "name": "Pork, forequarter chop, lean, BBQ'd, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pork-belly",
+   "name": "Pork belly, roasted",
+   "category": "meat",
+   "aliases": [
+    "pork belly"
+   ],
+   "per100g": {
+    "kcal": 383.8,
+    "proteinG": 27.4,
+    "fatG": 30.8,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 piece",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006860",
+    "name": "Pork, belly, rind removed, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pork-strips",
+   "name": "Pork stir-fry strips",
+   "category": "meat",
+   "aliases": [
+    "pork stir fry",
+    "pork strip"
+   ],
+   "per100g": {
+    "kcal": 148.9,
+    "proteinG": 31.2,
+    "fatG": 2.5,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 portion",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007127",
+    "name": "Pork, strips, untrimmed, fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bacon",
+   "name": "Bacon, middle rasher, cooked",
+   "category": "meat",
+   "aliases": [
+    "bacon",
+    "bacon rasher",
+    "streaky bacon"
+   ],
+   "per100g": {
+    "kcal": 417.5,
+    "proteinG": 20.6,
+    "fatG": 37.6,
+    "carbsG": 0.3,
+    "fiberG": 0,
+    "sugarG": 0.3
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 rasher",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000227",
+    "name": "Bacon, middle rasher, untrimmed, baked, roasted, fried, grilled or BBQ'd, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "bacon-shortcut",
+   "name": "Shortcut bacon, cooked",
+   "category": "meat",
+   "aliases": [
+    "shortcut bacon"
+   ],
+   "per100g": {
+    "kcal": 250,
+    "proteinG": 30.4,
+    "fatG": 13.9,
+    "carbsG": 0.9,
+    "fiberG": 0,
+    "sugarG": 0.9
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 rasher",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000231",
+    "name": "Bacon, shortcut, as purchased without rind, fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "ham",
+   "name": "Ham, leg",
+   "category": "meat",
+   "aliases": [
+    "ham",
+    "sliced ham"
+   ],
+   "per100g": {
+    "kcal": 111.6,
+    "proteinG": 17,
+    "fatG": 2.5,
+    "carbsG": 2,
+    "fiberG": 1.8,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 30,
+    "label": "2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004299",
+    "name": "Ham, leg, lean",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sausage-beef",
+   "name": "Beef sausage, grilled",
+   "category": "meat",
+   "aliases": [
+    "sausage",
+    "beef sausage",
+    "snarler",
+    "banger"
+   ],
+   "per100g": {
+    "kcal": 217.7,
+    "proteinG": 17.2,
+    "fatG": 14.9,
+    "carbsG": 3.8,
+    "fiberG": 0.2,
+    "sugarG": 0.4
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1 sausage",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008107",
+    "name": "Sausage, beef, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sausage-pork",
+   "name": "Pork sausage, cooked",
+   "category": "meat",
+   "aliases": [
+    "pork sausage"
+   ],
+   "per100g": {
+    "kcal": 258.8,
+    "proteinG": 16.5,
+    "fatG": 19.4,
+    "carbsG": 4.5,
+    "fiberG": 1.4,
+    "sugarG": 0.7
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1 sausage",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008143",
+    "name": "Sausage, pork, fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sausage-chicken",
+   "name": "Chicken sausage, cooked",
+   "category": "meat",
+   "aliases": [
+    "chicken sausage"
+   ],
+   "per100g": {
+    "kcal": 201,
+    "proteinG": 18.2,
+    "fatG": 12,
+    "carbsG": 4.9,
+    "fiberG": 0.6,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1 sausage",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008119",
+    "name": "Sausage, chicken, plain, fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sausage-vege",
+   "name": "Vegetarian sausage, cooked",
+   "category": "meat-alt",
+   "aliases": [
+    "vegetarian sausage",
+    "veggie sausage",
+    "vege sausage"
+   ],
+   "per100g": {
+    "kcal": 202.9,
+    "proteinG": 20,
+    "fatG": 9.9,
+    "carbsG": 7.8,
+    "fiberG": 1.6,
+    "sugarG": 2
+   },
+   "serving": {
+    "grams": 75,
+    "label": "1 sausage",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008153",
+    "name": "Sausage, vegetarian style, fried, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chorizo",
+   "name": "Chorizo",
+   "category": "meat",
+   "aliases": [
+    "chorizo"
+   ],
+   "per100g": {
+    "kcal": 282.7,
+    "proteinG": 20.1,
+    "fatG": 22.1,
+    "carbsG": 1.2,
+    "fiberG": 0.5,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 40,
+    "label": "4 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008126",
+    "name": "Sausage, chorizo, uncooked",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "salmon",
+   "name": "Salmon fillet, grilled",
+   "category": "fish",
+   "aliases": [
+    "salmon",
+    "grilled salmon",
+    "salmon fillet"
+   ],
+   "per100g": {
+    "kcal": 257.6,
+    "proteinG": 22.9,
+    "fatG": 18.6,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 fillet",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007826",
+    "name": "Salmon, Atlantic, fillet, grilled, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "salmon-smoked",
+   "name": "Smoked salmon",
+   "category": "fish",
+   "aliases": [
+    "smoked salmon"
+   ],
+   "per100g": {
+    "kcal": 188.1,
+    "proteinG": 24.3,
+    "fatG": 10.1,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 50,
+    "label": "3 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007864",
+    "name": "Salmon, smoked, sliced",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "salmon-canned",
+   "name": "Salmon, canned",
+   "category": "fish",
+   "aliases": [
+    "canned salmon",
+    "tinned salmon"
+   ],
+   "per100g": {
+    "kcal": 138.4,
+    "proteinG": 20.7,
+    "fatG": 6.2,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 90,
+    "label": "1 small can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007853",
+    "name": "Salmon, pink, canned in brine, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tuna-canned",
+   "name": "Tuna, canned in water",
+   "category": "fish",
+   "aliases": [
+    "tuna",
+    "canned tuna",
+    "tinned tuna",
+    "tuna in springwater"
+   ],
+   "per100g": {
+    "kcal": 129.1,
+    "proteinG": 26.1,
+    "fatG": 2.6,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 95,
+    "label": "1 small can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009300",
+    "name": "Tuna, unflavoured, canned in water, drained",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tuna-oil",
+   "name": "Tuna, canned in oil",
+   "category": "fish",
+   "aliases": [
+    "tuna in oil"
+   ],
+   "per100g": {
+    "kcal": 137.9,
+    "proteinG": 18,
+    "fatG": 5.8,
+    "carbsG": 3.3,
+    "fiberG": 0.3,
+    "sugarG": 2.5
+   },
+   "serving": {
+    "grams": 95,
+    "label": "1 small can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009293",
+    "name": "Tuna, flavoured, canned in oil",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "fish-battered",
+   "name": "Battered fish",
+   "category": "fish",
+   "aliases": [
+    "battered fish",
+    "fried fish"
+   ],
+   "per100g": {
+    "kcal": 196,
+    "proteinG": 12.2,
+    "fatG": 7,
+    "carbsG": 20.6,
+    "fiberG": 0.5,
+    "sugarG": 1.6
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 piece",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003950",
+    "name": "Fish, white flesh, battered, packaged frozen, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "fish-crumbed",
+   "name": "Crumbed fish",
+   "category": "fish",
+   "aliases": [
+    "crumbed fish",
+    "fish finger"
+   ],
+   "per100g": {
+    "kcal": 222.8,
+    "proteinG": 13.6,
+    "fatG": 10,
+    "carbsG": 18.8,
+    "fiberG": 1.5,
+    "sugarG": 0.8
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 fillet",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003954",
+    "name": "Fish, white flesh, crumbed, packaged frozen, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "prawns",
+   "name": "Prawns, cooked",
+   "category": "fish",
+   "aliases": [
+    "prawn",
+    "shrimp",
+    "cooked prawn"
+   ],
+   "per100g": {
+    "kcal": 121.2,
+    "proteinG": 27.1,
+    "fatG": 1.2,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 100,
+    "label": "8 prawns",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007432",
+    "name": "Prawn, flesh, cooked from raw, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "peanut-butter",
+   "name": "Peanut butter",
+   "category": "spread",
+   "aliases": [
+    "peanut butter",
+    "pb"
+   ],
+   "per100g": {
+    "kcal": 596.3,
+    "proteinG": 22.2,
+    "fatG": 49.6,
+    "carbsG": 14.3,
+    "fiberG": 5.8,
+    "sugarG": 8.6
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006577",
+    "name": "Peanut butter, smooth & crunchy, added sugar & salt",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 598,
+     "proteinG": 22.2,
+     "fatG": 51.4,
+     "carbsG": 22.3,
+     "fiberG": 5,
+     "sugarG": 10.5
+    },
+    "source": {
+     "db": "USDA SR Legacy",
+     "id": "172470",
+     "name": "Peanut butter, smooth style, without salt",
+     "url": "https://fdc.nal.usda.gov/food-details/172470/nutrients"
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "almonds",
+   "name": "Almonds",
+   "category": "nut",
+   "aliases": [
+    "almond",
+    "raw almond"
+   ],
+   "per100g": {
+    "kcal": 570.3,
+    "proteinG": 19.7,
+    "fatG": 50.5,
+    "carbsG": 5.4,
+    "fiberG": 11,
+    "sugarG": 5.2
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 handful",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006081",
+    "name": "Nut, almond, with skin, raw, unsalted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "almonds-roasted",
+   "name": "Almonds, roasted",
+   "category": "nut",
+   "aliases": [
+    "roasted almond"
+   ],
+   "per100g": {
+    "kcal": 588.4,
+    "proteinG": 19.7,
+    "fatG": 52.5,
+    "carbsG": 5.4,
+    "fiberG": 11,
+    "sugarG": 5.2
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 handful",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006082",
+    "name": "Nut, almond, with skin, roasted, unsalted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cashews",
+   "name": "Cashews, roasted, salted",
+   "category": "nut",
+   "aliases": [
+    "cashew"
+   ],
+   "per100g": {
+    "kcal": 610.4,
+    "proteinG": 17,
+    "fatG": 48.5,
+    "carbsG": 26.7,
+    "fiberG": 3,
+    "sugarG": 6.4
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 handful",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006090",
+    "name": "Nut, cashew, roasted, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "peanuts",
+   "name": "Peanuts, roasted, salted",
+   "category": "nut",
+   "aliases": [
+    "peanut",
+    "salted peanut"
+   ],
+   "per100g": {
+    "kcal": 637.4,
+    "proteinG": 25.1,
+    "fatG": 52.8,
+    "carbsG": 14.1,
+    "fiberG": 6.2,
+    "sugarG": 4.4
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 handful",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006109",
+    "name": "Nut, peanut, without skin, roasted, with oil, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "walnuts",
+   "name": "Walnuts",
+   "category": "nut",
+   "aliases": [
+    "walnut"
+   ],
+   "per100g": {
+    "kcal": 694.1,
+    "proteinG": 14.4,
+    "fatG": 69.2,
+    "carbsG": 3,
+    "fiberG": 6.4,
+    "sugarG": 2.7
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 handful",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006116",
+    "name": "Nut, walnut, raw, unsalted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "nutella",
+   "name": "Hazelnut chocolate spread",
+   "category": "spread",
+   "aliases": [
+    "nutella",
+    "hazelnut spread",
+    "chocolate spread"
+   ],
+   "per100g": {
+    "kcal": 523.9,
+    "proteinG": 6.8,
+    "fatG": 30.3,
+    "carbsG": 57.8,
+    "fiberG": 3.7,
+    "sugarG": 57.2
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008777",
+    "name": "Spread, hazelnut & chocolate flavoured",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "marmite",
+   "name": "Marmite",
+   "category": "spread",
+   "aliases": [
+    "marmite"
+   ],
+   "per100g": {
+    "kcal": 149.1,
+    "proteinG": 13.3,
+    "fatG": 0.9,
+    "carbsG": 16.6,
+    "fiberG": 11.8,
+    "sugarG": 11.8
+   },
+   "serving": {
+    "grams": 5,
+    "label": "1 tsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008783",
+    "name": "Spread, yeast, marmite",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "vegemite",
+   "name": "Vegemite",
+   "category": "spread",
+   "aliases": [
+    "vegemite"
+   ],
+   "per100g": {
+    "kcal": 163.2,
+    "proteinG": 24.4,
+    "fatG": 0.9,
+    "carbsG": 10.9,
+    "fiberG": 6.5,
+    "sugarG": 1.6
+   },
+   "serving": {
+    "grams": 5,
+    "label": "1 tsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008785",
+    "name": "Spread, yeast, vegemite",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "honey",
+   "name": "Honey",
+   "category": "spread",
+   "aliases": [
+    "honey",
+    "manuka honey"
+   ],
+   "per100g": {
+    "kcal": 277.7,
+    "proteinG": 0.3,
+    "fatG": 0,
+    "carbsG": 72.3,
+    "fiberG": 0,
+    "sugarG": 72.3
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004380",
+    "name": "Honey",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "jam",
+   "name": "Jam, berry",
+   "category": "spread",
+   "aliases": [
+    "jam",
+    "berry jam",
+    "strawberry jam",
+    "raspberry jam"
+   ],
+   "per100g": {
+    "kcal": 262.9,
+    "proteinG": 0.3,
+    "fatG": 0,
+    "carbsG": 67.3,
+    "fiberG": 1.6,
+    "sugarG": 67.2
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004600",
+    "name": "Jam, berry",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "olive-oil",
+   "name": "Olive oil",
+   "category": "fat",
+   "aliases": [
+    "olive oil",
+    "oil"
+   ],
+   "per100g": {
+    "kcal": 883.1,
+    "proteinG": 0,
+    "fatG": 99.9,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 10,
+    "label": "2 tsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006177",
+    "name": "Oil, olive",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mayonnaise",
+   "name": "Mayonnaise",
+   "category": "condiment",
+   "aliases": [
+    "mayo",
+    "mayonnaise",
+    "aioli"
+   ],
+   "per100g": {
+    "kcal": 633.6,
+    "proteinG": 0.8,
+    "fatG": 67.2,
+    "carbsG": 8.7,
+    "fiberG": 0.5,
+    "sugarG": 7.9
+   },
+   "serving": {
+    "grams": 15,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005441",
+    "name": "Mayonnaise, traditional (>65% fat), commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tomato-sauce",
+   "name": "Tomato sauce",
+   "category": "condiment",
+   "aliases": [
+    "tomato sauce",
+    "ketchup"
+   ],
+   "per100g": {
+    "kcal": 104.4,
+    "proteinG": 1.3,
+    "fatG": 0,
+    "carbsG": 24.1,
+    "fiberG": 1.3,
+    "sugarG": 23.7
+   },
+   "serving": {
+    "grams": 15,
+    "label": "1 tbsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008083",
+    "name": "Sauce, tomato, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sugar",
+   "name": "Sugar, white",
+   "category": "condiment",
+   "aliases": [
+    "sugar",
+    "white sugar"
+   ],
+   "per100g": {
+    "kcal": 382.4,
+    "proteinG": 0,
+    "fatG": 0,
+    "carbsG": 100,
+    "fiberG": 0,
+    "sugarG": 100
+   },
+   "serving": {
+    "grams": 4,
+    "label": "1 tsp",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008976",
+    "name": "Sugar, white, granulated or lump",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "gravy",
+   "name": "Gravy (from powder)",
+   "category": "condiment",
+   "aliases": [
+    "gravy"
+   ],
+   "per100g": {
+    "kcal": 26.1,
+    "proteinG": 0.7,
+    "fatG": 0.5,
+    "carbsG": 4.5,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 50,
+    "label": "1/4 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004265",
+    "name": "Gravy, prepared from dry powder with water",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "flat-white",
+   "name": "Flat white / latte (whole milk)",
+   "category": "drink",
+   "aliases": [
+    "flat white",
+    "latte",
+    "cappuccino",
+    "coffee with milk",
+    "flat white coffee",
+    "coffee"
+   ],
+   "per100g": {
+    "kcal": 46.8,
+    "proteinG": 2.8,
+    "fatG": 2.6,
+    "carbsG": 3.4,
+    "fiberG": 0,
+    "sugarG": 3.4
+   },
+   "serving": {
+    "grams": 220,
+    "label": "1 regular cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009796",
+    "name": "Coffee, flat white/latte/cappuccino, from ground coffee beans, with regular fat cow's milk",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 53.9,
+     "proteinG": 2.7,
+     "fatG": 2.8,
+     "carbsG": 4.4,
+     "fiberG": 0,
+     "sugarG": 4.4
+    },
+    "source": {
+     "db": "Recipe of sourced records",
+     "id": "171891x30g+171265x190g",
+     "name": "Weighted mix (component grams are a portion assumption)",
+     "url": "https://fdc.nal.usda.gov/food-details/171891/nutrients",
+     "components": [
+      {
+       "grams": 30,
+       "db": "USDA SR Legacy",
+       "id": "171891",
+       "name": "Beverages, coffee, brewed, espresso, restaurant-prepared",
+       "url": "https://fdc.nal.usda.gov/food-details/171891/nutrients"
+      },
+      {
+       "grams": 190,
+       "db": "USDA SR Legacy",
+       "id": "171265",
+       "name": "Milk, whole, 3.25% milkfat, with added vitamin D",
+       "url": "https://fdc.nal.usda.gov/food-details/171265/nutrients"
+      }
+     ]
+    }
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "long-black",
+   "name": "Long black",
+   "category": "drink",
+   "aliases": [
+    "long black",
+    "black coffee",
+    "americano"
+   ],
+   "per100g": {
+    "kcal": 1.9,
+    "proteinG": 0.3,
+    "fatG": 0.1,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 cup",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003065",
+    "name": "Coffee, long black, from ground coffee beans",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "espresso",
+   "name": "Espresso",
+   "category": "drink",
+   "aliases": [
+    "espresso",
+    "short black"
+   ],
+   "per100g": {
+    "kcal": 9.6,
+    "proteinG": 1.7,
+    "fatG": 0.3,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 shot",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003041",
+    "name": "Coffee, espresso, from ground coffee beans",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "instant-coffee",
+   "name": "Instant coffee, black",
+   "category": "drink",
+   "aliases": [
+    "instant coffee"
+   ],
+   "per100g": {
+    "kcal": 1.9,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 0.2,
+    "fiberG": 0.1,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 mug",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003017",
+    "name": "Coffee, black, from instant coffee powder",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tea",
+   "name": "Tea, black, no milk",
+   "category": "drink",
+   "aliases": [
+    "tea",
+    "black tea",
+    "cup of tea"
+   ],
+   "per100g": {
+    "kcal": 0.2,
+    "proteinG": 0.1,
+    "fatG": 0,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 mug",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009125",
+    "name": "Tea, regular, black, brewed from leaf or teabags, without milk",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "green-tea",
+   "name": "Green tea",
+   "category": "drink",
+   "aliases": [
+    "green tea"
+   ],
+   "per100g": {
+    "kcal": 1,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 mug",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009117",
+    "name": "Tea, green, plain, without milk",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "water",
+   "name": "Water",
+   "category": "drink",
+   "aliases": [
+    "water",
+    "tap water",
+    "glass of water"
+   ],
+   "per100g": {
+    "kcal": 0,
+    "proteinG": 0,
+    "fatG": 0,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009527",
+    "name": "Water, tap",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "orange-juice",
+   "name": "Orange juice",
+   "category": "drink",
+   "aliases": [
+    "orange juice",
+    "oj"
+   ],
+   "per100g": {
+    "kcal": 32,
+    "proteinG": 0.8,
+    "fatG": 0,
+    "carbsG": 6.8,
+    "fiberG": 0.3,
+    "sugarG": 6.8
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004739",
+    "name": "Juice, orange, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "apple-juice",
+   "name": "Apple juice",
+   "category": "drink",
+   "aliases": [
+    "apple juice"
+   ],
+   "per100g": {
+    "kcal": 28.9,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 7,
+    "fiberG": 0.2,
+    "sugarG": 7
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004663",
+    "name": "Juice, apple, commercial, added vitamin C",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cola",
+   "name": "Cola",
+   "category": "drink",
+   "aliases": [
+    "coke",
+    "cola",
+    "coca cola",
+    "soft drink",
+    "fizzy drink",
+    "fizzy"
+   ],
+   "per100g": {
+    "kcal": 49.2,
+    "proteinG": 0,
+    "fatG": 0.2,
+    "carbsG": 12.3,
+    "fiberG": 0,
+    "sugarG": 12.3
+   },
+   "serving": {
+    "grams": 330,
+    "label": "1 can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008402",
+    "name": "Soft drink, cola flavour",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cola-diet",
+   "name": "Diet cola",
+   "category": "drink",
+   "aliases": [
+    "diet coke",
+    "coke zero",
+    "diet cola",
+    "zero sugar coke"
+   ],
+   "per100g": {
+    "kcal": 0,
+    "proteinG": 0,
+    "fatG": 0,
+    "carbsG": 0,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 330,
+    "label": "1 can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008404",
+    "name": "Soft drink, cola flavour, intense sweetened or diet",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "beer",
+   "name": "Beer (4-4.9%)",
+   "category": "drink",
+   "aliases": [
+    "beer",
+    "lager",
+    "pint"
+   ],
+   "per100g": {
+    "kcal": 36.3,
+    "proteinG": 0.4,
+    "fatG": 0,
+    "carbsG": 2.3,
+    "fiberG": 0,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 330,
+    "label": "1 bottle",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F000994",
+    "name": "Beer, full strength (alcohol 4-4.9% v/v)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "wine-red",
+   "name": "Red wine",
+   "category": "drink",
+   "aliases": [
+    "red wine",
+    "wine"
+   ],
+   "per100g": {
+    "kcal": 80.1,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 0.2,
+    "fiberG": 0,
+    "sugarG": 0.2
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009571",
+    "name": "Wine, red",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "wine-white",
+   "name": "White wine",
+   "category": "drink",
+   "aliases": [
+    "white wine"
+   ],
+   "per100g": {
+    "kcal": 71.9,
+    "proteinG": 0.3,
+    "fatG": 0,
+    "carbsG": 0.2,
+    "fiberG": 0,
+    "sugarG": 0.2
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009581",
+    "name": "Wine, white",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sauvignon-blanc",
+   "name": "Sauvignon blanc",
+   "category": "drink",
+   "aliases": [
+    "sauvignon blanc",
+    "sav"
+   ],
+   "per100g": {
+    "kcal": 70.7,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 0.1,
+    "fiberG": 0,
+    "sugarG": 0.1
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009583",
+    "name": "Wine, white, sauvignon blanc",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "milo",
+   "name": "Milo with milk",
+   "category": "drink",
+   "aliases": [
+    "milo",
+    "milo with milk",
+    "hot chocolate"
+   ],
+   "per100g": {
+    "kcal": 93,
+    "proteinG": 4.1,
+    "fatG": 4,
+    "carbsG": 10.2,
+    "fiberG": 0.6,
+    "sugarG": 8.8
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 mug",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001068",
+    "name": "Beverage, chocolate flavour, from Milo powder, with regular fat cow's milk",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "red-bull",
+   "name": "Energy drink (Red Bull)",
+   "category": "drink",
+   "aliases": [
+    "red bull",
+    "energy drink"
+   ],
+   "per100g": {
+    "kcal": 43.5,
+    "proteinG": 0.1,
+    "fatG": 0,
+    "carbsG": 10.8,
+    "fiberG": 0,
+    "sugarG": 10.8
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008421",
+    "name": "Soft drink, energy drink, Red Bull",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "v-energy",
+   "name": "Energy drink (V)",
+   "category": "drink",
+   "aliases": [
+    "v energy drink",
+    "v drink"
+   ],
+   "per100g": {
+    "kcal": 43.5,
+    "proteinG": 0.1,
+    "fatG": 0,
+    "carbsG": 10.8,
+    "fiberG": 0,
+    "sugarG": 10.8
+   },
+   "serving": {
+    "grams": 350,
+    "label": "1 can",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008424",
+    "name": "Soft drink, energy drink, V",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "coconut-water",
+   "name": "Coconut water",
+   "category": "drink",
+   "aliases": [
+    "coconut water"
+   ],
+   "per100g": {
+    "kcal": 12.9,
+    "proteinG": 0.2,
+    "fatG": 0,
+    "carbsG": 3.2,
+    "fiberG": 0,
+    "sugarG": 3.2
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 glass",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F009794",
+    "name": "Water, coconut, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "potato-crisps",
+   "name": "Potato chips (crisps), plain",
+   "category": "snack",
+   "aliases": [
+    "chip",
+    "potato chip",
+    "crisp",
+    "potato crisp",
+    "ready salted chip"
+   ],
+   "per100g": {
+    "kcal": 511.5,
+    "proteinG": 6,
+    "fatG": 33.3,
+    "carbsG": 45.8,
+    "fiberG": 3.2,
+    "sugarG": 0.9
+   },
+   "serving": {
+    "grams": 45,
+    "label": "1 small bag",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007193",
+    "name": "Potato crisps or chips, plain, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "corn-chips",
+   "name": "Corn chips",
+   "category": "snack",
+   "aliases": [
+    "corn chip",
+    "nacho chip",
+    "tortilla chip"
+   ],
+   "per100g": {
+    "kcal": 490.7,
+    "proteinG": 7.5,
+    "fatG": 25,
+    "carbsG": 56,
+    "fiberG": 5.2,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 45,
+    "label": "1 small bag",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003198",
+    "name": "Corn chips, plain, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "popcorn",
+   "name": "Popcorn, butter flavoured",
+   "category": "snack",
+   "aliases": [
+    "popcorn"
+   ],
+   "per100g": {
+    "kcal": 490.7,
+    "proteinG": 9.1,
+    "fatG": 26.5,
+    "carbsG": 49.6,
+    "fiberG": 8.8,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 30,
+    "label": "1 bag",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006844",
+    "name": "Popcorn, commercial, butter flavoured, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chocolate-milk",
+   "name": "Milk chocolate",
+   "category": "treat",
+   "aliases": [
+    "chocolate",
+    "milk chocolate",
+    "choc",
+    "dairy milk"
+   ],
+   "per100g": {
+    "kcal": 520.8,
+    "proteinG": 7.6,
+    "fatG": 30.6,
+    "carbsG": 56,
+    "fiberG": 2.3,
+    "sugarG": 54.6
+   },
+   "serving": {
+    "grams": 40,
+    "label": "4 squares",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002929",
+    "name": "Chocolate, milk",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chocolate-dark",
+   "name": "Dark chocolate",
+   "category": "treat",
+   "aliases": [
+    "dark chocolate"
+   ],
+   "per100g": {
+    "kcal": 528.2,
+    "proteinG": 3.9,
+    "fatG": 30.3,
+    "carbsG": 62.6,
+    "fiberG": 1.2,
+    "sugarG": 52
+   },
+   "serving": {
+    "grams": 40,
+    "label": "4 squares",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002921",
+    "name": "Chocolate, dark, high cocoa solids",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "biscuit-choc-chip",
+   "name": "Chocolate chip biscuit",
+   "category": "treat",
+   "aliases": [
+    "biscuit",
+    "cookie",
+    "chocolate chip cookie",
+    "choc chip biscuit"
+   ],
+   "per100g": {
+    "kcal": 473,
+    "proteinG": 5.8,
+    "fatG": 22.7,
+    "carbsG": 61.9,
+    "fiberG": 3,
+    "sugarG": 35.8
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 biscuit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001170",
+    "name": "Biscuit, sweet, chocolate chip or coated",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "tim-tam",
+   "name": "Chocolate-coated cream biscuit (Tim Tam style)",
+   "category": "treat",
+   "aliases": [
+    "tim tam"
+   ],
+   "per100g": {
+    "kcal": 497.1,
+    "proteinG": 5.4,
+    "fatG": 25.4,
+    "carbsG": 63.1,
+    "fiberG": 2.2,
+    "sugarG": 44.7
+   },
+   "serving": {
+    "grams": 18,
+    "label": "1 biscuit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001234",
+    "name": "Biscuit, sweet, sandwich, cream filling, chocolate-coated, tim tam style",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "anzac",
+   "name": "Anzac biscuit",
+   "category": "treat",
+   "aliases": [
+    "anzac biscuit",
+    "anzac"
+   ],
+   "per100g": {
+    "kcal": 463.7,
+    "proteinG": 5.8,
+    "fatG": 22.1,
+    "carbsG": 60.3,
+    "fiberG": 3.8,
+    "sugarG": 32
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 biscuit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001164",
+    "name": "Biscuit, sweet, Anzac style, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "shortbread",
+   "name": "Shortbread",
+   "category": "treat",
+   "aliases": [
+    "shortbread"
+   ],
+   "per100g": {
+    "kcal": 504.3,
+    "proteinG": 6.2,
+    "fatG": 26.3,
+    "carbsG": 60.8,
+    "fiberG": 2.3,
+    "sugarG": 20.4
+   },
+   "serving": {
+    "grams": 20,
+    "label": "1 piece",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001244",
+    "name": "Biscuit, sweet, shortbread style, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "biscuit-plain",
+   "name": "Plain sweet biscuit",
+   "category": "treat",
+   "aliases": [
+    "plain biscuit",
+    "arrowroot biscuit",
+    "malt biscuit"
+   ],
+   "per100g": {
+    "kcal": 446.5,
+    "proteinG": 6.4,
+    "fatG": 15.8,
+    "carbsG": 69.4,
+    "fiberG": 2.1,
+    "sugarG": 24.7
+   },
+   "serving": {
+    "grams": 10,
+    "label": "1 biscuit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001215",
+    "name": "Biscuit, sweet, plain",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "gingernut",
+   "name": "Ginger biscuit",
+   "category": "treat",
+   "aliases": [
+    "ginger nut",
+    "gingernut",
+    "ginger biscuit"
+   ],
+   "per100g": {
+    "kcal": 423.5,
+    "proteinG": 4.8,
+    "fatG": 10.6,
+    "carbsG": 77.7,
+    "fiberG": 1.9,
+    "sugarG": 39
+   },
+   "serving": {
+    "grams": 15,
+    "label": "1 biscuit",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F001195",
+    "name": "Biscuit, sweet, ginger flavoured, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cake-chocolate",
+   "name": "Chocolate cake, iced",
+   "category": "treat",
+   "aliases": [
+    "chocolate cake",
+    "cake"
+   ],
+   "per100g": {
+    "kcal": 372.8,
+    "proteinG": 6.6,
+    "fatG": 18,
+    "carbsG": 46.4,
+    "fiberG": 2.6,
+    "sugarG": 27
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002111",
+    "name": "Cake, chocolate, homemade, iced",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "cake-carrot",
+   "name": "Carrot cake, iced",
+   "category": "treat",
+   "aliases": [
+    "carrot cake"
+   ],
+   "per100g": {
+    "kcal": 387.2,
+    "proteinG": 4.4,
+    "fatG": 20.4,
+    "carbsG": 47.6,
+    "fiberG": 1.5,
+    "sugarG": 30.5
+   },
+   "serving": {
+    "grams": 100,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002100",
+    "name": "Cake, carrot, commercial, iced",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lamington",
+   "name": "Lamington",
+   "category": "treat",
+   "aliases": [
+    "lamington"
+   ],
+   "per100g": {
+    "kcal": 294.7,
+    "proteinG": 4.7,
+    "fatG": 9.4,
+    "carbsG": 48,
+    "fiberG": 2.4,
+    "sugarG": 31.5
+   },
+   "serving": {
+    "grams": 60,
+    "label": "1 lamington",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F002159",
+    "name": "Cake, lamington, unfilled",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "muffin-berry",
+   "name": "Berry muffin",
+   "category": "treat",
+   "aliases": [
+    "muffin",
+    "blueberry muffin",
+    "berry muffin"
+   ],
+   "per100g": {
+    "kcal": 336.5,
+    "proteinG": 5.2,
+    "fatG": 15.6,
+    "carbsG": 44.4,
+    "fiberG": 1.9,
+    "sugarG": 26.1
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 muffin",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005877",
+    "name": "Muffin, cake-style, berry, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "muffin-choc",
+   "name": "Chocolate chip muffin",
+   "category": "treat",
+   "aliases": [
+    "chocolate muffin",
+    "chocolate chip muffin"
+   ],
+   "per100g": {
+    "kcal": 374.5,
+    "proteinG": 6.4,
+    "fatG": 17.7,
+    "carbsG": 48.1,
+    "fiberG": 1.4,
+    "sugarG": 29.5
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 muffin",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005882",
+    "name": "Muffin, cake-style, chocolate chip, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "scone",
+   "name": "Scone, plain",
+   "category": "treat",
+   "aliases": [
+    "scone"
+   ],
+   "per100g": {
+    "kcal": 334.4,
+    "proteinG": 7.9,
+    "fatG": 8.5,
+    "carbsG": 55.2,
+    "fiberG": 2.1,
+    "sugarG": 6.5
+   },
+   "serving": {
+    "grams": 60,
+    "label": "1 scone",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008173",
+    "name": "Scone, plain, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "doughnut",
+   "name": "Jam doughnut",
+   "category": "treat",
+   "aliases": [
+    "doughnut",
+    "donut",
+    "jam doughnut"
+   ],
+   "per100g": {
+    "kcal": 366.9,
+    "proteinG": 6,
+    "fatG": 17.6,
+    "carbsG": 46.2,
+    "fiberG": 1.9,
+    "sugarG": 19
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 doughnut",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003575",
+    "name": "Doughnut, jam filled, sugar coated",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "doughnut-iced",
+   "name": "Iced doughnut",
+   "category": "treat",
+   "aliases": [
+    "iced donut",
+    "iced doughnut"
+   ],
+   "per100g": {
+    "kcal": 362.6,
+    "proteinG": 6.7,
+    "fatG": 15.9,
+    "carbsG": 48.2,
+    "fiberG": 1.7,
+    "sugarG": 22.9
+   },
+   "serving": {
+    "grams": 70,
+    "label": "1 doughnut",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F003574",
+    "name": "Doughnut, iced",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "meat-pie",
+   "name": "Meat pie",
+   "category": "meal",
+   "aliases": [
+    "pie",
+    "meat pie",
+    "mince pie",
+    "mince and cheese pie",
+    "steak pie",
+    "steak and cheese pie"
+   ],
+   "per100g": {
+    "kcal": 227.5,
+    "proteinG": 8.9,
+    "fatG": 11.4,
+    "carbsG": 21.2,
+    "fiberG": 2.4,
+    "sugarG": 1.3
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1 pie",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006665",
+    "name": "Pie, savoury, meat, commercial, ready to eat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "chicken-pie",
+   "name": "Chicken & vegetable pie",
+   "category": "meal",
+   "aliases": [
+    "chicken pie"
+   ],
+   "per100g": {
+    "kcal": 236.1,
+    "proteinG": 8.2,
+    "fatG": 11,
+    "carbsG": 25,
+    "fiberG": 2.1,
+    "sugarG": 1.2
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1 pie",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006656",
+    "name": "Pie, savoury, chicken & vegetable, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "sausage-roll",
+   "name": "Sausage roll",
+   "category": "meal",
+   "aliases": [
+    "sausage roll"
+   ],
+   "per100g": {
+    "kcal": 284.4,
+    "proteinG": 9.7,
+    "fatG": 14.6,
+    "carbsG": 27.2,
+    "fiberG": 3,
+    "sugarG": 2.8
+   },
+   "serving": {
+    "grams": 130,
+    "label": "1 roll",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008098",
+    "name": "Sausage roll, commercial, ready to eat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "burger",
+   "name": "Cheeseburger (fast food)",
+   "category": "meal",
+   "aliases": [
+    "burger",
+    "hamburger",
+    "cheeseburger"
+   ],
+   "per100g": {
+    "kcal": 270.8,
+    "proteinG": 14.7,
+    "fatG": 12.6,
+    "carbsG": 23.2,
+    "fiberG": 1.8,
+    "sugarG": 3.6
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 burger",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004358",
+    "name": "Hamburger, white roll, beef patty, with cheese, onion, pickles & sauce, fast food chain",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "burger-takeaway",
+   "name": "Burger with salad (takeaway)",
+   "category": "meal",
+   "aliases": [
+    "takeaway burger",
+    "burger with salad"
+   ],
+   "per100g": {
+    "kcal": 208.2,
+    "proteinG": 12.1,
+    "fatG": 9.2,
+    "carbsG": 18,
+    "fiberG": 2.6,
+    "sugarG": 1.3
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 burger",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004362",
+    "name": "Hamburger, white roll, beef patty, with salad, independent takeaway outlet",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "hot-dog",
+   "name": "Hot dog",
+   "category": "meal",
+   "aliases": [
+    "hot dog"
+   ],
+   "per100g": {
+    "kcal": 226.8,
+    "proteinG": 10.6,
+    "fatG": 7.6,
+    "carbsG": 27.4,
+    "fiberG": 2.5,
+    "sugarG": 4
+   },
+   "serving": {
+    "grams": 120,
+    "label": "1 hot dog",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F004389",
+    "name": "Hot dog, bread roll, frankfurt & sauce filling",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pizza-supreme",
+   "name": "Pizza, supreme (takeaway)",
+   "category": "meal",
+   "aliases": [
+    "pizza",
+    "supreme pizza"
+   ],
+   "per100g": {
+    "kcal": 228,
+    "proteinG": 13,
+    "fatG": 9.8,
+    "carbsG": 20.5,
+    "fiberG": 3,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 200,
+    "label": "2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006800",
+    "name": "Pizza, supreme, takeaway style",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pizza-hawaiian",
+   "name": "Pizza, ham & pineapple (takeaway)",
+   "category": "meal",
+   "aliases": [
+    "hawaiian pizza",
+    "ham and pineapple pizza"
+   ],
+   "per100g": {
+    "kcal": 224.4,
+    "proteinG": 12.8,
+    "fatG": 8.3,
+    "carbsG": 23.1,
+    "fiberG": 3.1,
+    "sugarG": 2.7
+   },
+   "serving": {
+    "grams": 200,
+    "label": "2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006762",
+    "name": "Pizza, ham & pineapple, takeaway style",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "pizza-cheese",
+   "name": "Pizza, cheese & tomato",
+   "category": "meal",
+   "aliases": [
+    "cheese pizza",
+    "margherita pizza"
+   ],
+   "per100g": {
+    "kcal": 285.4,
+    "proteinG": 16.2,
+    "fatG": 11,
+    "carbsG": 28.7,
+    "fiberG": 2.8,
+    "sugarG": 2.7
+   },
+   "serving": {
+    "grams": 200,
+    "label": "2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006725",
+    "name": "Pizza, cheese & tomato, commercial",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "spring-roll",
+   "name": "Spring roll",
+   "category": "meal",
+   "aliases": [
+    "spring roll"
+   ],
+   "per100g": {
+    "kcal": 250.2,
+    "proteinG": 7.5,
+    "fatG": 11.7,
+    "carbsG": 27.5,
+    "fiberG": 2.8,
+    "sugarG": 4.3
+   },
+   "serving": {
+    "grams": 60,
+    "label": "1 roll",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F008794",
+    "name": "Spring roll, meat & vegetable filling, commercial, deep fried",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "lasagne",
+   "name": "Beef lasagne, homemade",
+   "category": "meal",
+   "aliases": [
+    "lasagne",
+    "lasagna"
+   ],
+   "per100g": {
+    "kcal": 179.7,
+    "proteinG": 9.9,
+    "fatG": 8,
+    "carbsG": 16.2,
+    "fiberG": 1.4,
+    "sugarG": 3
+   },
+   "serving": {
+    "grams": 300,
+    "label": "1 serve",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005146",
+    "name": "Lasagne, beef, homemade",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "spag-bol",
+   "name": "Spaghetti bolognese",
+   "category": "meal",
+   "aliases": [
+    "spaghetti bolognese",
+    "spag bol",
+    "bolognese"
+   ],
+   "per100g": {
+    "kcal": 120.5,
+    "proteinG": 7.3,
+    "fatG": 2.8,
+    "carbsG": 15.2,
+    "fiberG": 1.7,
+    "sugarG": 1.7
+   },
+   "serving": {
+    "grams": 350,
+    "label": "1 bowl",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F006393",
+    "name": "Pasta dish, homemade, cooked unfilled pasta, homemade beef bolognese sauce & added vegetables",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mac-cheese",
+   "name": "Macaroni cheese",
+   "category": "meal",
+   "aliases": [
+    "mac and cheese",
+    "macaroni cheese",
+    "mac n cheese"
+   ],
+   "per100g": {
+    "kcal": 166.8,
+    "proteinG": 6.4,
+    "fatG": 5.5,
+    "carbsG": 21.5,
+    "fiberG": 1.7,
+    "sugarG": 1
+   },
+   "serving": {
+    "grams": 250,
+    "label": "1 bowl",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F005259",
+    "name": "Macaroni & cheese, homemade, cooked unfilled pasta, homemade cheese sauce",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "hot-chips",
+   "name": "Hot chips (takeaway)",
+   "category": "meal",
+   "aliases": [
+    "hot chip",
+    "fries",
+    "french fry",
+    "takeaway chip",
+    "scoop of chips"
+   ],
+   "per100g": {
+    "kcal": 238.3,
+    "proteinG": 3.8,
+    "fatG": 11.6,
+    "carbsG": 28.2,
+    "fiberG": 3,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 200,
+    "label": "1 scoop",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007238",
+    "name": "Potato, chips, regular, independent takeaway outlet, deep fried, blended oil, salted",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "oven-chips",
+   "name": "Oven chips",
+   "category": "meal",
+   "aliases": [
+    "oven chip",
+    "oven fries",
+    "frozen chip"
+   ],
+   "per100g": {
+    "kcal": 175.2,
+    "proteinG": 3.8,
+    "fatG": 5.9,
+    "carbsG": 24.1,
+    "fiberG": 3.8,
+    "sugarG": 0
+   },
+   "serving": {
+    "grams": 150,
+    "label": "1 serve",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "AFCD",
+    "id": "F007242",
+    "name": "Potato, chips, regular, purchased frozen, baked, no added fat",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+   },
+   "confidence": "high"
+  },
+  {
+   "id": "mince-on-toast",
+   "name": "Mince on toast",
+   "category": "meal",
+   "aliases": [
+    "mince on toast",
+    "mince toast"
+   ],
+   "per100g": {
+    "kcal": 275.9,
+    "proteinG": 23,
+    "fatG": 11.7,
+    "carbsG": 18.9,
+    "fiberG": 1.5,
+    "sugarG": 1.3
+   },
+   "serving": {
+    "grams": 184,
+    "label": "1 plate (2 slices)",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F000679x120g+F001541x64g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 120,
+      "db": "AFCD",
+      "id": "F000679",
+      "name": "Beef, mince, regular fat, stir-fried, no added fat",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 64,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "reference": {
+    "per100g": {
+     "kcal": 278.3,
+     "proteinG": 20.7,
+     "fatG": 12.7,
+     "carbsG": 19,
+     "fiberG": 1,
+     "sugarG": 2.2
+    },
+    "source": {
+     "db": "Recipe of sourced records",
+     "id": "171799x120g+174925x64g",
+     "name": "Weighted mix (component grams are a portion assumption)",
+     "url": "https://fdc.nal.usda.gov/food-details/171799/nutrients",
+     "components": [
+      {
+       "grams": 120,
+       "db": "USDA SR Legacy",
+       "id": "171799",
+       "name": "Beef, ground, 80% lean meat / 20% fat, crumbles, cooked, pan-browned",
+       "url": "https://fdc.nal.usda.gov/food-details/171799/nutrients"
+      },
+      {
+       "grams": 64,
+       "db": "USDA SR Legacy",
+       "id": "174925",
+       "name": "Bread, white, commercially prepared, toasted",
+       "url": "https://fdc.nal.usda.gov/food-details/174925/nutrients"
+      }
+     ]
+    }
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "fish-and-chips",
+   "name": "Fish and chips",
+   "category": "meal",
+   "aliases": [
+    "fish and chip",
+    "fish n chip",
+    "fush and chup"
+   ],
+   "per100g": {
+    "kcal": 222.4,
+    "proteinG": 7,
+    "fatG": 9.9,
+    "carbsG": 25.4,
+    "fiberG": 2.1,
+    "sugarG": 0.6
+   },
+   "serving": {
+    "grams": 400,
+    "label": "1 piece + 1 scoop",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F003950x150g+F007238x250g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 150,
+      "db": "AFCD",
+      "id": "F003950",
+      "name": "Fish, white flesh, battered, packaged frozen, baked, no added fat",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 250,
+      "db": "AFCD",
+      "id": "F007238",
+      "name": "Potato, chips, regular, independent takeaway outlet, deep fried, blended oil, salted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "sausage-sizzle",
+   "name": "Sausage sizzle (sausage in bread)",
+   "category": "meal",
+   "aliases": [
+    "sausage sizzle",
+    "sausage in bread",
+    "sausage on bread"
+   ],
+   "per100g": {
+    "kcal": 227.7,
+    "proteinG": 14.9,
+    "fatG": 11,
+    "carbsG": 16.5,
+    "fiberG": 1.1,
+    "sugarG": 1.2
+   },
+   "serving": {
+    "grams": 107,
+    "label": "1 sizzle",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F008107x75g+F001463x32g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 75,
+      "db": "AFCD",
+      "id": "F008107",
+      "name": "Sausage, beef, grilled, no added fat",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 32,
+      "db": "AFCD",
+      "id": "F001463",
+      "name": "Bread, from white flour",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "pb-toast",
+   "name": "Peanut butter on toast",
+   "category": "meal",
+   "aliases": [
+    "peanut butter toast",
+    "peanut butter on toast"
+   ],
+   "per100g": {
+    "kcal": 392.3,
+    "proteinG": 14.4,
+    "fatG": 17.7,
+    "carbsG": 41.5,
+    "fiberG": 4.8,
+    "sugarG": 5.3
+   },
+   "serving": {
+    "grams": 47,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F001541x32g+F006577x15g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 32,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 15,
+      "db": "AFCD",
+      "id": "F006577",
+      "name": "Peanut butter, smooth & crunchy, added sugar & salt",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "eggs-on-toast",
+   "name": "Poached eggs on toast",
+   "category": "meal",
+   "aliases": [
+    "egg on toast",
+    "eggs on toast",
+    "poached egg on toast"
+   ],
+   "per100g": {
+    "kcal": 196.6,
+    "proteinG": 12.2,
+    "fatG": 6.5,
+    "carbsG": 21.4,
+    "fiberG": 1.7,
+    "sugarG": 1.6
+   },
+   "serving": {
+    "grams": 164,
+    "label": "2 eggs, 2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F003725x100g+F001541x64g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 100,
+      "db": "AFCD",
+      "id": "F003725",
+      "name": "Egg, chicken, whole, poached",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 64,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "beans-on-toast",
+   "name": "Baked beans on toast",
+   "category": "meal",
+   "aliases": [
+    "bean on toast",
+    "baked bean on toast"
+   ],
+   "per100g": {
+    "kcal": 140.9,
+    "proteinG": 6.3,
+    "fatG": 0.9,
+    "carbsG": 23,
+    "fiberG": 4.7,
+    "sugarG": 4.7
+   },
+   "serving": {
+    "grams": 264,
+    "label": "1/2 can, 2 slices",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F000243x200g+F001541x64g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 200,
+      "db": "AFCD",
+      "id": "F000243",
+      "name": "Baked beans, canned in tomato sauce",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 64,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "cheese-on-toast",
+   "name": "Cheese on toast",
+   "category": "meal",
+   "aliases": [
+    "cheese on toast",
+    "cheese toastie"
+   ],
+   "per100g": {
+    "kcal": 348.1,
+    "proteinG": 17.5,
+    "fatG": 17.6,
+    "carbsG": 28.2,
+    "fiberG": 2.2,
+    "sugarG": 2.1
+   },
+   "serving": {
+    "grams": 62,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F002414x30g+F001541x32g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 30,
+      "db": "AFCD",
+      "id": "F002414",
+      "name": "Cheese, cheddar, natural, regular fat",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 32,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "marmite-toast",
+   "name": "Marmite toast with butter",
+   "category": "meal",
+   "aliases": [
+    "marmite toast",
+    "marmite on toast"
+   ],
+   "per100g": {
+    "kcal": 335.5,
+    "proteinG": 9.9,
+    "fatG": 12.3,
+    "carbsG": 44.1,
+    "fiberG": 4.5,
+    "sugarG": 4.1
+   },
+   "serving": {
+    "grams": 41,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F001541x32g+F001973x5g+F008783x4g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 32,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 5,
+      "db": "AFCD",
+      "id": "F001973",
+      "name": "Butter, plain, salted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 4,
+      "db": "AFCD",
+      "id": "F008783",
+      "name": "Spread, yeast, marmite",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  },
+  {
+   "id": "buttered-toast",
+   "name": "Buttered toast",
+   "category": "meal",
+   "aliases": [
+    "buttered toast",
+    "toast with butter",
+    "butter toast"
+   ],
+   "per100g": {
+    "kcal": 375,
+    "proteinG": 9.1,
+    "fatG": 17.1,
+    "carbsG": 44.7,
+    "fiberG": 3.5,
+    "sugarG": 3.1
+   },
+   "serving": {
+    "grams": 39,
+    "label": "1 slice",
+    "basis": "portion assumption (not from the nutrient source)"
+   },
+   "source": {
+    "db": "Recipe of sourced records",
+    "id": "F001541x32g+F001973x7g",
+    "name": "Weighted mix (component grams are a portion assumption)",
+    "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd",
+    "components": [
+     {
+      "grams": 32,
+      "db": "AFCD",
+      "id": "F001541",
+      "name": "Bread, from white flour, toasted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     },
+     {
+      "grams": 7,
+      "db": "AFCD",
+      "id": "F001973",
+      "name": "Butter, plain, salted",
+      "url": "https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd"
+     }
+    ]
+   },
+   "confidence": "medium"
+  }
+ ]
+}

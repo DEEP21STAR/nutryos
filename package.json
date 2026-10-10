@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "e2e": "npm run build && playwright test --project=chromium-mobile --project=firefox",
     "gate": "node scripts/predeploy-gate.mjs",
-    "gate:live": "playwright test --project=live"
+    "gate:live": "playwright test --project=live",
+    "gate:live-foods": "vitest run --config vitest.live-foods.config.ts",
+    "build:foods": "node scripts/build-foods.mjs"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.3.0",

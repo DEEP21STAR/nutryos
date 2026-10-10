@@ -25,7 +25,21 @@ export interface FoodItem {
    * been applied to this item's calories/fat — gates the ConfirmLog button so it can't be tapped
    * twice and silently stack the multiplier. See eatingOutAdjustment.ts for the actual heuristic. */
   adjustedForEatingOut?: boolean
+  /** Where this item's numbers came from (Phase 1 "never a silent 0"). Shown as a badge on the
+   * confirm screen. Undefined only on items logged before Phase 1. */
+  source?: FoodSource
+  /** How much to trust the numbers: 'high' = food-composition table record, 'medium' = median of
+   * several products / a recipe / a partial name match, 'low' = AI estimate or thin data. */
+  confidence?: FoodConfidence
+  /** Human-readable provenance, e.g. "AFCD F007493" or "Open Food Facts median of 9 products". */
+  sourceRef?: string
+  /** True when 0 kcal is a CONFIRMED value (the source says ~0, e.g. water, or the user tapped
+   * "Log with 0"), as opposed to "we couldn't find numbers". See mealGuards.ts. */
+  zeroConfirmed?: boolean
 }
+
+export type FoodSource = 'my-foods' | 'curated' | 'off' | 'ai-estimate' | 'barcode' | 'user' | 'unresolved'
+export type FoodConfidence = 'high' | 'medium' | 'low'
 
 export interface Meal {
   id: string

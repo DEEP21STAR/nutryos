@@ -102,6 +102,9 @@ export function BarcodeCapture({
         estimatedGrams: DEFAULT_PORTION_G,
         offCode: off.code,
         ...macros,
+        source: 'barcode',
+        confidence: 'high',
+        sourceRef: `Open Food Facts product ${off.code}`,
       }
       hapticSuccess()
       playScanSuccessPing()

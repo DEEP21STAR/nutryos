@@ -29,3 +29,6 @@ supabase/.temp
 # Playwright
 test-results/
 playwright-report/
+
+# build-foods.mjs download/OFF response cache
+scripts/.cache/

@@ -6,9 +6,10 @@
  * 100g, which we then scale by the vision model's estimated portion size.
  */
 
-import { matchCommonFood } from '@/lib/commonFoods'
 import { getCachedFoodLookup, cacheFoodLookup } from '@/lib/offlineFoodCache'
 import { extractMicronutrientsPer100g, scaleMicronutrients, type MicronutrientProfile } from '@/lib/micronutrients'
+import { bestFuzzyMatch, normalizeName, normalizeTokens, tokenSimilarity } from '@/lib/fuzzyMatch'
+import { pickMedianProduct } from '@/lib/offMedian'
 
 export interface OffMacros {
   code: string
@@ -25,6 +26,8 @@ export interface OffMacros {
   /** Per-100g, from OFF's nutriments_estimated block — see micronutrients.ts. Undefined for the
    * common-foods dataset (not sourced for those, see that file's own comment on scope). */
   micronutrientsPer100g?: MicronutrientProfile
+  /** Search lookups only: how many plausible products the median was taken from. */
+  validCount?: number
 }
 
 interface OffSearchResponse {
@@ -38,99 +41,160 @@ interface OffSearchResponse {
 }
 
 /**
- * Searches Open Food Facts by free-text food name and returns the best-match
- * macro profile (per 100g), or null if nothing usable was found. Real network
- * call — no mock/fallback data invented here; a null result means the UI's
- * editable confirm step is genuinely empty for that item and the user fills
- * it in by hand (see the manual-text-search fallback requirement).
- *
- * Retries once after a short delay on a 5xx — found live during core-loop
- * testing: the public API returned a real (not hypothetical) transient 503
- * "Page temporarily unavailable" for one request, which had fully recovered
- * 3 seconds later on a plain retry. Without this, that single hiccup would
- * silently zero out an item's macros in the confirm screen.
- *
- * 2026-09-18: checks two things BEFORE ever touching the network, in order —
- *   1. commonFoods.ts's curated whole-foods dataset — fixes both the offline case AND this
- *      file's own documented weak spot (OFF being a branded-product database, not a whole-food
- *      one; "olives" matching olive oil, "banana" resolving to zero, both real, both here).
- *   2. offlineFoodCache.ts — anything looked up successfully before, cached, works offline.
- * A cache miss + no common-food match still falls through to the real network call exactly as
- * before, and a successful network result gets cached for next time.
+ * Sliding-window limiter for OFF *search* requests. OFF asks for at most 10 searches/minute/IP;
+ * NUTRYOS stays at 8. `acquire(maxWaitMs)` waits for a slot up to maxWaitMs and returns false if
+ * none frees up in time (the caller then skips OFF instead of hanging the confirm screen).
  */
-export async function lookupFoodMacros(query: string): Promise<OffMacros | null> {
-  const common = matchCommonFood(query)
-  if (common) {
-    return {
-      code: '',
-      productName: common.name,
-      caloriesPer100g: common.caloriesPer100g,
-      proteinPer100gG: common.proteinPer100gG,
-      fatPer100gG: common.fatPer100gG,
-      carbsPer100gG: common.carbsPer100gG,
-      fiberPer100gG: common.fiberPer100gG,
-      sugarPer100gG: common.sugarPer100gG,
+export class RateLimiter {
+  private stamps: number[] = []
+  readonly limit: number
+  readonly windowMs: number
+  private readonly now: () => number
+
+  constructor(limit: number, windowMs: number, now: () => number = Date.now) {
+    this.limit = limit
+    this.windowMs = windowMs
+    this.now = now
+  }
+
+  /** Timestamps of every granted request (for the live gate's per-minute audit). */
+  get history(): readonly number[] {
+    return this.stamps
+  }
+
+  private inWindow(t: number): number {
+    return this.stamps.filter((s) => t - s < this.windowMs).length
+  }
+
+  async acquire(maxWaitMs: number): Promise<boolean> {
+    const t = this.now()
+    if (this.inWindow(t) < this.limit) {
+      this.stamps.push(t)
+      return true
     }
+    const recent = this.stamps.filter((s) => t - s < this.windowMs).sort((a, b) => a - b)
+    const waitMs = recent[recent.length - this.limit] + this.windowMs - t + 5
+    if (waitMs > maxWaitMs) return false
+    await new Promise((r) => setTimeout(r, waitMs))
+    return this.acquire(maxWaitMs - waitMs)
   }
+}
 
-  const cached = getCachedFoodLookup(query)
-  if (cached) return cached
+export const offSearchLimiter = new RateLimiter(8, 60_000)
 
-  const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(
-    query,
-  )}&search_simple=1&action=process&json=1&page_size=5&fields=code,product_name,product_name_en,nutriments,nutriments_estimated`
+/**
+ * Query rules: normalised names that OFF's free-text ranking handles badly get a better search
+ * term and/or a category filter. Matched with the same fuzzy matcher as the food tables.
+ */
+export const OFF_QUERY_RULES: Array<{ aliases: string[]; terms?: string; category?: string }> = [
+  { aliases: ['whey protein powder', 'whey protein', 'protein powder', 'whey'], terms: 'whey', category: 'en:protein-powders' },
+  { aliases: ['protein bar'], category: 'en:protein-bars' },
+  { aliases: ['oat milk', 'oat drink'], category: 'en:oat-based-drinks' },
+  { aliases: ['soy milk', 'soya milk'], category: 'en:soy-based-drinks' },
+  { aliases: ['almond milk'], category: 'en:almond-based-drinks' },
+  { aliases: ['weet bix', 'weetbix'], terms: 'weet-bix' },
+  { aliases: ['greek yoghurt', 'greek yogurt'], category: 'en:greek-style-yogurts' },
+  { aliases: ['peanut butter'], category: 'en:peanut-butters' },
+]
 
-  let res = await fetch(url)
-  if (!res.ok && res.status >= 500) {
-    await new Promise((r) => setTimeout(r, 1500))
-    res = await fetch(url)
-  }
-  if (!res.ok) throw new Error(`Open Food Facts request failed: ${res.status}`)
-  const data = (await res.json()) as OffSearchResponse
+export interface OffSearchOptions {
+  fetchImpl?: typeof fetch
+  /** Extra request headers. Node callers set a real User-Agent; browsers can't. */
+  headers?: Record<string, string>
+  limiter?: RateLimiter
+  /** How long to wait for a rate-limit slot before skipping OFF (ms). */
+  maxWaitMs?: number
+  /** Per-request timeout (ms). */
+  timeoutMs?: number
+  /** Skip the localStorage result cache (the live gate measures real calls). */
+  noCache?: boolean
+}
 
-  const candidates = (data.products ?? []).filter(
-    (p) => typeof p.nutriments?.['energy-kcal_100g'] === 'number',
-  )
-  if (candidates.length === 0) return null
-
-  // Real finding from live testing: Open Food Facts' free-text search ranking
-  // is not reliable enough to trust the raw top hit — searching "olives"
-  // returned "Alvalle Gazpacho" (a soup) as result #1. Prefer a candidate
-  // whose product name genuinely contains the search term (tolerating simple
-  // singular/plural mismatches, e.g. "olives" vs "olive") before falling
-  // back to the raw top match.
-  //
-  // KNOWN, UNRESOLVED LIMITATION (found live, not fixed here — flagged to
-  // the coordinator): Open Food Facts is a barcode/branded-product database,
-  // not a generic whole-food nutrition database. For "olives" specifically,
-  // even the top 15 results contain no genuine whole-olive product at all —
-  // just olive OIL (~900 kcal/100g, wildly wrong for the fruit) and unrelated
-  // items. Generic single-ingredient whole foods (raw fruit/veg, plain meats)
-  // are exactly where this API is weakest; branded/packaged items match well.
-  // The editable confirm step is the real safety net for this — a wrong
-  // auto-match is visibly editable before anything is logged, never silently
-  // trusted.
-  const singularOrPlural = (w: string) => (w.endsWith('s') ? [w, w.slice(0, -1)] : [w, `${w}s`])
-  const queryWords = query.toLowerCase().split(/\s+/).filter(Boolean).flatMap(singularOrPlural)
-  const nameMatch = candidates.find((p) => {
-    const name = (p.product_name_en || p.product_name || '').toLowerCase()
-    return queryWords.some((w) => name.includes(w))
+/** Builds the OFF search URL for a food name (exported for tests). */
+export function buildOffSearch(query: string): { url: string; filteredByCategory: boolean; terms: string } {
+  const rule = bestFuzzyMatch(query, OFF_QUERY_RULES)
+  const terms = rule ? (rule.item.terms ?? '') : normalizeName(query)
+  const params = new URLSearchParams({
+    action: 'process',
+    json: '1',
+    page_size: '24',
+    fields: 'code,product_name,product_name_en,nutriments,nutriments_estimated',
   })
+  if (terms) {
+    params.set('search_terms', terms)
+    params.set('search_simple', '1')
+  }
+  if (rule?.item.category) {
+    params.set('tagtype_0', 'categories')
+    params.set('tag_contains_0', 'contains')
+    params.set('tag_0', rule.item.category)
+  }
+  return { url: `https://world.openfoodfacts.org/cgi/search.pl?${params}`, filteredByCategory: !!rule?.item.category, terms }
+}
 
-  const best = nameMatch ?? candidates[0]
-  const n = best.nutriments!
+/** A product name is relevant when it fuzzily contains every word of the query (all of them for
+ * up to 3 words, all but one for longer queries). */
+export function isRelevantName(terms: string, productName: string): boolean {
+  const q = normalizeTokens(terms)
+  if (q.length === 0) return true
+  const p = normalizeTokens(productName)
+  const hits = q.filter((qt) => p.some((pt) => tokenSimilarity(pt, qt) > 0 || pt.includes(qt)))
+  return hits.length >= (q.length <= 3 ? q.length : q.length - 1)
+}
+
+/**
+ * Step 3 of the resolution chain: Open Food Facts free-text search, made less naive (Phase 1).
+ *  - the name is normalised and, for foods OFF ranks badly, rewritten to better terms plus a
+ *    category filter (OFF_QUERY_RULES);
+ *  - products with missing or implausible numbers are rejected (kcal must match 4/4/9 within 25%,
+ *    see offMedian.ts) and, without a category filter, so are products whose name doesn't fit;
+ *  - the MEDIAN-kcal product of what's left is used, not the first hit.
+ * Returns null when nothing usable was found, when the rate-limit slot doesn't free up in time,
+ * or when the request fails. It never returns zeros: a null means "keep looking / ask the user".
+ *
+ * Known limit: OFF is a packaged-product database. Whole foods are covered by the curated table
+ * (step 2), which runs first.
+ */
+export async function lookupFoodMacros(query: string, opts: OffSearchOptions = {}): Promise<OffMacros | null> {
+  if (!opts.noCache) {
+    const cached = getCachedFoodLookup(query)
+    if (cached && cached.caloriesPer100g > 0) return cached
+  }
+
+  const { url, filteredByCategory, terms } = buildOffSearch(query)
+  const limiter = opts.limiter ?? offSearchLimiter
+  if (!(await limiter.acquire(opts.maxWaitMs ?? 3000))) return null
+
+  const doFetch = opts.fetchImpl ?? fetch
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), opts.timeoutMs ?? 8000)
+  let data: OffSearchResponse
+  try {
+    const res = await doFetch(url, { headers: opts.headers, signal: controller.signal })
+    if (!res.ok) return null
+    data = (await res.json()) as OffSearchResponse
+  } catch {
+    return null // network error, timeout, or OFF's HTML "temporarily unavailable" page
+  } finally {
+    clearTimeout(timer)
+  }
+
+  const pick = pickMedianProduct(data.products ?? [], filteredByCategory ? undefined : (name) => isRelevantName(terms, name))
+  if (!pick) return null
+  const best = pick.product
   const result: OffMacros = {
     code: best.code ?? '',
     productName: best.product_name_en || best.product_name || query,
-    caloriesPer100g: n['energy-kcal_100g'] ?? 0,
-    proteinPer100gG: n['proteins_100g'] ?? 0,
-    fatPer100gG: n['fat_100g'] ?? 0,
-    carbsPer100gG: n['carbohydrates_100g'] ?? 0,
-    fiberPer100gG: n['fiber_100g'],
-    sugarPer100gG: n['sugars_100g'],
+    caloriesPer100g: pick.per100g.kcal,
+    proteinPer100gG: pick.per100g.proteinG,
+    fatPer100gG: pick.per100g.fatG,
+    carbsPer100gG: pick.per100g.carbsG,
+    fiberPer100gG: pick.per100g.fiberG,
+    sugarPer100gG: pick.per100g.sugarG,
     micronutrientsPer100g: best.nutriments_estimated ? extractMicronutrientsPer100g(best.nutriments_estimated) : undefined,
+    validCount: pick.validCount,
   }
-  cacheFoodLookup(query, result)
+  if (!opts.noCache) cacheFoodLookup(query, result)
   return result
 }
 

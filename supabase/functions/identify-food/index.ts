@@ -68,6 +68,15 @@ const TEXT_SYSTEM_PROMPT =
   'short, generic food names suitable for a nutrition database lookup (e.g. "scrambled eggs", not ' +
   '"delicious fluffy eggs"). Maximum 8 items total. Never fabricate detail the user did not say or imply.';
 
+// Phase 1 estimate path. The model gets only food names and grams (no user data).
+const ESTIMATE_SYSTEM_PROMPT =
+  "You estimate nutrition for food portions. Input: JSON {\"items\":[{\"name\":string,\"grams\":number}]}. " +
+  "For EACH input item, in the same order, estimate energy and macronutrients for exactly that many grams " +
+  "of the food as typically eaten in New Zealand/Australia. Respond ONLY with JSON: " +
+  '{"items":[{"kcal":number,"protein_g":number,"fat_g":number,"carbs_g":number,"confidence":"low"|"medium"|"high"}]}. ' +
+  "Use confidence \"low\" when the food name is unfamiliar, ambiguous or possibly misspelled. If a name is not " +
+  "a food you can recognise at all, return kcal 0 for it (the app then asks the user). Never invent precision.";
+
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -157,6 +166,45 @@ Deno.serve(async (req: Request) => {
         return jsonResponse({ type: "items", items: parsed.items }, 200);
       }
       return jsonResponse({ error: "Unparseable response shape from Gemini text path" }, 502);
+    }
+
+    // Estimate path (NUTRYOS Phase 1, step 4 of the resolution chain). Only called by the app when
+    // the user opted in to cloud AI (or tapped "Allow once"). Receives ONLY food names + grams.
+    // Returns per-item kcal/protein/fat/carbs for that portion plus a self-reported confidence; the
+    // client never treats an estimate as better than 'medium' and treats 0 kcal as "no estimate".
+    if (Array.isArray(body?.estimate)) {
+      const items = (body.estimate as Array<{ name?: unknown; grams?: unknown }>)
+        .slice(0, 8)
+        .map((it) => ({ name: String(it?.name ?? "").slice(0, 80), grams: Number(it?.grams) }))
+      if (items.length === 0 || items.some((it) => !it.name.trim() || !(it.grams > 0 && it.grams <= 3000))) {
+        return jsonResponse({ error: "estimate must be a non-empty array of {name, grams} (0 < grams <= 3000)" }, 400);
+      }
+      const { res: geminiRes, lastDetail } = await callGeminiWithRetry(apiKey, {
+        systemInstruction: { parts: [{ text: ESTIMATE_SYSTEM_PROMPT }] },
+        contents: [{ role: "user", parts: [{ text: JSON.stringify({ items }) }] }],
+        generationConfig: { temperature: 0.1, maxOutputTokens: 1024, responseMimeType: "application/json" },
+      });
+      if (!geminiRes) return jsonResponse({ error: "Gemini API call never completed" }, 502);
+      if (!geminiRes.ok) {
+        const detail = geminiRes.status === 503 || geminiRes.status === 429 ? lastDetail : await geminiRes.text();
+        return jsonResponse({ error: `Gemini API error (${geminiRes.status}) after retries: ${detail.slice(0, 300)}` }, 502);
+      }
+      const geminiJson = await geminiRes.json();
+      const parsed = extractJson(geminiJson?.candidates?.[0]?.content?.parts?.[0]?.text) as { items?: unknown[] };
+      const out = items.map((_, i) => {
+        const r = (parsed.items ?? [])[i] as Record<string, unknown> | undefined;
+        const n = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : null);
+        if (!r || n(r.kcal) === null) return null;
+        return {
+          name: items[i].name,
+          kcal: n(r.kcal),
+          protein_g: n(r.protein_g) ?? 0,
+          fat_g: n(r.fat_g) ?? 0,
+          carbs_g: n(r.carbs_g) ?? 0,
+          confidence: r.confidence === "high" || r.confidence === "medium" ? r.confidence : "low",
+        };
+      });
+      return jsonResponse({ items: out }, 200);
     }
 
     // Photo path (existing, unchanged behavior).

@@ -7,6 +7,10 @@ import { GoalImpact } from '@/components/GoalImpact'
 import { applyEatingOutAdjustment, findRepeatVisitSuggestion } from '@/lib/eatingOutAdjustment'
 import { DAILY_VALUES, percentDV } from '@/lib/micronutrients'
 import { isPremiumUnlocked } from '@/lib/premium'
+import { badgeLabel, canLogMeal, itemNeedsNumbers, itemsNeedingNumbers } from '@/lib/mealGuards'
+import { estimateMacrosViaCloud, getCloudAiOptIn, setCloudAiOptIn } from '@/lib/cloudAi'
+import { itemFromAiEstimate } from '@/lib/resolveFoodItems'
+import { CloudAiConsentSheet, type CloudAiChoice } from '@/components/CloudAiConsentSheet'
 
 /** Real device haptic tick on slider drag, when the API exists — degrades to nothing (no error, no fake motion) everywhere else. Not gated by prefers-reduced-motion: this is tactile, not visual/animated. */
 function tick() {
@@ -78,6 +82,12 @@ export function ConfirmLog({
   const [isEatingOut, setIsEatingOut] = useState(initialIsEatingOut)
   const [restaurantName, setRestaurantName] = useState(initialRestaurantName)
   const [suggestionDismissed, setSuggestionDismissed] = useState(false)
+  // Phase 1 "never a silent 0": the item whose "Log with 0" confirm dialog is open, the items
+  // waiting on the cloud-AI consent sheet, and the AI-estimate request state.
+  const [zeroDialogFor, setZeroDialogFor] = useState<string | null>(null)
+  const [consentFor, setConsentFor] = useState<string[] | null>(null)
+  const [aiBusy, setAiBusy] = useState(false)
+  const [aiError, setAiError] = useState<string | null>(null)
   // Snapshot of what vision/lookup actually produced at mount — used only for
   // the emerald "detected" tag overlay on the photo, never mutated, so items
   // added manually afterward correctly do NOT get relabeled as "detected".
@@ -103,6 +113,51 @@ export function ConfirmLog({
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)))
   }
 
+  /** Macro edits by hand: an item that had no numbers becomes "You entered". */
+  function editMacros(item: FoodItem, patch: Partial<FoodItem>) {
+    updateItem(item.id, item.source === 'unresolved' || itemNeedsNumbers(item) ? { ...patch, source: 'user', confidence: undefined, sourceRef: undefined } : patch)
+  }
+
+  async function runAiEstimate(ids: string[]) {
+    const targets = items.filter((it) => ids.includes(it.id))
+    if (targets.length === 0) return
+    setAiBusy(true)
+    setAiError(null)
+    try {
+      const estimates = await estimateMacrosViaCloud(targets.map((t) => ({ name: t.name, grams: t.estimatedGrams })))
+      setItems((prev) =>
+        prev.map((it) => {
+          const k = targets.findIndex((t) => t.id === it.id)
+          const est = k >= 0 ? estimates[k] : null
+          return est ? { ...itemFromAiEstimate(it.name, it.estimatedGrams, est), id: it.id } : it
+        }),
+      )
+      if (estimates.some((e) => !e)) setAiError("The AI couldn't estimate that one. Please type the numbers in.")
+    } catch {
+      setAiError('AI estimate is unavailable right now. Please type the numbers in.')
+    } finally {
+      setAiBusy(false)
+    }
+  }
+
+  function requestAiEstimate(id: string) {
+    if (getCloudAiOptIn()) runAiEstimate([id])
+    else setConsentFor([id])
+  }
+
+  function onConsent(choice: CloudAiChoice) {
+    const ids = consentFor ?? []
+    setConsentFor(null)
+    if (choice === 'private') return
+    if (choice === 'always') setCloudAiOptIn(true)
+    runAiEstimate(ids)
+  }
+
+  function confirmZero(id: string) {
+    updateItem(id, { zeroConfirmed: true, source: 'user', confidence: undefined, sourceRef: 'Logged as 0 by you' })
+    setZeroDialogFor(null)
+  }
+
   function removeItem(id: string) {
     setItems((prev) => prev.filter((it) => it.id !== id))
   }
@@ -115,6 +170,8 @@ export function ConfirmLog({
   }
 
   const totals = sumMacros(items)
+  const needingNumbers = itemsNeedingNumbers(items)
+  const zeroDialogItem = zeroDialogFor ? items.find((it) => it.id === zeroDialogFor) : undefined
 
   function confirm() {
     onConfirm({
@@ -282,17 +339,32 @@ export function ConfirmLog({
               </button>
             </div>
 
-            {/* Real gap found 2026-09-20: a lookup miss (no Open Food Facts or common-foods match
-                — Open Food Facts is a branded-product database, weakest on plain whole-food cuts)
-                silently left every macro at 0, which read as "this food has zero nutrition"
-                rather than "we couldn't find it, please fill this in" — exactly what happened with
-                "Lamb Shank". item.offCode is only ever set when a lookup actually succeeded (see
-                resolveFoodItems.ts), so its absence on a named item is the real, existing signal
-                for this, not a new field. */}
-            {item.name.trim().length > 0 && item.offCode === undefined && (
-              <p className="mt-2 text-caption text-accent-energy">
-                Couldn't find nutrition data for this — check the numbers below.
-              </p>
+            {/* Provenance badge (Phase 1): where these numbers came from, or "Needs numbers". */}
+            {item.name.trim().length > 0 && <SourceBadge item={item} />}
+
+            {/* Never a silent 0: an item with no numbers says so and offers the ways out. It also
+                blocks "Log this meal" (mealGuards.canLogMeal) until it's dealt with. */}
+            {itemNeedsNumbers(item) && (
+              <div data-testid="needs-numbers" className="mt-2 flex flex-col gap-2 rounded-sm bg-accent-energy/10 p-2.5 ring-1 ring-accent-energy/30">
+                <p className="text-caption text-accent-energy">
+                  We couldn't find numbers for this. Type the kcal and macros below, or estimate them.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => requestAiEstimate(item.id)}
+                    disabled={aiBusy}
+                    className="rounded-full bg-accent-ai/15 px-3 py-1.5 text-caption font-semibold text-accent-ai ring-1 ring-accent-ai/40 transition active:scale-95 disabled:opacity-50"
+                  >
+                    {aiBusy ? 'Estimating…' : 'Estimate with AI'}
+                  </button>
+                  <button
+                    onClick={() => setZeroDialogFor(item.id)}
+                    className="rounded-full px-3 py-1.5 text-caption text-text-secondary ring-1 ring-white/15 transition active:scale-95"
+                  >
+                    Log with 0 for this item
+                  </button>
+                </div>
+              </div>
             )}
 
             {/* Haptic-slider-style portion adjuster — real onChange -> updateItem, same estimatedGrams field as before. */}
@@ -322,10 +394,10 @@ export function ConfirmLog({
             </div>
 
             <div className="mt-3 grid grid-cols-4 gap-2">
-              <MacroField label="Kcal" value={item.calories} onChange={(v) => updateItem(item.id, { calories: v })} />
-              <MacroField label="Protein" value={item.proteinG} onChange={(v) => updateItem(item.id, { proteinG: v })} color={MACRO_COLORS.protein} />
-              <MacroField label="Fats" value={item.fatG} onChange={(v) => updateItem(item.id, { fatG: v })} color={MACRO_COLORS.fat} />
-              <MacroField label="Carbs" value={item.carbsG} onChange={(v) => updateItem(item.id, { carbsG: v })} color={MACRO_COLORS.carbs} />
+              <MacroField label="Kcal" value={item.calories} onChange={(v) => editMacros(item, { calories: v })} />
+              <MacroField label="Protein" value={item.proteinG} onChange={(v) => editMacros(item, { proteinG: v })} color={MACRO_COLORS.protein} />
+              <MacroField label="Fats" value={item.fatG} onChange={(v) => editMacros(item, { fatG: v })} color={MACRO_COLORS.fat} />
+              <MacroField label="Carbs" value={item.carbsG} onChange={(v) => editMacros(item, { carbsG: v })} color={MACRO_COLORS.carbs} />
             </div>
 
             {/* Fiber/sugar only appear once a lookup actually provided them (common-foods dataset
@@ -376,7 +448,7 @@ export function ConfirmLog({
 
       <GoalImpact todaysTotals={todaysTotals} mealTotals={totals} goals={goals} />
 
-      <div className="glass sticky bottom-0 mt-auto p-4">
+      <div className="glass sticky bottom-0 mt-auto bg-bg-primary p-4">
         <div className="mb-3 flex items-center justify-between">
           <span className="text-caption text-text-tertiary">Total</span>
           <span className="text-data text-text-primary">
@@ -386,14 +458,83 @@ export function ConfirmLog({
             {!!totals.sugarG && ` Su${Math.round(totals.sugarG)}`}
           </span>
         </div>
+        {needingNumbers.length > 0 && (
+          <p className="mb-2 text-center text-caption text-accent-energy" data-testid="log-blocked-reason">
+            {needingNumbers.length === 1 ? '1 item needs numbers' : `${needingNumbers.length} items need numbers`} before this meal can be logged.
+          </p>
+        )}
+        {aiError && <p className="mb-2 text-center text-caption text-accent-danger">{aiError}</p>}
         <button
           onClick={confirm}
-          disabled={items.filter((it) => it.name.trim()).length === 0}
-          className="w-full rounded-full bg-accent-health py-3 text-subtitle font-semibold text-bg-primary shadow-[0_0_28px_6px_var(--glow-health)] transition active:scale-[0.98] disabled:opacity-40 disabled:shadow-none"
+          disabled={!canLogMeal(items)}
+          className="w-full rounded-full bg-accent-health py-3 text-subtitle font-semibold text-bg-primary shadow-[0_0_28px_6px_var(--glow-health)] transition active:scale-[0.98] disabled:bg-bg-tertiary disabled:text-text-tertiary disabled:shadow-none"
         >
           Log this meal
         </button>
       </div>
+
+      {zeroDialogItem && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-6" onClick={() => setZeroDialogFor(null)}>
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="zero-dialog-title"
+            className="glass-card flex w-full max-w-xs flex-col gap-3 p-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 id="zero-dialog-title" className="text-subtitle font-semibold text-text-primary">
+              Log "{zeroDialogItem.name}" as 0 kcal?
+            </h3>
+            <p className="text-body text-text-secondary">
+              Only do this for things with no calories, like water or black coffee. Otherwise your day's total will be too low.
+            </p>
+            <div className="flex gap-2">
+              <button onClick={() => setZeroDialogFor(null)} className="flex-1 rounded-full px-3 py-2.5 text-body text-text-secondary ring-1 ring-white/15">
+                Cancel
+              </button>
+              <button
+                onClick={() => confirmZero(zeroDialogItem.id)}
+                className="flex-1 rounded-full bg-accent-energy px-3 py-2.5 text-body font-semibold text-bg-primary"
+              >
+                Log with 0
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {consentFor && (
+        <CloudAiConsentSheet
+          foodNames={items.filter((it) => consentFor.includes(it.id)).map((it) => `${it.name}, ${it.estimatedGrams} g`)}
+          onChoose={onConsent}
+        />
+      )}
+    </div>
+  )
+}
+
+const BADGE_TONES: Record<string, string> = {
+  needs: 'bg-accent-energy/15 text-accent-energy ring-accent-energy/40',
+  ai: 'bg-accent-ai/15 text-accent-ai ring-accent-ai/40',
+  user: 'bg-white/5 text-text-secondary ring-white/15',
+  sourced: 'bg-accent-health/10 text-accent-health ring-accent-health/35',
+}
+
+/** Per-item provenance badge: source + confidence, with the exact record underneath. */
+function SourceBadge({ item }: { item: FoodItem }) {
+  const needs = itemNeedsNumbers(item)
+  const tone = needs ? 'needs' : item.source === 'ai-estimate' ? 'ai' : item.source === 'user' ? 'user' : 'sourced'
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+      <span
+        data-testid="source-badge"
+        data-source={needs ? 'needs-numbers' : (item.source ?? 'legacy')}
+        className={cn('rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1', BADGE_TONES[tone])}
+      >
+        {badgeLabel(item)}
+        {!needs && item.confidence ? ` · ${item.confidence}` : ''}
+      </span>
+      {!needs && item.sourceRef && <span className="text-[11px] text-text-tertiary">{item.sourceRef}</span>}
     </div>
   )
 }
