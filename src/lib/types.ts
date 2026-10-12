@@ -36,6 +36,9 @@ export interface FoodItem {
   /** True when 0 kcal is a CONFIRMED value (the source says ~0, e.g. water, or the user tapped
    * "Log with 0"), as opposed to "we couldn't find numbers". See mealGuards.ts. */
   zeroConfirmed?: boolean
+  /** 'added-fat' marks the explicit "added fats" line the photo split adds (oil, butter, dressing
+   * the camera cannot see). It is a normal, editable item otherwise. */
+  role?: 'added-fat'
 }
 
 export type FoodSource = 'my-foods' | 'curated' | 'off' | 'ai-estimate' | 'barcode' | 'user' | 'unresolved'

@@ -1,0 +1,347 @@
+{
+ "_LABEL": "SIMULATED edge-function responses. NOT recorded from Gemini. They are hand-written to the Phase 4 response schema in supabase/functions/identify-food/index.ts (items[{name, estimated_grams, kind}], note_applied) because that function is not deployed yet and the real Gemini path cannot be exercised offline. Each `known` list is what the author could see in the CC0 photo; the `response` is what a perfect model would send. They prove the app's UI/merge/fix logic, NOT model accuracy.",
+ "photos": {
+  "07-single-banana.jpg": {
+   "known": [
+    "banana"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "banana",
+      "estimated_grams": 118,
+      "kind": "food"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "02-chicken-fried-rice-peas.jpg": {
+   "known": [
+    "baked chicken breast",
+    "fried rice",
+    "peas"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "baked chicken breast",
+      "estimated_grams": 150,
+      "kind": "food"
+     },
+     {
+      "name": "white rice cooked",
+      "estimated_grams": 200,
+      "kind": "food"
+     },
+     {
+      "name": "peas",
+      "estimated_grams": 50,
+      "kind": "food"
+     },
+     {
+      "name": "olive oil",
+      "estimated_grams": 8,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "01-full-english-breakfast.jpg": {
+   "known": [
+    "fried egg",
+    "bacon",
+    "sausage",
+    "black pudding",
+    "baked beans",
+    "toast",
+    "grilled tomato"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "fried egg",
+      "estimated_grams": 100,
+      "kind": "food"
+     },
+     {
+      "name": "bacon",
+      "estimated_grams": 45,
+      "kind": "food"
+     },
+     {
+      "name": "sausage",
+      "estimated_grams": 70,
+      "kind": "food"
+     },
+     {
+      "name": "black pudding",
+      "estimated_grams": 40,
+      "kind": "food"
+     },
+     {
+      "name": "baked beans",
+      "estimated_grams": 90,
+      "kind": "food"
+     },
+     {
+      "name": "wholemeal toast",
+      "estimated_grams": 60,
+      "kind": "food"
+     },
+     {
+      "name": "tomato",
+      "estimated_grams": 60,
+      "kind": "food"
+     },
+     {
+      "name": "olive oil",
+      "estimated_grams": 10,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "03-meatloaf-plate.jpg": {
+   "known": [
+    "meatloaf with tomato glaze"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "meatloaf",
+      "estimated_grams": 180,
+      "kind": "food"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "04-rice-and-chicken-lunch.jpg": {
+   "known": [
+    "rice with carrot",
+    "avocado",
+    "sweet chilli fried chicken"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "white rice cooked",
+      "estimated_grams": 200,
+      "kind": "food"
+     },
+     {
+      "name": "avocado",
+      "estimated_grams": 70,
+      "kind": "food"
+     },
+     {
+      "name": "fried chicken",
+      "estimated_grams": 120,
+      "kind": "food"
+     },
+     {
+      "name": "olive oil",
+      "estimated_grams": 10,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "05-american-chop-suey.jpg": {
+   "known": [
+    "macaroni",
+    "beef mince",
+    "tomato"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "pasta cooked",
+      "estimated_grams": 180,
+      "kind": "food"
+     },
+     {
+      "name": "beef mince",
+      "estimated_grams": 100,
+      "kind": "food"
+     },
+     {
+      "name": "tomato",
+      "estimated_grams": 60,
+      "kind": "food"
+     },
+     {
+      "name": "olive oil",
+      "estimated_grams": 5,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "06-egg-sandwich-salad.jpg": {
+   "known": [
+    "fried egg",
+    "brioche bun",
+    "cheese",
+    "rocket salad",
+    "cherry tomatoes"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "fried egg",
+      "estimated_grams": 50,
+      "kind": "food"
+     },
+     {
+      "name": "bread roll",
+      "estimated_grams": 60,
+      "kind": "food"
+     },
+     {
+      "name": "cheddar cheese",
+      "estimated_grams": 20,
+      "kind": "food"
+     },
+     {
+      "name": "salad leaves",
+      "estimated_grams": 40,
+      "kind": "food"
+     },
+     {
+      "name": "cherry tomatoes",
+      "estimated_grams": 20,
+      "kind": "food"
+     },
+     {
+      "name": "butter",
+      "estimated_grams": 5,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  }
+ },
+ "scenarios": {
+  "shake": {
+   "known": [
+    "whey protein powder",
+    "milk",
+    "banana",
+    "peanut butter"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "whey protein powder",
+      "estimated_grams": 30,
+      "kind": "food"
+     },
+     {
+      "name": "milk",
+      "estimated_grams": 250,
+      "kind": "food"
+     },
+     {
+      "name": "banana",
+      "estimated_grams": 120,
+      "kind": "food"
+     },
+     {
+      "name": "peanut butter",
+      "estimated_grams": 20,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "bowl": {
+   "known": [
+    "rice",
+    "grilled chicken",
+    "broccoli",
+    "olive oil"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "white rice cooked",
+      "estimated_grams": 250,
+      "kind": "food"
+     },
+     {
+      "name": "grilled chicken breast",
+      "estimated_grams": 150,
+      "kind": "food"
+     },
+     {
+      "name": "broccoli",
+      "estimated_grams": 90,
+      "kind": "food"
+     },
+     {
+      "name": "olive oil",
+      "estimated_grams": 10,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  },
+  "breakfast": {
+   "known": [
+    "scrambled eggs",
+    "toast",
+    "milk",
+    "butter"
+   ],
+   "response": {
+    "items": [
+     {
+      "name": "scrambled eggs",
+      "estimated_grams": 120,
+      "kind": "food"
+     },
+     {
+      "name": "wholemeal toast",
+      "estimated_grams": 70,
+      "kind": "food"
+     },
+     {
+      "name": "milk",
+      "estimated_grams": 250,
+      "kind": "food"
+     },
+     {
+      "name": "butter",
+      "estimated_grams": 10,
+      "kind": "added_fat"
+     }
+    ],
+    "note_applied": false
+   }
+  }
+ },
+ "fixCloud": {
+  "_LABEL": "SIMULATED response for the cloud 'fix' mode (hand-written, not Gemini). Used to prove the consent gate, validation and apply path for wording the private reader cannot read.",
+  "request": "the shake also had a shot of espresso",
+  "response": {
+   "fix": {
+    "ops": [
+     {
+      "action": "add",
+      "name": "long black",
+      "grams": 30
+     }
+    ]
+   }
+  }
+ }
+}

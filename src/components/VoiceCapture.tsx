@@ -73,11 +73,14 @@ export function VoiceCapture({
   onResolved,
   onCancel,
   typeFirst = false,
+  initialText = '',
 }: {
   onResolved: (items: FoodItem[]) => void
   onCancel: () => void
   /** Opens straight on the text box (the visible "Type it" entry), without touching the microphone. */
   typeFirst?: boolean
+  /** Text already typed in the capture sheet's note box; pre-fills the text box in the typed entry. */
+  initialText?: string
 }) {
   const panelRef = useRef<HTMLDivElement>(null)
   const [closing, setClosing] = useState(false)
@@ -92,7 +95,7 @@ export function VoiceCapture({
   const recordTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const originalTextRef = useRef('')
   const [micError, setMicError] = useState<string | null>(null)
-  const [transcript, setTranscript] = useState('')
+  const [transcript, setTranscript] = useState(typeFirst ? initialText : '')
   const [liveInterim, setLiveInterim] = useState('')
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [level, setLevel] = useState(0)

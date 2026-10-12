@@ -6,6 +6,10 @@
 // Phase 3 adds: barcode.spec.ts (10 photos x 2 engines via file input, scan button, typed digits, unknown -> label/manual,
 // native-empty -> ponyfill, lazy self-hosted WASM, no CDN) and barcodeFakeCam.spec.ts (10 photos via Chromium fake camera).
 // `npm run gate:live-barcode` (real Open Food Facts, <= 10 requests) is separate.
+// Phase 4 adds: capture.spec.ts (one capture sheet; photo -> saved log in 3 counted taps; Stay private ends in manual entry; 4-row
+// split with added-fats line; 10 scripted Fix-it corrections that change only the targeted item; portion steps; 6 CC0 meal photos
+// for layout) plus the fixIt / photoAnalysis unit tests. The photo path runs against SIMULATED edge-function responses
+// (e2e/fixtures/meals/responses.json): the real Gemini path cannot be exercised until the Phase 4 function is deployed.
 // Live tests (real edge function) are separate: `npm run gate:live`.
 // Prints exactly one final line: `GATE PASS` or `GATE FAIL: <reason>`.
 import { spawnSync } from 'node:child_process'

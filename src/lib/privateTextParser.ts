@@ -290,6 +290,30 @@ function preprocess(text: string, foods: readonly CuratedFood[]): string {
 
 const SPLIT = /\s*(?:[,;\n]+|\.(?=\s|$)|\band\b|\bwith\b|\bplus\b|\bthen\b|\balong with\b|\bas well as\b|\bfollowed by\b|\bto\b|\bin\b|\bfor\b(?!\s+(?:breakfast|brekkie|lunch|dinner|tea|supper|a snack|snack|dessert|morning tea|afternoon tea)\b))\s*/
 
+/**
+ * Grams for a spoken/typed quantity phrase WITHOUT a food name ("a cup", "2 scoops", "150g", "3"), using
+ * a known food's serving data. Used by Fix-it ("make the rice a cup"). Null when no quantity is present.
+ */
+export function gramsFromQuantityText(
+  text: string,
+  food: CuratedFood | null,
+): { grams: number; basis: GramsBasis; qty: number; unit: string | null } | null {
+  const seg = text
+    .toLowerCase()
+    .normalize('NFKC')
+    .replace(/[’‘]/g, "'")
+    .replace(/½/g, ' 1/2 ').replace(/¼/g, ' 1/4 ').replace(/¾/g, ' 3/4 ')
+    .replace(/[^a-z0-9/.'\- ]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  const tokens = seg.split(' ').filter(Boolean)
+  if (tokens.length === 0) return null
+  const q = readQuantity(tokens)
+  if (q.qty === null || !(q.qty > 0)) return null
+  const { grams, basis } = resolveGrams(food, q.qty, q.unit, q.article)
+  return { grams, basis, qty: q.qty, unit: q.unit }
+}
+
 /** Pure parser. `foods` supplies the serving data; pass the curated table. */
 export function parsePrivateText(text: string, foods: readonly CuratedFood[], opts: { fromSpeech?: boolean } = {}): PrivateParsedItem[] {
   const out: PrivateParsedItem[] = []

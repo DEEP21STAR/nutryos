@@ -15,8 +15,8 @@ export function CloudAiConsentSheet({
 }: {
   /** What would be sent, shown verbatim so the user sees exactly what leaves the phone. */
   foodNames: string[]
-  /** 'label' = a photo of a nutrition panel is sent (barcode fallback). */
-  kind?: 'estimate' | 'label'
+  /** 'label' = a nutrition-panel photo is sent (barcode fallback); 'photo' = a meal photo plus its note; 'fix' = the user's Fix-it words and the item names. */
+  kind?: 'estimate' | 'label' | 'photo' | 'fix'
   onChoose: (choice: CloudAiChoice) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -32,12 +32,16 @@ export function CloudAiConsentSheet({
         onClick={(e) => e.stopPropagation()}
       >
         <h3 id="cloud-ai-title" className="text-subtitle font-semibold text-text-primary">
-          {kind === 'label' ? 'Read the label with AI?' : 'Estimate with AI?'}
+          {kind === 'label' ? 'Read the label with AI?' : kind === 'photo' ? 'Scan the photo with AI?' : kind === 'fix' ? 'Ask the AI to fix this?' : 'Estimate with AI?'}
         </h3>
         <p className="text-body text-text-secondary">
           {kind === 'label'
             ? "Photo scan sends the label photo to Google's free AI, which may use it to improve their products. Nothing else about you is sent."
-            : `AI estimate sends the food name and portion (${foodNames.join(', ')}) to Google's free AI, which may use it to improve their products. Nothing else about you is sent.`}
+            : kind === 'photo'
+              ? "Photo scan sends the photo (and your note, if you added one) to Google's free AI, which may use it to improve their products. Nothing else about you is sent. Stay private keeps it on this phone and you add the food by hand."
+              : kind === 'fix'
+                ? `Fix it sends your words and the food names and portions (${foodNames.join(', ')}) to Google's free AI, which may use it to improve their products. Nothing else about you is sent.`
+                : `AI estimate sends the food name and portion (${foodNames.join(', ')}) to Google's free AI, which may use it to improve their products. Nothing else about you is sent.`}
         </p>
         <p className="text-caption text-text-tertiary">You can change this any time in Settings → Privacy.</p>
         <div className="mt-1 flex flex-col gap-2">

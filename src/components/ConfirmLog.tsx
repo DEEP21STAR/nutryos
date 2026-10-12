@@ -12,6 +12,11 @@ import { estimateMacrosViaCloud, getCloudAiOptIn, setCloudAiOptIn } from '@/lib/
 import { itemFromAiEstimate } from '@/lib/resolveFoodItems'
 import { rescalePortion, type PortionBase } from '@/lib/portion'
 import { CloudAiConsentSheet, type CloudAiChoice } from '@/components/CloudAiConsentSheet'
+import { FixItBox } from '@/components/FixItBox'
+import { resolveIdentifiedItems } from '@/lib/resolveFoodItems'
+
+/** Portion steps relative to the portion first shown ("1×" = what the photo or words said). */
+const PORTION_STEPS: Array<[number, string]> = [[0.5, '½×'], [1, '1×'], [1.5, '1.5×'], [2, '2×'], [3, '3×']]
 
 /** Real device haptic tick on slider drag, when the API exists — degrades to nothing (no error, no fake motion) everywhere else. Not gated by prefers-reduced-motion: this is tactile, not visual/animated. */
 function tick() {
@@ -48,6 +53,8 @@ export function ConfirmLog({
   goals,
   identificationNote = null,
   logSource = 'voice',
+  noteChanges = [],
+  fixSeed = '',
   onConfirm,
   onCancel,
 }: {
@@ -76,6 +83,10 @@ export function ConfirmLog({
    * previously only shown on App.tsx's own header, which this full-screen overlay immediately
    * covers, so it was never actually visible to anyone. Surfaced here instead. */
   identificationNote?: string | null
+  /** What the note typed or said with the photo already changed (shown in the Fix it box). */
+  noteChanges?: string[]
+  /** Part of that note the app could not apply by itself: pre-fills the Fix it box. */
+  fixSeed?: string
   onConfirm: (meal: Meal) => void
   onCancel: () => void
 }) {
@@ -116,6 +127,34 @@ export function ConfirmLog({
 
   /** Remembered per-item scaling base (see lib/portion.ts), so repeated slider moves never drift. */
   const portionBases = useRef(new Map<string, PortionBase>())
+  /** The portion each item first showed: what the ½× / 1× / 1.5× / 2× / 3× steps are relative to. */
+  const stepBase = useRef(new Map<string, number>(initialItems.map((i) => [i.id, i.estimatedGrams])))
+  const baseOf = (it: FoodItem): number => {
+    if (!stepBase.current.has(it.id)) stepBase.current.set(it.id, it.estimatedGrams)
+    return stepBase.current.get(it.id) ?? it.estimatedGrams
+  }
+
+  /** Fix it changed these items: their new portion becomes the new 1×. */
+  function onFixApplied(next: FoodItem[], touched: string[]) {
+    setItems(next)
+    for (const id of touched) {
+      const it = next.find((i) => i.id === id)
+      if (it) stepBase.current.set(id, it.estimatedGrams)
+      portionBases.current.delete(id)
+    }
+  }
+
+  const [addingFat, setAddingFat] = useState(false)
+  /** "+ Added fats": an explicit line for oil/butter/dressing the camera cannot see (5 g oil to start; the steps change it). */
+  async function addFatsLine() {
+    setAddingFat(true)
+    try {
+      const [fat] = await resolveIdentifiedItems([{ name: 'olive oil', estimatedGrams: 5 }])
+      setItems((prev) => [...prev, { ...fat, role: 'added-fat' as const }])
+    } finally {
+      setAddingFat(false)
+    }
+  }
 
   /** Slider or typed grams: rescales kcal/protein/fat/carbs/fiber/sugar in proportion. */
   function setPortion(id: string, grams: number) {
@@ -202,7 +241,7 @@ export function ConfirmLog({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-bg-primary text-text-primary">
+    <div className="fixed inset-0 z-50 flex scroll-pb-48 flex-col overflow-y-auto bg-bg-primary text-text-primary">
       <div className="glass sticky top-0 z-10 flex items-center justify-between px-4 py-3">
         <button onClick={onCancel} className="text-caption text-text-tertiary">
           Cancel
@@ -265,6 +304,8 @@ export function ConfirmLog({
           </div>
         )}
       </div>
+
+      {items.length > 0 && <FixItBox items={items} onApply={onFixApplied} seed={fixSeed} initialChanges={noteChanges} />}
 
       {/* Eating Out tag — available on every path (photo/voice/menu), per Phase 3 item 3. Menu
           mode arrives with this already on and the name pre-filled; toggling it off here for a
@@ -334,23 +375,26 @@ export function ConfirmLog({
           <div className="flex flex-col gap-1.5 text-center">
             <p className="text-body text-text-tertiary">No items identified — add one manually below.</p>
             {identificationNote && (
-              <p className="text-caption text-accent-danger/90">{identificationNote}</p>
+              <p data-testid="identification-note" className="text-caption text-accent-danger/90">{identificationNote}</p>
             )}
           </div>
         )}
         {items.map((item) => (
-          <div key={item.id} className="glass-card p-4">
+          <div key={item.id} className="glass-card p-4" data-testid="item-row" data-name={item.name} data-role={item.role ?? 'food'}>
+            {item.role === 'added-fat' && (
+              <p className="mb-1.5 text-caption font-semibold uppercase tracking-wide text-accent-energy">Added fats (oil, butter, dressing)</p>
+            )}
             <div className="flex items-center gap-2">
               <input
                 value={item.name}
                 onChange={(e) => updateItem(item.id, { name: e.target.value })}
                 placeholder="Food name"
-                className="min-w-0 flex-1 rounded-sm bg-bg-tertiary px-2 py-1.5 text-body text-text-primary outline-none ring-1 ring-white/5 focus:ring-accent-ai"
+                className="min-h-11 min-w-0 flex-1 rounded-sm bg-bg-tertiary px-2 py-1.5 text-body text-text-primary outline-none ring-1 ring-white/5 focus:ring-accent-ai"
               />
               <button
                 onClick={() => removeItem(item.id)}
                 aria-label="Remove item"
-                className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-text-tertiary transition hover:bg-accent-danger/15 hover:text-accent-danger"
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-text-tertiary transition hover:bg-accent-danger/15 hover:text-accent-danger"
               >
                 ✕
               </button>
@@ -370,19 +414,43 @@ export function ConfirmLog({
                   <button
                     onClick={() => requestAiEstimate(item.id)}
                     disabled={aiBusy}
-                    className="rounded-full bg-accent-ai/15 px-3 py-1.5 text-caption font-semibold text-accent-ai ring-1 ring-accent-ai/40 transition active:scale-95 disabled:opacity-50"
+                    className="min-h-11 rounded-full bg-accent-ai/15 px-3 py-1.5 text-caption font-semibold text-accent-ai ring-1 ring-accent-ai/40 transition active:scale-95 disabled:opacity-50"
                   >
                     {aiBusy ? 'Estimating…' : 'Estimate with AI'}
                   </button>
                   <button
                     onClick={() => setZeroDialogFor(item.id)}
-                    className="rounded-full px-3 py-1.5 text-caption text-text-secondary ring-1 ring-white/15 transition active:scale-95"
+                    className="min-h-11 rounded-full px-3 py-1.5 text-caption text-text-secondary ring-1 ring-white/15 transition active:scale-95"
                   >
                     Log with 0 for this item
                   </button>
                 </div>
               </div>
             )}
+
+            {/* Portion steps: ½× 1× 1.5× 2× 3× of the portion first shown. Totals below update at once. */}
+            <div role="group" aria-label={`${item.name || 'Item'} portion steps`} className="mt-3 grid grid-cols-5 gap-1.5">
+              {PORTION_STEPS.map(([m, label]) => {
+                const base = baseOf(item)
+                const active = base > 0 && Math.abs(item.estimatedGrams - base * m) < 0.6
+                return (
+                  <button
+                    key={label}
+                    type="button"
+                    disabled={base <= 0}
+                    aria-pressed={active}
+                    data-testid={`step-${label}`}
+                    onClick={() => setPortion(item.id, Math.round(base * m * 10) / 10)}
+                    className={cn(
+                      'min-h-11 rounded-full text-caption font-semibold ring-1 transition active:scale-95 disabled:opacity-40',
+                      active ? 'bg-accent-health/20 text-accent-health ring-accent-health/60' : 'text-text-secondary ring-white/15',
+                    )}
+                  >
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
 
             {/* Haptic-slider-style portion adjuster — real onChange -> updateItem, same estimatedGrams field as before. */}
             <div className="mt-3">
@@ -399,7 +467,7 @@ export function ConfirmLog({
                     onChange={(e) => setPortion(item.id, e.target.value === '' ? 0 : Number(e.target.value))}
                     aria-label={`${item.name || 'Item'} portion in grams, typed`}
                     data-testid="portion-input"
-                    className="w-16 rounded-sm bg-bg-tertiary/60 px-1 py-0.5 text-right text-data text-accent-health outline-none ring-1 ring-white/5 focus:ring-accent-health"
+                    className="min-h-11 w-20 rounded-sm bg-bg-tertiary/60 px-1 py-0.5 text-right text-data text-accent-health outline-none ring-1 ring-white/5 focus:ring-accent-health"
                   />
                   g
                 </label>
@@ -469,6 +537,16 @@ export function ConfirmLog({
             )}
           </div>
         ))}
+        {photoDataUrl && items.length > 0 && !items.some((i) => i.role === 'added-fat') && (
+          <button
+            onClick={() => void addFatsLine()}
+            disabled={addingFat}
+            data-testid="add-fats"
+            className="glass min-h-11 rounded-md border-dashed py-2.5 text-caption text-accent-energy transition active:scale-[0.98] disabled:opacity-50"
+          >
+            + Added fats (oil, butter, dressing)
+          </button>
+        )}
         <button
           onClick={addBlankItem}
           className="glass rounded-md border-dashed py-2.5 text-caption text-text-secondary transition active:scale-[0.98]"
@@ -647,8 +725,9 @@ function MacroField({
       <input
         type="number"
         value={value}
+        data-field={label.toLowerCase()}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full rounded-sm bg-bg-tertiary/60 px-1 py-1.5 text-center text-data text-text-primary outline-none ring-1 ring-white/5 focus:ring-accent-ai"
+        className="min-h-11 w-full rounded-sm bg-bg-tertiary/60 px-1 py-1.5 text-center text-data text-text-primary outline-none ring-1 ring-white/5 focus:ring-accent-ai"
       />
     </label>
   )

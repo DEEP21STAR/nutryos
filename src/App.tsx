@@ -1,7 +1,9 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { CameraCapture, InputOrbButton } from '@/components/CameraCapture'
 import { MenuCapture } from '@/components/MenuCapture'
 import { BarcodeCapture } from '@/components/BarcodeCapture'
+import { CaptureSheet, type PhotoConsent } from '@/components/CaptureSheet'
+import { CloudAiConsentSheet } from '@/components/CloudAiConsentSheet'
 import { ConfirmLog } from '@/components/ConfirmLog'
 import { TodayRing } from '@/components/TodayRing'
 import { whatNextLine } from '@/lib/stats'
@@ -48,10 +50,14 @@ import { useRegisterSW } from 'virtual:pwa-register/react'
 import { getStoredTheme, applyTheme, type Theme } from '@/lib/theme'
 import { getStoredAccentColor, applyAccentColor, type AccentColor } from '@/lib/accentColor'
 import { identifyFoodViaOllama } from '@/lib/ollamaVision'
-import { identifyFoodViaGemini } from '@/lib/geminiVision'
 import { identifyFoodOnDevice, isWebGPUAvailable, type OnDeviceProgress } from '@/lib/onDeviceVision'
 import { resizeImage } from '@/lib/imageResize'
 import { resolveIdentifiedItems } from '@/lib/resolveFoodItems'
+import { analysePlateViaCloud, type PlateItem } from '@/lib/photoAnalysis'
+import { getCloudAiOptIn, setCloudAiOptIn } from '@/lib/cloudAi'
+import { parseFoodTextPrivate } from '@/lib/privateTextParser'
+import { applyFixOps, planFix } from '@/lib/fixIt'
+import { loadCuratedFoods } from '@/lib/curatedFoods'
 import { fireConfetti } from '@/lib/confetti'
 import { playScanSuccessPing } from '@/lib/chime'
 import { hapticSuccess, hapticCelebrate } from '@/lib/haptics'
@@ -64,7 +70,7 @@ import { sumMacros, DEFAULT_GOALS, type FoodItem, type Goals, type Meal } from '
 import { uid } from '@/lib/utils'
 import type { RealtimeChannel } from '@supabase/supabase-js'
 
-type Stage = 'idle' | 'mode-select' | 'camera' | 'voice' | 'menu' | 'barcode' | 'identifying' | 'confirm' | 'logging'
+type Stage = 'idle' | 'mode-select' | 'camera' | 'photo-consent' | 'voice' | 'menu' | 'barcode' | 'identifying' | 'confirm' | 'logging'
 
 /**
  * Core loop, now backed by the real, live Supabase project
@@ -83,6 +89,14 @@ export default function App() {
   const [identifyingDetail, setIdentifyingDetail] = useState<string | null>(null)
   const [stage, setStage] = useState<Stage>('idle')
   const [typeFirst, setTypeFirst] = useState(false)
+  // Phase 4 capture sheet: the note typed/said with a photo, the privacy choice made on the sheet (so the
+  // live-viewfinder path knows it), a photo waiting for the consent sheet (entry points that skip the
+  // capture sheet, e.g. the PWA shortcut), and what the note changed / could not change on the result.
+  const captureCtx = useRef<{ note: string; consent: PhotoConsent | undefined }>({ note: '', consent: undefined })
+  const [pendingPhoto, setPendingPhoto] = useState<{ blob: Blob; note: string } | null>(null)
+  const [voiceSeed, setVoiceSeed] = useState('')
+  const [draftNoteChanges, setDraftNoteChanges] = useState<string[]>([])
+  const [draftFixSeed, setDraftFixSeed] = useState('')
   // One place to react to "identification finished, food recognized" rather than duplicating a
   // sound/haptic call at every one of handleCapture's several setStage('confirm') exit points
   // (Ollama success, Gemini success, on-device success, on-device skipped) — this fires exactly
@@ -91,6 +105,13 @@ export default function App() {
     if (stage === 'confirm') {
       playScanSuccessPing()
       hapticSuccess()
+    }
+  }, [stage])
+  // The photo note's results belong to one confirm screen only.
+  useEffect(() => {
+    if (stage === 'idle') {
+      setDraftNoteChanges([])
+      setDraftFixSeed('')
     }
   }, [stage])
   const [capturedPhoto, setCapturedPhoto] = useState<{ blob: Blob; dataUrl: string } | null>(null)
@@ -176,7 +197,7 @@ export default function App() {
   // every time `stage` changes, so it applies the moment the user lands back on a safe stage.
   useEffect(() => {
     if (!needRefresh) return
-    const UNSAFE_STAGES: Stage[] = ['camera', 'voice', 'identifying', 'logging']
+    const UNSAFE_STAGES: Stage[] = ['camera', 'photo-consent', 'voice', 'identifying', 'logging']
     if (!UNSAFE_STAGES.includes(stage)) {
       updateServiceWorker(true)
     }
@@ -294,81 +315,142 @@ export default function App() {
 
   const totals = sumMacros(meals.flatMap((m) => m.items))
 
-  async function handleCapture(blob: Blob) {
+  /**
+   * Photo path (Phase 4). The privacy choice (`consent`) comes from the capture sheet; an entry point
+   * that skipped it (PWA shortcut) gets the consent sheet first. Without consent ("Stay private") the
+   * photo goes nowhere: the note, if any, is read by the private parser and the user finishes by hand.
+   * With consent the plate is split into separate items plus an added-fats line by the shared service.
+   * A note the service did not use itself is applied here as a first Fix-it pass, shown on the result.
+   */
+  async function handleCapture(blob: Blob, note = '', consent?: PhotoConsent) {
     const dataUrl = await blobToDataUrl(blob)
     setCapturedPhoto({ blob, dataUrl })
     setDraftIsEatingOut(false)
     setDraftRestaurantName('')
-    setStage('identifying')
+    setDraftNoteChanges([])
+    setDraftFixSeed('')
     setStatusMessage(null)
     setIdentifyingDetail(null)
+    const choice: PhotoConsent | undefined = consent ?? (getCloudAiOptIn() ? 'always' : undefined)
+    if (!choice) {
+      setPendingPhoto({ blob, note })
+      setStage('photo-consent')
+      return
+    }
+    await runPhoto(blob, note, choice)
+  }
 
-    // Resize before sending to the vision model — confirmed live during
-    // core-loop testing that this cuts inference time ~5.7x on this
-    // hardware, and an unresized photo has previously blown the model's
-    // context window entirely. Shared by both the Ollama and on-device paths.
+  async function onPhotoConsent(choice: PhotoConsent) {
+    const pending = pendingPhoto
+    setPendingPhoto(null)
+    if (!pending) {
+      setStage('idle')
+      return
+    }
+    if (choice === 'always') setCloudAiOptIn(true)
+    await runPhoto(pending.blob, pending.note, choice)
+  }
+
+  async function runPhoto(blob: Blob, note: string, choice: PhotoConsent) {
+    setStage('identifying')
+    const allowed = choice !== 'private'
+    const failures: string[] = []
+    let plate: PlateItem[] | null = null
+    let noteApplied = false
+    let via = ''
+
+    // Resize before sending to any vision model (confirmed live: cuts inference time ~5.7x on this
+    // hardware, and an unresized photo has previously blown a model's context window entirely).
     const resizedForVision = await resizeImage(blob, 640)
 
-    // Three real vision paths, tried in order — each with a genuinely different failure mode,
-    // so none of them can substitute for the others:
-    //   1. Ollama (home/Tailscale) — best quality, needs the laptop on and reachable.
-    //   2. Gemini via the identify-food Edge Function — the shared-family path (2026-09-17):
-    //      one Gemini key held server-side, invisible to every device, needs only internet
-    //      (wifi or mobile data), no per-device capability required.
-    //   3. On-device WebGPU — free forever, fully offline once cached, but real hardware/browser
-    //      support varies (confirmed absent on Deep's own phone) — last resort, not first.
-    const failures: string[] = []
-
+    // Own Ollama server: contacted only when the user configured a URL in Settings, so it is the
+    // user's own machine, not a third party, and needs no consent.
     try {
       const { items, endpointUsed } = await identifyFoodViaOllama(resizedForVision)
-      setStatusMessage(`Identified via ${endpointUsed}`)
-      setDraftItems(await resolveIdentifiedItems(items))
-      setStage('confirm')
-      return
+      plate = items.map((it) => ({ ...it, kind: 'food' as const }))
+      via = `Identified via ${endpointUsed}`
     } catch (ollamaErr) {
       failures.push(`Ollama: ${ollamaErr instanceof Error ? ollamaErr.message : 'failed'}`)
     }
 
-    try {
-      setIdentifyingDetail('Trying shared vision service…')
-      const items = await identifyFoodViaGemini(resizedForVision)
-      setStatusMessage('Identified via shared vision service')
-      setDraftItems(await resolveIdentifiedItems(items))
-      setStage('confirm')
-      return
-    } catch (geminiErr) {
-      failures.push(`Shared vision service: ${geminiErr instanceof Error ? geminiErr.message : 'failed'}`)
+    // Shared cloud AI (edge function): ONLY after the user's consent (Allow once / Always).
+    if (!plate && allowed) {
+      try {
+        setIdentifyingDetail('Asking the shared vision service…')
+        const result = await analysePlateViaCloud(await resizeImage(blob, 1024), note)
+        plate = result.items
+        noteApplied = result.noteApplied
+        via = 'Identified via shared vision service'
+      } catch (geminiErr) {
+        failures.push(`Shared vision service: ${geminiErr instanceof Error ? geminiErr.message : 'failed'}`)
+      }
     }
 
-    if (!isWebGPUAvailable()) {
-      // Distinct from a plain failure — explicitly says the on-device attempt was never made,
-      // not that it was tried and failed, so this doesn't get misread as a bug in that path.
-      setStatusMessage(`${failures.join(' | ')} | On-device: skipped — this browser has no WebGPU.`)
-      setDraftItems([])
-      setStage('confirm')
-      return
+    // On-device model: a further fallback, also only for users who allowed photo scan.
+    if (!plate && allowed && isWebGPUAvailable()) {
+      try {
+        setIdentifyingDetail('Starting on-device model (first time: one download, then instant)…')
+        const items = await identifyFoodOnDevice(resizedForVision, (p: OnDeviceProgress) => {
+          if (p.status === 'progress' && typeof p.progress === 'number') {
+            setIdentifyingDetail(`Downloading on-device model… ${Math.round(p.progress)}%`)
+          } else if (p.status === 'ready' || p.status === 'done') {
+            setIdentifyingDetail('Running on-device…')
+          }
+        })
+        plate = items.map((it) => ({ ...it, kind: 'food' as const }))
+        via = 'Identified on-device (offline)'
+      } catch (onDeviceErr) {
+        failures.push(`On-device: ${onDeviceErr instanceof Error ? onDeviceErr.message : 'failed'}`)
+      }
     }
+    setIdentifyingDetail(null)
 
     try {
-      setIdentifyingDetail('Starting on-device model (first time: one download, then instant)…')
-      const items = await identifyFoodOnDevice(resizedForVision, (p: OnDeviceProgress) => {
-        if (p.status === 'progress' && typeof p.progress === 'number') {
-          setIdentifyingDetail(`Downloading on-device model… ${Math.round(p.progress)}%`)
-        } else if (p.status === 'ready' || p.status === 'done') {
-          setIdentifyingDetail('Running on-device…')
+      if (plate && plate.length > 0) {
+        const resolved = await resolveIdentifiedItems(plate.map((p) => ({ name: p.name, estimatedGrams: p.estimatedGrams })))
+        let items = resolved.map((r, i) => (plate![i].kind === 'added-fat' ? { ...r, role: 'added-fat' as const } : r))
+        let changes: string[] = []
+        let seed = ''
+        if (note.trim() && !noteApplied) {
+          const foods = await loadCuratedFoods()
+          const fixPlan = planFix(note, items, foods)
+          if (fixPlan.ops.length > 0) {
+            const applied = await applyFixOps(items, fixPlan.ops)
+            items = applied.items
+            changes = applied.changes
+          }
+          seed = [...fixPlan.unhandled, ...(fixPlan.ask ? [fixPlan.ask.clause] : [])].join(', ')
         }
-      })
-      setStatusMessage('Identified on-device (offline)')
-      setDraftItems(await resolveIdentifiedItems(items))
-      setStage('confirm')
-    } catch (onDeviceErr) {
-      failures.push(`On-device: ${onDeviceErr instanceof Error ? onDeviceErr.message : 'failed'}`)
-      setStatusMessage(failures.join(' | '))
-      setDraftItems([])
-      setStage('confirm') // still let the user log manually — manual-entry fallback
-    } finally {
-      setIdentifyingDetail(null)
+        setDraftNoteChanges(changes)
+        setDraftFixSeed(seed)
+        setStatusMessage(via)
+        setDraftItems(items)
+        setStage('confirm')
+        return
+      }
+    } catch (err) {
+      failures.push(`Lookup: ${err instanceof Error ? err.message : 'failed'}`)
     }
+
+    // Manual path: never a silent 0, never a dead end. With a note, the private parser reads it.
+    let manual: Awaited<ReturnType<typeof resolveIdentifiedItems>> = []
+    if (note.trim()) {
+      try {
+        const parsed = await parseFoodTextPrivate(note)
+        manual = await resolveIdentifiedItems(parsed.map((p) => ({ name: p.name, estimatedGrams: p.estimatedGrams })))
+      } catch {
+        manual = []
+      }
+    }
+    setDraftItems(manual)
+    setStatusMessage(
+      allowed
+        ? failures.length > 0
+          ? `${failures.join(' | ')}${isWebGPUAvailable() ? '' : ' | On-device: skipped, this browser has no WebGPU.'}`
+          : 'The photo was not read.'
+        : 'Photo scan is off because you chose to stay private, so the photo stayed on this phone. Add what is on the plate below, or allow photo scan next time.',
+    )
+    setStage('confirm') // still let the user log manually
   }
 
   /**
@@ -631,21 +713,48 @@ export default function App() {
       {showHelp && <HelpCarousel onClose={() => setShowHelp(false)} />}
 
       {stage === 'mode-select' && (
-        <InputModeSheet
-          onPhoto={() => setStage('camera')}
-          onVoice={() => { setTypeFirst(false); setStage('voice') }}
-          onType={() => { setTypeFirst(true); setStage('voice') }}
+        <CaptureSheet
+          onPhotoFile={(file, note, consent) => {
+            captureCtx.current = { note, consent }
+            void handleCapture(file, note, consent)
+          }}
+          onLiveCamera={(note, consent) => {
+            captureCtx.current = { note, consent }
+            setStage('camera')
+          }}
+          onVoice={() => { setTypeFirst(false); setVoiceSeed(''); setStage('voice') }}
+          onType={(note) => { setTypeFirst(true); setVoiceSeed(note); setStage('voice') }}
           onMenu={() => setStage('menu')}
           onBarcode={() => setStage('barcode')}
           onCancel={() => setStage('idle')}
         />
       )}
 
-      {stage === 'camera' && <CameraCapture onCapture={handleCapture} onCancel={() => setStage('idle')} />}
+      {stage === 'camera' && (
+        <CameraCapture
+          onCapture={(blob) => {
+            const { note, consent } = captureCtx.current
+            captureCtx.current = { note: '', consent: undefined }
+            void handleCapture(blob, note, consent)
+          }}
+          onCancel={() => {
+            captureCtx.current = { note: '', consent: undefined }
+            setStage('idle')
+          }}
+        />
+      )}
+
+      {stage === 'photo-consent' && (
+        <CloudAiConsentSheet
+          kind="photo"
+          foodNames={[]}
+          onChoose={(choice) => void onPhotoConsent(choice)}
+        />
+      )}
 
       {stage === 'voice' && (
         <Suspense fallback={<ScreenFallback />}>
-          <VoiceCapture typeFirst={typeFirst} onResolved={handleVoiceResolved} onCancel={() => setStage('idle')} />
+          <VoiceCapture typeFirst={typeFirst} initialText={voiceSeed} onResolved={handleVoiceResolved} onCancel={() => setStage('idle')} />
         </Suspense>
       )}
 
@@ -679,6 +788,8 @@ export default function App() {
           todaysTotals={totals}
           goals={goals ?? DEFAULT_GOALS}
           identificationNote={statusMessage}
+          noteChanges={draftNoteChanges}
+          fixSeed={draftFixSeed}
           onConfirm={handleConfirm}
           onCancel={() => {
             setStage('idle')
@@ -707,71 +818,6 @@ export default function App() {
         </div>
         )}
     </>
-  )
-}
-
-/**
- * Tapping the orb now offers three genuinely distinct entry points instead of
- * jumping straight to the camera — Photo (existing CameraCapture, itself
- * still offering live camera + gallery/files), Voice (VoiceCapture), and
- * Eating Out (MenuCapture, Phase 3 — menu-photo OCR + optional plate photo).
- * Styled with the same glass button language as CameraCapture's
- * UploadOptions rather than inventing a new sheet pattern.
- */
-function InputModeSheet({
-  onPhoto,
-  onVoice,
-  onType,
-  onMenu,
-  onBarcode,
-  onCancel,
-}: {
-  onPhoto: () => void
-  onVoice: () => void
-  onType: () => void
-  onMenu: () => void
-  onBarcode: () => void
-  onCancel: () => void
-}) {
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-end bg-black/60 p-6 pb-10">
-      <div className="glass-card flex w-full max-w-xs flex-col gap-2 p-4">
-        <p className="mb-1 text-center text-caption uppercase tracking-wide text-text-tertiary">Log a meal</p>
-        <button
-          onClick={onPhoto}
-          className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-accent-health shadow-[0_0_24px_4px_var(--glow-health)] transition active:scale-95"
-        >
-          <span aria-hidden>📷</span> Photo
-        </button>
-        <button
-          onClick={onVoice}
-          className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-accent-ai shadow-[0_0_24px_4px_var(--glow-ai)] transition active:scale-95"
-        >
-          <span aria-hidden>🎙️</span> Voice
-        </button>
-        <button
-          onClick={onType}
-          className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-text-primary shadow-[0_0_24px_4px_rgb(255_255_255/0.15)] transition active:scale-95"
-        >
-          <span aria-hidden>⌨️</span> Type it
-        </button>
-        <button
-          onClick={onMenu}
-          className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-accent-energy shadow-[0_0_24px_4px_var(--glow-energy)] transition active:scale-95"
-        >
-          <span aria-hidden>🍽️</span> Eating Out
-        </button>
-        <button
-          onClick={onBarcode}
-          className="glass flex items-center justify-center gap-2 rounded-full px-6 py-3 text-subtitle font-semibold text-text-primary shadow-[0_0_24px_4px_rgb(255_255_255/0.15)] transition active:scale-95"
-        >
-          <span aria-hidden>📦</span> Scan barcode
-        </button>
-        <button onClick={onCancel} className="mt-1 text-caption text-text-tertiary underline">
-          Cancel
-        </button>
-      </div>
-    </div>
   )
 }
 
